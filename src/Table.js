@@ -5,8 +5,8 @@ import Packery from "packery";
 import Draggabilly from "draggabilly";
 import GridItem from "./GridItem";
 import { colors } from "./Colorpalette";
+import { principal } from "./Principalid";
 import { delDoc, deleteAsset, listAssets } from "@junobuild/core";
-import { Swipeable } from "react-swipeable";
 
 export const Table = () => {
   const { user } = useContext(AuthContext);
@@ -41,7 +41,7 @@ export const Table = () => {
       return;
     }
     list();
-    if (user && user.key === "bejiw-lmmap-dscrd-b6jed-6zrsu-nyrlm-wa4rn-e56p2-wqanx-doasx-zqe") {
+    if (user && user.key === principal[0]) {
       setHasCRUDAccess(true);
     }
   }, [user]);
@@ -106,18 +106,6 @@ export const Table = () => {
     });
 
     setFilteredItems(filtered);
-  };
-
-  const handleSwipeLeft = () => {
-    setFullscreenIndex((prevIndex) =>
-      prevIndex === null ? 0 : Math.min(prevIndex + 1, items.length - 1)
-    );
-  };
-  
-  const handleSwipeRight = () => {
-    setFullscreenIndex((prevIndex) =>
-      prevIndex === null ? 0 : Math.max(prevIndex - 1, 0)
-    );
   };
   
   const handleRemoveItem = async (doc, key, url) => {
@@ -269,7 +257,6 @@ export const Table = () => {
         </h2>
       </header>
       <div className="p-3">
-      <Swipeable onSwipedLeft={handleSwipeLeft} onSwipedRight={handleSwipeRight}>
 
         <div
           ref={gridRef}
@@ -306,7 +293,6 @@ export const Table = () => {
       );
     })}
   </div>
-  </Swipeable>
 
 </div>
 

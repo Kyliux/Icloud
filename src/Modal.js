@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { setDoc, uploadFile } from "@junobuild/core";
 import { AuthContext } from "./Auth";
 import { nanoid } from "nanoid";
+import { principal } from "./Principalid";
 
 export const Modal = () => {
   const [showModal, setShowModal] = useState(false);
@@ -18,7 +19,7 @@ export const Modal = () => {
 
   useEffect(() => {
     setValid(inputText !== "" && user !== undefined && user !== null);
-    if (user && user.key === "bejiw-lmmap-dscrd-b6jed-6zrsu-nyrlm-wa4rn-e56p2-wqanx-doasx-zqe") {
+    if (user && user.key === principal[0]) {
       setHasCRUDAccess(true);
     }
   }, [showModal, inputText, user]);

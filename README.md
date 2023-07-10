@@ -1,20 +1,27 @@
 # React + Tailwind
 
-A sample app with React and Tailwind Javascript that showcases authentication, datastore and storage usage.
+An evolution of the diary example from https://github.com/buildwithjuno/examples showcasing web3 capabilities
+
+This sample app uses React and Tailwind Javascript that showcases authentication, datastore and storage usage.
+
+Added functionnality :
+- CRUD
+- Packery
+- pictures and videos support
+- Usage tags buttons to filter
+
 
 ## Getting started
 
 Make sure you have [node.js](https://nodejs.org) LTS installed.
 
+Log in Juno website, get your satellite ID and change juno.json
+
 ```bash
-git clone https://github.com/buildwithjuno/examples
-cd react/diary
+git clone https://github.com/Kyliux/Icloud
 npm ci
-```
-
-## Local development
+npm run build && juno deploy 
 
 ```
-npm run start
-```1
-# Icloud
+
+Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the sattelite owner have the possibility to add or remove items.

@@ -42,83 +42,84 @@ export const Modal = () => {
     if ([null, undefined].includes(user)) {
       return;
     }
-
+  
     setProgress(true);
-
+  
     try {
-      const uploadedFiles = [];
-      let url;
-      let type;
-      let ratio;
-      
-      for (const file of files) {
-        const filename = `${user.key}-${file.name}`;
-
-        let collection;
-
-        if (file.type.startsWith("image/")) {
-          collection = "images";
-          const image = new Image();
-          image.src = URL.createObjectURL(file);
-          await image.decode();
-          ratio = getClosestRatio(image.width / image.height);
-
-        } else if (file.type.startsWith("video/")) {
-          collection = "videos";
-          const video = document.createElement("video");
-          video.src = URL.createObjectURL(file);
-
-          const videoLoadPromise = new Promise((resolve, reject) => {
-            video.addEventListener("loadedmetadata", () => {
-              ratio = video.videoWidth / video.videoHeight;
-
-            
+      const uploadedFiles = await Promise.all(
+        files.map(async (file) => {
+          const filename = `${user.key}-${file.name}`;
+  
+          let collection;
+          let ratio;
+          let url;
+          let type;
+  
+          if (file.type.startsWith("image/")) {
+            collection = "images";
+            const image = new Image();
+            image.src = URL.createObjectURL(file);
+            await image.decode();
+            ratio = getClosestRatio(image.width / image.height);
+          } else if (file.type.startsWith("video/")) {
+            collection = "videos";
+            const video = document.createElement("video");
+            video.src = URL.createObjectURL(file);
+  
+            const videoLoadPromise = new Promise((resolve, reject) => {
+              video.addEventListener("loadedmetadata", () => {
+                ratio = video.videoWidth / video.videoHeight;
                 resolve();
+              });
+  
+              video.addEventListener("error", reject);
             });
-
-            video.addEventListener("error", reject);
-          });
-
-          await videoLoadPromise;
-        }
   
-        if (collection) {
-          const { downloadUrl } = await uploadFile({
-            collection,
-            data: file,
-            filename,
+            await videoLoadPromise;
+          }
+  
+          if (collection) {
+            const { downloadUrl } = await uploadFile({
+              collection,
+              data: file,
+              filename,
+            });
+  
+            url = downloadUrl;
+            type = collection.slice(0, -1);
+          }
+  
+          const key = nanoid();
+          const currentDate = new Date().toISOString();
+  
+          await setDoc({
+            collection: "notes",
+            doc: {
+              key,
+              data: {
+                text: inputText,
+                type,
+                tags,
+                ratio,
+                date: currentDate,
+                ...(url !== undefined && { url }),
+              },
+            },
           });
   
-          url = downloadUrl;
-          type = collection.slice(0, -1);
-        }
-      
-
-      const key = nanoid();
-      const currentDate = new Date().toISOString();
-
-      await setDoc({
-        collection: "notes",
-        doc: {
-          key,
-          data: {
-            text: inputText,
+          return {
+            url,
             type,
-            tags,
-            ratio,
-            date: currentDate,
-            ...(url !== undefined && { url }),
-          },
-        },
-      });
-    }
+          };
+        })
+      );
+  
       setShowModal(false);
-
       reload();
     } catch (err) {
       console.error(err);
     }
-
+  
     setProgress(false);
   };
 

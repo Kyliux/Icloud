@@ -1,0 +1,24 @@
+{
+  "satellite": {
+    "satelliteId": "m5rwi-daaaa-aaaal-acrpq-cai",
+    "source": "build",
+    "storage": {
+      "headers": [
+        {
+          "source": "**/*.jpg",
+          "headers": [
+            ["Cache-Control", "max-age=31536000"],
+            ["Access-Control-Allow-Origin", "*"]
+          ]
+        },
+        {
+          "source": "**/*.mp4",
+          "headers": [
+            ["Cache-Control", "max-age=31536000"],
+            ["Access-Control-Allow-Origin", "*"]
+          ]
+        }
+      ]
+    }
+  }
+}

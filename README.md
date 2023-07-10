@@ -2,7 +2,7 @@
 
 An evolution of the diary example from https://github.com/buildwithjuno/examples showcasing web3 capabilities
 
-This web3 sample app uses React and Tailwind Javascript that showcases authentication, datastore and storage usage in the internet computer from Dfinity.
+This web3 sample app is totally stored ON-CHAIN, it uses React and Tailwind Javascript that showcases authentication, datastore and storage usage in the internet computer from Dfinity.
 
 Added functionnality :
 - CRUD

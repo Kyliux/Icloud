@@ -24,4 +24,4 @@ npm run build && juno deploy
 
 ```
 
-Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the sattelite owner have the possibility to add or remove items.
+Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the sattelite owner have the possibility to add or remove items. The principalid of your sattelite login device have to be configured in Principalid.js to be able to change your data.

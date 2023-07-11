@@ -9,6 +9,7 @@ Added functionnality :
 - Packery
 - pictures and videos support
 - Lazyload implemented
+- swiper to navigate the elements individually
 - Usage tags buttons to filter
 
 
@@ -31,3 +32,6 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 
 - Make the code better / refactorize to improve reusability and maintenance
 - Lazyload the pictures / videos also inside the swiper
+- make close swiper when clicking around the picture, also make the button bigger
+- print the latest media first
+-

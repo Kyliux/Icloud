@@ -30,5 +30,4 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 ## TODO List
 
 - Make the code better / refactorize to improve reusability and maintenance
-- Lazyload the pictures / videos
-- interpret all tags as if they were all Tolowercase 
+- Lazyload the pictures / videos also inside the swiper

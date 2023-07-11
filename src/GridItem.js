@@ -18,6 +18,7 @@ const GridItem = ({
   setItems,
   setFilteredItems,
   hasCRUDAccess,
+  setShowSwiper,
   packeryInit,
 }) => {
   const [showLabel, setShowLabel] = useState(false);
@@ -128,28 +129,6 @@ const GridItem = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {type === "video" && mediaUrl ? (
-        <div style={{ position: "relative", width: "100%", height: "100%" }}>
-          <video
-            src={mediaUrl}
-            controls
-            className="media-element w-full h-full object-cover"
-          >
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      ) : mediaUrl ? (
-        <img src={mediaUrl} alt={text} className="media-element w-full h-auto" />
-      ) : null}
-
-      {showLabel && (
-        <div className="absolute bottom-0 left-0 w-full">
-          <div className="bg-black opacity-75">
-            <p className="text-white text-lg font-semibold text-center">{text}</p>
-          </div>
-        </div>
-      )}
-
       {showRemoveLogo && hasCRUDAccess && (
         <div
           className="remove-logo"
@@ -195,6 +174,29 @@ const GridItem = ({
           )}
         </div>
       </div>
+
+      {type === "video" && mediaUrl ? (
+        <div style={{ position: "relative", width: "100%", height: "100%" }}>
+          <video
+            src={mediaUrl}
+            controls
+            className="media-element w-full h-full object-cover"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      ) : mediaUrl ? (
+        <img src={mediaUrl} alt={text} className="media-element w-full h-auto" onClick={() => setShowSwiper(index)} />
+      ) : null}
+
+      {showLabel && (
+        <div className="absolute bottom-0 left-0 w-full">
+          <div className="bg-black opacity-75">
+            <p className="text-white text-lg font-semibold text-center">{text}</p>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

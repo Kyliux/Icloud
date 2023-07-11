@@ -6,6 +6,10 @@ import GridItem from "./GridItem";
 import { colors } from "./Colorpalette";
 import { principal } from "./Principalid";
 import { delDoc, deleteAsset, listAssets } from "@junobuild/core";
+import { ImageSwiper } from './ImageSwiper';
+
+
+
 
 export const Table = () => {
   const { user } = useContext(AuthContext);
@@ -16,13 +20,36 @@ export const Table = () => {
   const [hasCRUDAccess, setHasCRUDAccess] = useState(false); // Flag for CRUD access
   const [inProgress, setInProgress] = useState(false);
   const [packeryInit, setPackeryInit] = useState(false);
+  const [showSwiper, setShowSwiper] = useState(false);
+  const [swiperIndex, setSwiperIndex] = useState(0);
 
   const gridRef = useRef(null);
   const packeryRef = useRef(null);
   const activeTagsRef = useRef([]);
   const excludedTagsRef = useRef([]);
 
-  
+  const handleShowSwiper = (index) => {
+    console.log('handleShowSwiper triggered with index:', index);
+    setShowSwiper(true);
+    setSwiperIndex(index);
+  }
+
+  const handleCloseSwiper = () => {
+    console.log('handleCloseSwiper triggered');
+    setShowSwiper(false);
+  }
+
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) handleCloseSwiper();
+    };
+    window.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
   useEffect(() => {
     window.addEventListener("reload", list);
     return () => {
@@ -226,6 +253,24 @@ export const Table = () => {
 
   return (
     <div className="w-full  bg-white">
+
+      {/* {showSwiper && 
+    <ImageSwiper 
+      items={filteredItems} 
+      activeIndex={swiperIndex} 
+      onClose={handleCloseSwiper} 
+    />
+}
+*/}
+
+{/* Render ImageSwiper unconditionally */}
+ {showSwiper && 
+    <ImageSwiper 
+      items={filteredItems} 
+      activeIndex={swiperIndex} 
+      onClose={handleCloseSwiper} 
+    />
+}
       <header className="px-5 py-4 w-full">
         <h2 className="font-semibold text-gray-800 text-center">
           Top Tags:
@@ -281,6 +326,7 @@ export const Table = () => {
           url={url}
           ratio={ratio}
           tags={tags}
+          setShowSwiper={handleShowSwiper}
           type={type}
           filterItems={filterItems}
           hasCRUDAccess={hasCRUDAccess} // Pass the CRUD access flag as a prop

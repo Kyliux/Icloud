@@ -1,4 +1,4 @@
-# React + Tailwind
+# React + Tailwind + ICP
 
 An evolution of the diary example from https://github.com/buildwithjuno/examples showcasing web3 capabilities
 
@@ -24,4 +24,10 @@ npm run build && juno deploy
 
 ```
 
-Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the sattelite owner have the possibility to add or remove items. The principalid of your sattelite login device have to be configured in Principalid.js to be able to change your data.
+Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the sattelite owner have the possibility to add or remove items. The principalid of your satelite login device have to be configured in Principalid.js to be able to change your data.
+
+## TODO List
+
+- Make the code better / refactorize to improve reusability and maintenance
+- Lazyload the pictures / videos
+- interpret all tags as if they were all Tolowercase 

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { listDocs } from "@junobuild/core";
 import { AuthContext } from "./Auth";
 import Packery from "packery";
-import Draggabilly from "draggabilly";
 import GridItem from "./GridItem";
 import { colors } from "./Colorpalette";
 import { principal } from "./Principalid";
@@ -13,12 +12,10 @@ export const Table = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [activeTags, setActiveTags] = useState([]);
-  const [excludedTags, setExcludedTags] = useState([]);
   const [topTags, setTopTags] = useState([]);
   const [hasCRUDAccess, setHasCRUDAccess] = useState(false); // Flag for CRUD access
   const [inProgress, setInProgress] = useState(false);
-  const [fullscreenIndex, setFullscreenIndex] = useState(null);
-
+  const [packeryInit, setPackeryInit] = useState(false);
 
   const gridRef = useRef(null);
   const packeryRef = useRef(null);
@@ -75,8 +72,10 @@ export const Table = () => {
     packeryRef.current = new Packery(gridRef.current, {
       itemSelector: ".grid-item",
       percentPosition: true,
-      gutter: 2,
+      gutter: 0,
     });
+    setPackeryInit(true);
+
   };
 
   const reloadPackery = () => {
@@ -120,11 +119,6 @@ export const Table = () => {
       if (url !== undefined) {
         const { pathname } = new URL(url);
         const extension = pathname.split(".").pop();
-
-      
- 
-
-        
   
         if (extension === "jpg" || extension === "jpeg" || extension === "png") {
           const { assets } = await listAssets({
@@ -203,10 +197,11 @@ export const Table = () => {
     items.forEach((item) => {
       const tags = item.data.tags ? String(item.data.tags).split(",") : [];
       tags.forEach((tag) => {
-        tagCount[tag] = tagCount[tag] ? tagCount[tag] + 1 : 1;
+        const normalizedTag = tag.toLowerCase(); // Convert tag to lowercase
+        tagCount[normalizedTag] = tagCount[normalizedTag] ? tagCount[normalizedTag] + 1 : 1;
       });
     });
-
+  
     const sortedTags = Object.keys(tagCount).sort(
       (a, b) => tagCount[b] - tagCount[a]
     );
@@ -225,8 +220,8 @@ export const Table = () => {
   };
 
   return (
-    <div className="w-full mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-8">
-      <header className="px-5 py-4 border-b border-gray-100 w-full">
+    <div className="w-full  bg-white">
+      <header className="px-5 py-4 w-full">
         <h2 className="font-semibold text-gray-800 text-center">
           Top Tags:
           {topTags.length > 0 && (
@@ -275,6 +270,7 @@ export const Table = () => {
       return (
         <GridItem
           itemKey={key}
+          packeryInit={packeryInit}
           item={item}
           text={text}
           url={url}

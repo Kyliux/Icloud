@@ -11,7 +11,6 @@ export const Modal = () => {
   const [valid, setValid] = useState(false);
   const [progress, setProgress] = useState(false);
   const [files, setFiles] = useState([]);
-  const [file, setFile] = useState();
   const [hasCRUDAccess, setHasCRUDAccess] = useState(false); // Flag for CRUD access
 
 
@@ -46,7 +45,7 @@ export const Modal = () => {
     setProgress(true);
   
     try {
-      const uploadedFiles = await Promise.all(
+       await Promise.all(
         files.map(async (file) => {
           const filename = `${user.key}-${file.name}`;
   

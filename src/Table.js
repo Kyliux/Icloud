@@ -86,26 +86,31 @@ export const Table = () => {
   
 
   const filterItems = (tag, exclude = false) => {
+    tag = tag.toLowerCase();
     const activeTags = exclude
       ? activeTagsRef.current.filter((t) => t !== tag)
       : [...activeTagsRef.current, tag];
     const excludedTags = exclude
       ? [...excludedTagsRef.current, tag]
       : excludedTagsRef.current.filter((t) => t !== tag);
-
-    setActiveTags(activeTags);
-    excludedTagsRef.current = excludedTags;
-
+  
+    setActiveTags(activeTags.map(tag => tag.toLowerCase())); 
+    excludedTagsRef.current = excludedTags.map(tag => tag.toLowerCase());
+  
     const filtered = items.filter((item) => {
-      const itemTags = item.data.tags || [];
+      const itemTags = item.data.tags 
+        ? String(item.data.tags).split(",").map(tag => tag.toLowerCase().trim()) 
+        : []; 
       return (
         activeTags.every((t) => itemTags.includes(t)) &&
         excludedTags.every((t) => !itemTags.includes(t))
       );
     });
-
+  
     setFilteredItems(filtered);
   };
+  
+  
   
   const handleRemoveItem = async (doc, key, url) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this item?");

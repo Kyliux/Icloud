@@ -77,7 +77,7 @@ const GridItem = ({
     setShowRemoveLogo(false);
   };
 
-  const tagsArray = tags ? String(tags).split(",") : [];
+  const tagsArray = tags ? String(tags).toLowerCase().split(",") : [];
 
   const getTagColor = (tag) => {
     const hashCode = tag.split("").reduce((acc, char) => {

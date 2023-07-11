@@ -8,6 +8,7 @@ Added functionnality :
 - CRUD
 - Packery
 - pictures and videos support
+- Lazyload implemented
 - Usage tags buttons to filter
 
 

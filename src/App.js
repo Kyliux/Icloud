@@ -1,11 +1,13 @@
+import React, { useEffect, useState } from "react";
 import { Background } from "./Background";
-import { Table } from "./Table";
-import { Modal } from "./Modal";
+import { Gallery } from "./Gallery";
+import { Iscan } from "./Iscan";
 import { initJuno } from "@junobuild/core";
 import { Auth } from "./Auth";
-import { useEffect } from "react";
 
 function App() {
+  const [activeView, setActiveView] = useState("gallery");
+
   useEffect(() => {
     (async () =>
       await initJuno({
@@ -13,25 +15,43 @@ function App() {
       }))();
   }, []);
 
+  const toggleView = () => {
+    setActiveView(activeView === "gallery" ? "iscan" : "gallery");
+  };
+
   return (
     <>
-        <main>
-            <div className="mx-auto pt-16">
-              <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              <span className="text-teal-800">T</span>he <span className="text-blue-600">i</span><span className="text-red-500">C</span>lou<span className="text-yellow-500">d</span>
-</h1>
+      <main>
+        <div className="mx-auto pt-16">
+          <div className="text-center">
+            {activeView === "gallery" ? (
+              <h1
+                onClick={toggleView}
+                className="cursor-pointer text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
+              >
+                <span className="text-teal-800">T</span>he{" "}
+                <span className="text-blue-600">i</span>
+                <span className="text-red-500">C</span>lou
+                <span className="text-yellow-500">d</span>
+              </h1>
+            ) : (
+              <h1
+                onClick={toggleView}
+                className="cursor-pointer text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
+              >
+                <span className="text-teal-800">T</span>he{" "}
+                <span className="text-blue-600">i</span>
+                <span className="text-red-500">S</span>can
+              </h1>
+            )}
 
-
-                <Auth>
-                  <Table />
-
-                  <Modal />
-                </Auth>
-              </div>
-            </div>
-            <Background />
-        </main>
+            <Auth>
+              {activeView === "gallery" ? <Gallery /> : <Iscan />}
+            </Auth>
+          </div>
+        </div>
+        <Background />
+      </main>
     </>
   );
 }

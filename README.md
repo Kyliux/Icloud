@@ -30,8 +30,20 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 
 ## TODO List
 
+# Optimisation
+
 - Make the code better / refactorize to improve reusability and maintenance
-- Lazyload the pictures / videos also inside the swiper
+- Lazyload the pictures / videos inside the swiper too
 - make close swiper when clicking around the picture, also make the button bigger
-- print the latest media first
--
+- add a button to print the latest media first
+- make the gallery use all the space available on mobile
+- center the main gallery
+- Decide how to deal with big resolution picture / video 
+- when the Table is rly functionnal, add data
+- by default, filter the grid so that for each group of the tag1 x tag2 x tag3, only one random element is shown.
+    this will be ordened so that tag1 x tag2 will be something different and higher level of tag1 x tag2 x another tag because the occurence of the 2 first tag will be superior and printed before
+
+# Functionality
+
+- add a ICdoc section that is essencially the same as Table but with only confidential documents
+- 

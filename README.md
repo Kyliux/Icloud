@@ -44,5 +44,5 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 
 # Functionality
 
-- add a ICdoc section that is essencially the same as Table but with only confidential documents
+- make Iscan data encrypted with https://docs.cossacklabs.com/themis/languages/react-native/features/#secure-cell
 - 

@@ -8,16 +8,13 @@ import { principal } from "./Principalid";
 import { delDoc, deleteAsset, listAssets } from "@junobuild/core";
 import { ImageSwiper } from './ImageSwiper';
 
-
-
-
 export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
   const { user } = useContext(AuthContext);
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [activeTags, setActiveTags] = useState([]);
   const [topTags, setTopTags] = useState([]);
-  const [hasCRUDAccess, setHasCRUDAccess] = useState(false); // Flag for CRUD access
+  const [hasCRUDAccess, setHasCRUDAccess] = useState(false);
   const [inProgress, setInProgress] = useState(false);
   const [packeryInit, setPackeryInit] = useState(false);
   const [showSwiper, setShowSwiper] = useState(false);
@@ -55,7 +52,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     return () => {
       window.removeEventListener("reload", list);
     };
-
   }, []);
 
   useEffect(() => {
@@ -102,15 +98,12 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
       gutter: 0,
     });
     setPackeryInit(true);
-
   };
 
   const reloadPackery = () => {
     packeryRef.current.reloadItems();
     packeryRef.current.layout();
   };
-
-  
 
   const filterItems = (tag, exclude = false) => {
     tag = tag.toLowerCase();
@@ -120,38 +113,36 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     const excludedTags = exclude
       ? [...excludedTagsRef.current, tag]
       : excludedTagsRef.current.filter((t) => t !== tag);
-  
-    setActiveTags(activeTags.map(tag => tag.toLowerCase())); 
-    excludedTagsRef.current = excludedTags.map(tag => tag.toLowerCase());
-  
+
+    setActiveTags(activeTags.map((tag) => tag.toLowerCase()));
+    excludedTagsRef.current = excludedTags.map((tag) => tag.toLowerCase());
+
     const filtered = items.filter((item) => {
-      const itemTags = item.data.tags 
-        ? String(item.data.tags).split(",").map(tag => tag.toLowerCase().trim()) 
-        : []; 
+      const itemTags = item.data.tags
+        ? String(item.data.tags)
+            .split(",")
+            .map((tag) => tag.toLowerCase().trim())
+        : [];
       return (
         activeTags.every((t) => itemTags.includes(t)) &&
         excludedTags.every((t) => !itemTags.includes(t))
       );
     });
-  
+
     setFilteredItems(filtered);
   };
-  
-  
-  
+
   const handleRemoveItem = async (doc, key, url) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this item?");
     if (!confirmDelete) return;
-  
+
     try {
       setInProgress(true);
-      
-      
-      
+
       if (url !== undefined) {
         const { pathname } = new URL(url);
         const extension = pathname.split(".").pop();
-  
+
         if (extension === "jpg" || extension === "jpeg" || extension === "png") {
           const { assets } = await listAssets({
             collection: images,
@@ -161,13 +152,13 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
               },
             },
           });
-  
+
           if (assets.length !== 1) {
             setInProgress(false);
             alert("More than one corresponding asset found");
             return;
           }
-  
+
           await deleteAsset({
             collection: images,
             storageFile: assets[0],
@@ -187,14 +178,14 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
             alert("More than one corresponding asset found");
             return;
           }
-  
+
           await deleteAsset({
             collection: videos,
             storageFile: assets[0],
           });
         }
       }
-  
+
       const {
         data: { url },
       } = doc;
@@ -214,9 +205,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
       setInProgress(false);
     }
   };
-  
-
-
 
   const resetFilters = () => {
     setActiveTags([]);
@@ -226,20 +214,49 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
 
   const fetchTopTags = () => {
     const tagCount = {};
+    const itemTagsMap = {};
+  
     items.forEach((item) => {
       const tags = item.data.tags ? String(item.data.tags).split(",") : [];
       tags.forEach((tag) => {
-        const normalizedTag = tag.toLowerCase(); // Convert tag to lowercase
+        const normalizedTag = tag.toLowerCase();
         tagCount[normalizedTag] = tagCount[normalizedTag] ? tagCount[normalizedTag] + 1 : 1;
+  
+        if (!itemTagsMap[normalizedTag]) {
+          itemTagsMap[normalizedTag] = [];
+        }
+        itemTagsMap[normalizedTag].push(item);
       });
     });
   
-    const sortedTags = Object.keys(tagCount).sort(
-      (a, b) => tagCount[b] - tagCount[a]
-    );
+    const sortedTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]);
     const topTags = sortedTags.slice(0, 20);
     setTopTags(topTags);
+  
+    const selectedItems = new Set();
+    const filtered = [];
+  
+    topTags.forEach((tag) => {
+      const itemsWithTag = itemTagsMap[tag] || [];
+  
+      if (itemsWithTag.length > 0) {
+        const remainingItems = itemsWithTag.filter((item) => !selectedItems.has(item));
+        if (remainingItems.length > 0) {
+          const randomIndex = Math.floor(Math.random() * remainingItems.length);
+          const selectedItem = remainingItems[randomIndex];
+          filtered.push(selectedItem);
+          selectedItems.add(selectedItem);
+        }
+      }
+    });
+  
+    setFilteredItems(filtered);
   };
+  
+  
+  
+  
+  
 
   const getTagColor = (tag) => {
     const hashCode = tag.split("").reduce((acc, char) => {
@@ -253,24 +270,10 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
 
   return (
     <div className="w-full  bg-white">
+      {showSwiper && (
+        <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
+      )}
 
-      {/* {showSwiper && 
-    <ImageSwiper 
-      items={filteredItems} 
-      activeIndex={swiperIndex} 
-      onClose={handleCloseSwiper} 
-    />
-}
-*/}
-
-{/* Render ImageSwiper unconditionally */}
- {showSwiper && 
-    <ImageSwiper 
-      items={filteredItems} 
-      activeIndex={swiperIndex} 
-      onClose={handleCloseSwiper} 
-    />
-}
       <header className="px-5 py-4 w-full">
         <h2 className="font-semibold text-gray-800 text-center">
           Top Tags:
@@ -297,12 +300,12 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
                   </button>
                 ))}
               </div>
-              </div>
+            </div>
           )}
         </h2>
       </header>
-      <div className="p-3">
 
+      <div className="p-3">
         <div
           ref={gridRef}
           className="grid"
@@ -311,38 +314,37 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
             gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
           }}
         >
-           {filteredItems.map((item, index) => {
-      const {
-        key,
-        data: { text, url, ratio, tags, type },
-      } = item;
+          {filteredItems.map((item, index) => {
+            const {
+              key,
+              data: { text, url, ratio, tags, type },
+            } = item;
 
-      return (
-        <GridItem
-          itemKey={key}
-          packeryInit={packeryInit}
-          item={item}
-          text={text}
-          url={url}
-          ratio={defaultratio?defaultratio:ratio}
-          tags={tags}
-          setShowSwiper={handleShowSwiper}
-          type={type}
-          filterItems={filterItems}
-          hasCRUDAccess={hasCRUDAccess} // Pass the CRUD access flag as a prop
-          index={index}
-          inProgress={inProgress}
-          handleRemoveItem={handleRemoveItem} // Pass handleRemoveItem as a prop
-          items={items} // Pass items as a prop
-          setItems={setItems} // Pass setItems as a prop
-          setFilteredItems={setFilteredItems} // Pass setFilteredItems as a prop
-        />
-      );
-    })}
-  </div>
-
-</div>
-
+            return (
+              <GridItem
+                key={key}
+                itemKey={key}
+                packeryInit={packeryInit}
+                item={item}
+                text={text}
+                url={url}
+                ratio={defaultratio ? defaultratio : ratio}
+                tags={tags}
+                setShowSwiper={handleShowSwiper}
+                type={type}
+                filterItems={filterItems}
+                hasCRUDAccess={hasCRUDAccess}
+                index={index}
+                inProgress={inProgress}
+                handleRemoveItem={handleRemoveItem}
+                items={items}
+                setItems={setItems}
+                setFilteredItems={setFilteredItems}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

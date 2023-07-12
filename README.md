@@ -37,7 +37,6 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 - make close swiper when clicking around the picture, also make the button bigger
 - add a button to print the latest media first
 - make the gallery use all the space available on mobile
-- center the main gallery
 - Decide how to deal with big resolution picture / video 
 - when the Table is rly functionnal, add data
 - by default, filter the grid so that for each group of the tag1 x tag2 x tag3, only one random element is shown.

@@ -7,6 +7,7 @@ import { Auth } from "./Auth";
 
 function App() {
   const [activeView, setActiveView] = useState("gallery");
+  const [leftPadding, setLeftPadding] = useState(0);
 
   useEffect(() => {
     (async () =>
@@ -19,10 +20,25 @@ function App() {
     setActiveView(activeView === "gallery" ? "iscan" : "gallery");
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      const imageWidth = window.innerHeight * 0.312;  // 30vh in pixels
+      const numWholeImages = Math.floor(window.innerWidth / imageWidth);
+      const leftoverSpace = window.innerWidth - numWholeImages * imageWidth;
+      setLeftPadding(leftoverSpace / 2); 
+
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // call once on mount to set initial padding
+
+    return () => window.removeEventListener("resize", handleResize); // cleanup on unmount
+  }, []);
+
   return (
     <>
-      <main>
-        <div className="mx-auto pt-16">
+      <main style={{ margin: 0, padding: 0 }}>
+        <div className="mx-auto pt-16" style={{ paddingLeft: leftPadding, margin: 0, padding: 0 }}>
           <div className="text-center">
             {activeView === "gallery" ? (
               <h1

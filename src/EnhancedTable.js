@@ -71,6 +71,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
       initializePackery();
     }
   }, []);
+  
 
   useEffect(() => {
     if (packeryRef.current) {

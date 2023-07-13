@@ -58,7 +58,8 @@ function App() {
                 <span className="text-teal-800">T</span>he{" "}
                 <span className="text-blue-600">i</span>
                 <span className="text-red-500">S</span>can
-              </h1>
+                <h2>"my private stuff, nothing to see here"</h2>
+              </h1> 
             )}
 
             <Auth>

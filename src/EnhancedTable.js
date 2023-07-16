@@ -70,6 +70,11 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     if (gridRef.current) {
       initializePackery();
     }
+    return () => {
+      if (packeryRef.current) {
+        packeryRef.current.destroy();
+      }
+    };
   }, []);
   
 

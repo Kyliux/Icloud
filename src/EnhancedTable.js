@@ -56,9 +56,9 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
 
   useEffect(() => {
     if ([undefined, null].includes(user)) {
-      setItems([]);
-      setFilteredItems([]);
-      return;
+     // setItems([]);
+     // setFilteredItems([]);
+     // return;
     }
     list();
     if (user && user.key === principal[0]) {
@@ -131,6 +131,8 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     });
 
     setFilteredItems(filtered);
+    reloadPackery();
+
   };
 
   const handleRemoveItem = async (doc, key, url) => {
@@ -252,6 +254,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     });
   
     setFilteredItems(filtered);
+    initializePackery(); // was before issue with 1st pic reloadPackery();
   };
   
   

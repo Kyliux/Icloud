@@ -4,6 +4,7 @@ import { AuthContext } from "./Auth";
 import { nanoid } from "nanoid";
 import { principal } from "./Principalid";
 import ReactDOM from "react-dom";
+import CryptoJS from 'crypto-js';
 
 export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
   const [showModal, setShowModal] = useState(false);

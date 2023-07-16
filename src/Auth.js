@@ -23,7 +23,11 @@ export const Auth = ({ children }) => {
           <Logout />
         </div>
       ) : (
+        <div>
         <Login />
+        {children}
+        </div>
+
       )}
     </AuthContext.Provider>
   );

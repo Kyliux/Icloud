@@ -64,6 +64,7 @@ function App() {
 
             <Auth>
               {activeView === "gallery" ? <Gallery /> : <Iscan />}
+              
             </Auth>
           </div>
         </div>

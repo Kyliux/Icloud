@@ -32,6 +32,7 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 
 ## Optimisation
 
+- The first image during the initialisation is not always in the right place in the packery ( you can see it in the bottom of the page )  and it goes in the top after page resize. It should have been there fron the beginning. I dont know why.
 - Make the code better / refactorize to improve reusability and maintenance
 - Lazyload the pictures / videos inside the swiper too
 - make close swiper when clicking around the picture, also make the button bigger

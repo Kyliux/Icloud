@@ -21,6 +21,8 @@ const GridItem = ({
   setShowSwiper,
   packeryInit,
 }) => {
+  const isFirstItem = index === 0;
+
   const [showLabel, setShowLabel] = useState(false);
   const [showRemoveLogo, setShowRemoveLogo] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -107,9 +109,11 @@ const GridItem = ({
   const itemStyle = {
     height: getUrlHeight(ratio),
     width: getUrlWidth(ratio),
-    position: "relative",
+    position: isFirstItem ? "" : "absolute",
     border: "1px solid white",
     boxSizing: "border-box",
+    left: isFirstItem ? "unset" : "",
+    right: isFirstItem ? "unset" : "",
   };
 
   const handleClickTag = (tag) => {

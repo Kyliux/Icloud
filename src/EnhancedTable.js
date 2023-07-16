@@ -16,7 +16,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
   const [topTags, setTopTags] = useState([]);
   const [hasCRUDAccess, setHasCRUDAccess] = useState(false);
   const [inProgress, setInProgress] = useState(false);
-  const [packeryInit, setPackeryInit] = useState(false);
   const [showSwiper, setShowSwiper] = useState(false);
   const [swiperIndex, setSwiperIndex] = useState(0);
 
@@ -29,12 +28,12 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     console.log('handleShowSwiper triggered with index:', index);
     setShowSwiper(true);
     setSwiperIndex(index);
-  }
+  };
 
   const handleCloseSwiper = () => {
     console.log('handleCloseSwiper triggered');
     setShowSwiper(false);
-  }
+  };
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -70,18 +69,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     if (gridRef.current) {
       initializePackery();
     }
-    return () => {
-      if (packeryRef.current) {
-        packeryRef.current.destroy();
-      }
-    };
-  }, []);
-  
-
-  useEffect(() => {
-    if (packeryRef.current) {
-      reloadPackery();
-    }
   }, [filteredItems]);
 
   useEffect(() => {
@@ -98,12 +85,14 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
   };
 
   const initializePackery = () => {
+    if (packeryRef.current) {
+      packeryRef.current.destroy();
+    }
     packeryRef.current = new Packery(gridRef.current, {
       itemSelector: ".grid-item",
       percentPosition: true,
       gutter: 0,
     });
-    setPackeryInit(true);
   };
 
   const reloadPackery = () => {
@@ -137,7 +126,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
 
     setFilteredItems(filtered);
     reloadPackery();
-
   };
 
   const handleRemoveItem = async (doc, key, url) => {
@@ -223,30 +211,30 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
   const fetchTopTags = () => {
     const tagCount = {};
     const itemTagsMap = {};
-  
+
     items.forEach((item) => {
       const tags = item.data.tags ? String(item.data.tags).split(",") : [];
       tags.forEach((tag) => {
         const normalizedTag = tag.toLowerCase();
         tagCount[normalizedTag] = tagCount[normalizedTag] ? tagCount[normalizedTag] + 1 : 1;
-  
+
         if (!itemTagsMap[normalizedTag]) {
           itemTagsMap[normalizedTag] = [];
         }
         itemTagsMap[normalizedTag].push(item);
       });
     });
-  
+
     const sortedTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]);
     const topTags = sortedTags.slice(0, 20);
     setTopTags(topTags);
-  
+
     const selectedItems = new Set();
     const filtered = [];
-  
+
     topTags.forEach((tag) => {
       const itemsWithTag = itemTagsMap[tag] || [];
-  
+
       if (itemsWithTag.length > 0) {
         const remainingItems = itemsWithTag.filter((item) => !selectedItems.has(item));
         if (remainingItems.length > 0) {
@@ -257,15 +245,10 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
         }
       }
     });
-  
+
     setFilteredItems(filtered);
-    initializePackery(); // was before issue with 1st pic reloadPackery();
+    initializePackery();
   };
-  
-  
-  
-  
-  
 
   const getTagColor = (tag) => {
     const hashCode = tag.split("").reduce((acc, char) => {
@@ -277,8 +260,21 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     return colors[colorIndex];
   };
 
+  useEffect(() => {
+    if (gridRef.current) {
+      initializePackery();
+    }
+
+    // Clean up the previous Packery instance when the component unmounts
+    return () => {
+      if (packeryRef.current) {
+        packeryRef.current.destroy();
+      }
+    };
+  }, []);
+
   return (
-    <div className="w-full  bg-white">
+    <div className="w-full bg-white">
       {showSwiper && (
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
       )}
@@ -333,7 +329,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
               <GridItem
                 key={key}
                 itemKey={key}
-                packeryInit={packeryInit}
+                packeryInit={packeryRef.current !== null}
                 item={item}
                 text={text}
                 url={url}

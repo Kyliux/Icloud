@@ -45,4 +45,10 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 ## Functionality
 
 - make Iscan data encrypted with https://docs.cossacklabs.com/themis/languages/react-native/features/#secure-cell
-- 
+
+## inspiration
+
+- https://app.papy.rs/
+- https://www.watashi.fr/
+- comments : https://giscus.app/fr
+- https://zur5z-byaaa-aaaag-aaxeq-cai.ic0.app/tags/IC

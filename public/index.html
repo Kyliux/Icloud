@@ -10,6 +10,26 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/2.0.0/trianglify.min.js"></script>
+
+    <style>
+     #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-blend-mode: lighten;
+            background-color: rgba(255,255,255,0.6); /* 50% white overlay */
+        
+        }
+        #root {
+            position: relative;
+            z-index: 1;
+        }
+  </style>
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -41,5 +61,25 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <div id="background"></div>
+
+    <script>
+        function setTrianglifyBackground() {
+            var pattern = Trianglify({
+                width: window.innerWidth,
+                height: window.innerHeight,
+                cell_size: 400,
+                stroke_width: 3 // Adjust this value to increase line thickness
+
+            });
+
+            document.getElementById('background').style.backgroundImage = "url(" + pattern.png() + ")";
+        }
+
+        window.onresize = setTrianglifyBackground;
+        setTrianglifyBackground();
+    </script>
+
   </body>
 </html>

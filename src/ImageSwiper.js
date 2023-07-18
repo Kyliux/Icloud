@@ -1,11 +1,30 @@
-
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 export function ImageSwiper({ items, activeIndex, onClose }) {
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (swiperRef.current && !swiperRef.current.contains(event.target)) {
+        onClose();
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
+  function handleMediaClick(event) {
+    event.stopPropagation();
+  }
+
   return (
     <div
       style={{
@@ -20,6 +39,7 @@ export function ImageSwiper({ items, activeIndex, onClose }) {
         justifyContent: 'center',
         alignItems: 'center',
       }}
+      onClick={onClose}
     >
       <Swiper
         initialSlide={activeIndex}
@@ -32,6 +52,7 @@ export function ImageSwiper({ items, activeIndex, onClose }) {
           width: '100%',
           height: '100%',
         }}
+        onClick={handleMediaClick}
       >
         {items.map((item, index) => (
           <SwiperSlide
@@ -54,6 +75,7 @@ export function ImageSwiper({ items, activeIndex, onClose }) {
                   objectFit: 'contain',
                 }}
                 controls
+                onClick={handleMediaClick}
               />
             ) : (
               <img
@@ -66,6 +88,7 @@ export function ImageSwiper({ items, activeIndex, onClose }) {
                   height: 'auto',
                   objectFit: 'contain',
                 }}
+                onClick={handleMediaClick}
               />
             )}
           </SwiperSlide>

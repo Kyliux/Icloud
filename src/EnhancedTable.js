@@ -18,6 +18,8 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
   const [inProgress, setInProgress] = useState(false);
   const [showSwiper, setShowSwiper] = useState(false);
   const [swiperIndex, setSwiperIndex] = useState(0);
+  const [showTopTags, setShowTopTags] = useState(false);
+
 
   const gridRef = useRef(null);
   const packeryRef = useRef(null);
@@ -99,6 +101,10 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     packeryRef.current.reloadItems();
     packeryRef.current.layout();
   };
+
+  const toggleTopTags = () => {
+    setShowTopTags(!showTopTags);
+};
 
   const filterItems = (tag, exclude = false) => {
     tag = tag.toLowerCase();
@@ -274,84 +280,87 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
   }, []);
 
   return (
-    <div className="w-full bg-white">
-      {showSwiper && (
+    <div className="w-full">
+    {showSwiper && (
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
-      )}
+    )}
 
-      <header className="px-5 py-4 w-full">
+    <header className="px-5 py-4 w-full flex justify-between">
+        
         <h2 className="font-semibold text-gray-800 text-center">
-          Top Tags:
-          {topTags.length > 0 && (
-            <div className="mt-2">
-              <div className="flex flex-wrap justify-center mt-2">
-                <button
-                  className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${
-                    activeTags.length === 0 ? "bg-indigo-600" : "bg-gray-400"
-                  }`}
-                  onClick={resetFilters}
-                >
-                  All
-                </button>
-                {topTags.map((tag) => (
-                  <button
-                    key={tag}
-                    className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(
-                      tag
-                    )}`}
-                    onClick={() => filterItems(tag)}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+            <button className="rounded-lg px-1 text-white text-lg font-semibold mr-2 bg-indigo-600" onClick={toggleTopTags}>
+                Tags 👀
+            </button>
+            {topTags.length > 0 && showTopTags && (
+                <div className="mt-2">
+                    <div className="flex flex-wrap justify-center mt-2">
+                        <button
+                            className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${
+                                activeTags.length === 0 ? "bg-indigo-600" : "bg-gray-400"
+                            }`}
+                            onClick={resetFilters}
+                        >
+                            All
+                        </button>
+                        {topTags.map((tag) => (
+                            <button
+                                key={tag}
+                                className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(
+                                    tag
+                                )}`}
+                                onClick={() => filterItems(tag)}
+                            >
+                                {tag}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
         </h2>
-      </header>
+    </header>
 
-      <div className="p-3">
+    <div className="p-3">
         <div
-          ref={gridRef}
-          className="grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          }}
+            ref={gridRef}
+            className="grid"
+            style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            }}
         >
-          {filteredItems.map((item, index) => {
-            const {
-              key,
-              data: { text, url, ratio, tags, type },
-            } = item;
+            {filteredItems.map((item, index) => {
+                const {
+                    key,
+                    data: { text, url, ratio, tags, type },
+                } = item;
 
-            return (
-              <GridItem
-                key={key}
-                itemKey={key}
-                packeryInit={packeryRef.current !== null}
-                item={item}
-                text={text}
-                url={url}
-                ratio={defaultratio ? defaultratio : ratio}
-                tags={tags}
-                setShowSwiper={handleShowSwiper}
-                type={type}
-                filterItems={filterItems}
-                hasCRUDAccess={hasCRUDAccess}
-                index={index}
-                inProgress={inProgress}
-                handleRemoveItem={handleRemoveItem}
-                items={items}
-                setItems={setItems}
-                setFilteredItems={setFilteredItems}
-              />
-            );
-          })}
+                return (
+                    <GridItem
+                        key={key}
+                        itemKey={key}
+                        packeryInit={packeryRef.current !== null}
+                        item={item}
+                        text={text}
+                        url={url}
+                        ratio={defaultratio ? defaultratio : ratio}
+                        tags={tags}
+                        setShowSwiper={handleShowSwiper}
+                        type={type}
+                        filterItems={filterItems}
+                        hasCRUDAccess={hasCRUDAccess}
+                        index={index}
+                        inProgress={inProgress}
+                        handleRemoveItem={handleRemoveItem}
+                        items={items}
+                        setItems={setItems}
+                        setFilteredItems={setFilteredItems}
+                    />
+                );
+            })}
         </div>
-      </div>
     </div>
-  );
+</div>
+);
 };
 
 export default EnhancedTable;

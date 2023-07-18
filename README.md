@@ -30,7 +30,7 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 
 # TODO List
 
-## Optimisation
+## Optimisation Gallery
 
 - Make the code better / refactorize to improve reusability and maintenance
 - Lazyload the pictures / videos inside the swiper too
@@ -40,11 +40,15 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 - Decide how to deal with big resolution picture / video 
 - when the Table is rly functionnal, add data
 - video tag default for videos
+- url / video tag filtered.
 
 
 ## Functionality
 
 - make Iscan data encrypted with https://docs.cossacklabs.com/themis/languages/react-native/features/#secure-cell
+- Add travel/home tab with maps  with function add coord and recent pic and tweet
+- Add tweet archive section
+- add article section
 
 ## inspiration
 

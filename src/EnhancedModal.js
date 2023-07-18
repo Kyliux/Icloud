@@ -124,42 +124,6 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
     setProgress(false);
   };
 
-  const handleDonate = () => {
-    const address = "c6469203131ae3a107f303fd85de7e39bd148e74643c97d5131da08eea567124";
-    const message = `Cheers 🥂 ! If you like what I do, feel free to donate to keep this page online. Just send ICP to the following address, it is instantly 🔥 to create cycle 🔄 for this website: ${address}`;
-
-    const handleCopy = () => {
-      navigator.clipboard.writeText(address).then(() => {
-        alert("Address copied to clipboard!");
-      }).catch(err => {
-        console.error('Failed to copy text: ', err);
-      });
-    };
-
-    const Modal = () => {
-      return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white rounded p-8 shadow-lg">
-            <p>{message}</p>
-            <button className="bg-blue-500 text-white py-1 px-2 mt-2 rounded" onClick={handleCopy}>
-              Copy Address
-            </button>
-            <button className="bg-gray-500 text-white py-1 px-2 mt-2 rounded" onClick={() => handleClose()}>
-              Close
-            </button>
-          </div>
-        </div>
-      );
-    };
-
-    const handleClose = () => {
-      ReactDOM.unmountComponentAtNode(modalRoot);
-    };
-
-    const modalRoot = document.getElementById("modal-root");
-    ReactDOM.render(<Modal />, modalRoot);
-  };
-
   return (
     <>
     <div id="modal-root"></div>
@@ -174,13 +138,7 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
             Add an entry
           </button>
         )}
-        <button
-          type="button"
-          onClick={handleDonate}
-          className="rounded-md bg-green-500 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-        >
-          Donate
-        </button>
+
       </div>
 
       {/* Modal Root */}

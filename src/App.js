@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Background } from "./Background";
 import { Gallery } from "./Gallery";
 import { Iscan } from "./Iscan";
 import { initJuno } from "@junobuild/core";
 import { Auth } from "./Auth";
+import Navbar from './Navbar';
+
 
 function App() {
   const [activeView, setActiveView] = useState("gallery");
@@ -39,7 +40,7 @@ function App() {
     <>
       <main style={{ margin: 0, padding: 0 }}>
         <div className="mx-auto pt-16" style={{ paddingLeft: leftPadding, margin: 0, padding: 0 }}>
-          <div className="text-center">
+          <div className="text-center" >
             {activeView === "gallery" ? (
               <h1
                 onClick={toggleView}
@@ -61,14 +62,13 @@ function App() {
                 <h2>"my private stuff, nothing to see here"</h2>
               </h1> 
             )}
-
-            <Auth>
-              {activeView === "gallery" ? <Gallery /> : <Iscan />}
+            <Navbar style={{ padding: leftPadding }} />
+            <Auth >
+              {activeView === "gallery" ? <Gallery style={{ padding: leftPadding }} /> : <Iscan style={{ padding: leftPadding }} />}
               
             </Auth>
           </div>
         </div>
-        <Background />
       </main>
     </>
   );

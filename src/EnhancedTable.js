@@ -7,8 +7,9 @@ import { colors } from "./Colorpalette";
 import { principal } from "./Principalid";
 import { delDoc, deleteAsset, listAssets } from "@junobuild/core";
 import { ImageSwiper } from './ImageSwiper';
+import Navbarr from './Navbarr';
 
-export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
+export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding}) => {
   const { user } = useContext(AuthContext);
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -102,9 +103,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
     packeryRef.current.layout();
   };
 
-  const toggleTopTags = () => {
-    setShowTopTags(!showTopTags);
-};
+
 
   const filterItems = (tag, exclude = false) => {
     tag = tag.toLowerCase();
@@ -280,43 +279,44 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio }) => {
   }, []);
 
   return (
+
+
     <div className="w-full">
+      <Navbarr setShowTopTags={setShowTopTags} />
+
     {showSwiper && (
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
     )}
 
     <header className="px-5 py-4 w-full flex justify-between">
         
-        <h2 className="font-semibold text-gray-800 text-center">
-            <button className="rounded-lg px-1 text-white text-lg font-semibold mr-2 bg-indigo-600" onClick={toggleTopTags}>
-                Tags 👀
-            </button>
-            {topTags.length > 0 && showTopTags && (
-                <div className="mt-2">
-                    <div className="flex flex-wrap justify-center mt-2">
-                        <button
-                            className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${
-                                activeTags.length === 0 ? "bg-indigo-600" : "bg-gray-400"
-                            }`}
-                            onClick={resetFilters}
-                        >
-                            All
-                        </button>
-                        {topTags.map((tag) => (
-                            <button
-                                key={tag}
-                                className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(
-                                    tag
-                                )}`}
-                                onClick={() => filterItems(tag)}
-                            >
-                                {tag}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </h2>
+    <h2 className="font-semibold text-gray-800 text-center">
+  {topTags.length > 0 && showTopTags && (
+    <div className="mt-2">
+      <div className="flex flex-wrap justify-center mt-2">
+        <button
+          className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${
+            activeTags.length === 0 ? "bg-indigo-600" : "bg-gray-400"
+          }`}
+          onClick={resetFilters}
+        >
+          All
+        </button>
+        {topTags.map((tag) => (
+          <button
+            key={tag}
+            className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(
+              tag
+            )}`}
+            onClick={() => filterItems(tag)}
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+</h2>
     </header>
 
     <div className="p-3">

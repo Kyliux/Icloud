@@ -56,3 +56,8 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 - https://www.watashi.fr/
 - comments : https://giscus.app/fr
 - https://zur5z-byaaa-aaaag-aaxeq-cai.ic0.app/tags/IC
+
+
+
+
+<svg height="80px" width="80px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,20)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,14.0246)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,8.04921)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g></svg>

@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import { authSubscribe } from "@junobuild/core";
-import Navbar from './Navbar';
 
 export const AuthContext = createContext();
 
@@ -15,7 +14,7 @@ export const Auth = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user }}>
-      <Navbar />
+      
 
       {user !== undefined && user !== null ? (
         <div>{children}</div>

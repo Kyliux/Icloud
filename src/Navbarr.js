@@ -7,7 +7,7 @@ const Navbarr = ({ setShowTopTags }) => {
   const { user } = useContext(AuthContext);
   const [rightIsOpen, setRightIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const rightNavItems = ["Tags 👀", user !== undefined && user !== null ? "Logout" : "Login"];
+  const rightNavItems = ["Tags 👀", user !== undefined && user !== null ? "Logout 🔒 " : "Login 🔑 "];
   const rightMenuRef = useRef(null);
 
  
@@ -18,9 +18,9 @@ const Navbarr = ({ setShowTopTags }) => {
   };
 
   const handleItemClick = (item) => {
-    if (item === "Login") {
+    if (item === "Login 🔑 ") {
       user ? signOut() : signIn();
-    } else if (item === "Logout") {
+    } else if (item === "Logout 🔒 ") {
       user ? signOut() : signIn();
     } else if (item === "Tags 👀") {
       setShowTopTags((prevShowTopTags) => !prevShowTopTags);
@@ -59,8 +59,8 @@ const renderMenu = (isOpen, menuRef, navItems, handleItemClick, user, setShowTop
 
   let reorderedNavItems = [...navItems];
 
-  if (reorderedNavItems.includes("Login")) {
-    reorderedNavItems = ["Login", ...reorderedNavItems.filter(item => item !== "Login")];
+  if (reorderedNavItems.includes("Login 🔑 ")) {
+    reorderedNavItems = ["Login 🔑 ", ...reorderedNavItems.filter(item => item !== "Login 🔑 ")];
   }
 
 
@@ -78,7 +78,7 @@ const renderMenu = (isOpen, menuRef, navItems, handleItemClick, user, setShowTop
               onMouseOver={(e) => e.target.style.backgroundColor = '#B36704'}
               onMouseOut={(e) => e.target.style.backgroundColor = 'inherit'}
             >
-              {item === "Login" ? (user ? 'Logout' : 'Sign In') : item}
+              {item === "Login 🔑 " ? (user ? 'Logout 🔒 ' : 'Login 🔑 ') : item}
             </div>
           </li>
         ))}

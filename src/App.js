@@ -4,6 +4,7 @@ import { Iscan } from "./Iscan";
 import { initJuno } from "@junobuild/core";
 import { Auth } from "./Auth";
 import Navbar from './Navbar';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
   }, []);
 
   const toggleView = () => {
-    setActiveView(activeView === "gallery" ? "iscan" : "gallery");
+    setActiveView(activeView === "gallery" ? "gallery" /*iscan */ : "gallery");
   };
 
   useEffect(() => {
@@ -38,6 +39,7 @@ function App() {
 
   return (
     <>
+      <Router>
       <main style={{ margin: 0, padding: 0 }}>
         <div className="mx-auto pt-16" style={{ paddingLeft: leftPadding, margin: 0, padding: 0 }}>
           <div className="text-center" >
@@ -62,14 +64,17 @@ function App() {
                 <h2>"my private stuff, nothing to see here"</h2>
               </h1> 
             )}
-            <Navbar style={{ padding: leftPadding }} />
             <Auth >
-              {activeView === "gallery" ? <Gallery style={{ padding: leftPadding }} /> : <Iscan style={{ padding: leftPadding }} />}
+              {/*
+              became useless, rly ??
+              
+              activeView === "gallery" ? <Gallery style={{ padding: leftPadding }} /> : <Iscan style={{ padding: leftPadding }} />*/}
               
             </Auth>
           </div>
         </div>
       </main>
+      </Router>
     </>
   );
 }

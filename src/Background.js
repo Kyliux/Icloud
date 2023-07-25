@@ -1,31 +1,106 @@
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
-export const Background = () => {
-  return (
- /*   <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-      <svg
-        className="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"
-        viewBox="0 0 1155 678"
-      >
-        <path
-          fill="url(#ecb5b0c9-546c-4772-8c71-4d3f06d544bc)"
-          fillOpacity=".3"
-          d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z"
-        />
-        <defs>
-          <linearGradient
-            id="ecb5b0c9-546c-4772-8c71-4d3f06d544bc"
-            x1="1155.49"
-            x2="-78.208"
-            y1=".177"
-            y2="474.645"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#9089FC" />
-            <stop offset="1" stopColor="#FF80B5" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>*/
-    <div ></div>
-  );
-};
+const BackgroundContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+`;
+
+
+// Style for MapContainer to make it take full screen
+const StyledMapContainer = styled(MapContainer)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: ${props => props.height}px;
+  z-index: 0;
+
+`;
+
+const DarkOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: ${props => props.height}px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+`;
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const MenuButton = styled.button`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+`;
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
+
+const position = [47.5596, 7.5886]; // The coordinates for Basel
+
+
+const Background = () => {
+  const location = useLocation();
+  const showMap = location.pathname === "/map"; // adjust this condition as needed
+  const [contentHeight, setContentHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setContentHeight(document.body.clientHeight);
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+    return (
+      <BackgroundContainer>
+        <StyledMapContainer
+          center={position}
+          zoom={13}
+          style={{
+            filter: showMap ? "none" : "brightness(50%)",
+            height: '100%'
+          }}
+        >
+          <TileLayer
+            url="https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg"
+            attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <Marker position={position}>
+            <Popup>
+              Basel 🌟<br />A place of interest.
+            </Popup>
+          </Marker>
+          <MenuButton>Menu</MenuButton>
+          <ButtonContainer>
+            <button>Add Location</button>
+            <button>Remove Location</button>
+          </ButtonContainer>
+        </StyledMapContainer>
+      </BackgroundContainer>
+    );
+  };
+
+export default Background;

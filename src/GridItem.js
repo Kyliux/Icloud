@@ -140,7 +140,7 @@ const GridItem = ({
             position: "absolute",
             top: "0",
             right: "0",
-            zIndex: "1",
+            zIndex: "999",
             width: "32px",
             height: "32px",
             borderRadius: "50%",

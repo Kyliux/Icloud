@@ -128,9 +128,9 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
     <>
     <div id="modal-root"></div>
 
-      <div className="mt-10 flex items-center justify-center gap-x-6">
+      <div className="mt-10 flex items-center justify-center gap-x-6" style={{ zIndex: 999 }}>
         {hasCRUDAccess && (
-          <button
+          <button style={{ zIndex: 999 }}
             type="button"
             onClick={() => setShowModal(true)}
             className="rounded-md bg-indigo-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -143,7 +143,7 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
 
       {/* Modal Root */}
       {showModal && hasCRUDAccess && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" style={{ zIndex: 999 }}>
           <div className="bg-white rounded p-8 shadow-lg">
             <textarea
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"

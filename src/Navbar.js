@@ -19,7 +19,7 @@ const [showMap, setShowMap] = useState(false);
   const handleDonate = () => {
     const address = "c6469203131ae3a107f303fd85de7e39bd148e74643c97d5131da08eea567124";
     const message = `Cheers 🥂 ! If you like what I do, feel free to donate to keep this page online. Just send ICP to the following address, it is instantly 🔥 to create cycle 🔄 for this website: ${address}`;
-1
+
     const handleCopy = () => {
       navigator.clipboard.writeText(address).then(() => {
         alert("Address copied to clipboard!");

@@ -43,7 +43,7 @@ const Navbarr = ({ setShowTopTags }) => {
 
   return (
     <>
-      <nav style={{ position: 'fixed', right: '20px', top: '20px', zIndex: 2 }}>
+      <nav style={{ position: 'fixed', right: '20px', top: '20px', zIndex: 1000 }}>
         <button type="button" onClick={handleRightNavToggle} style={{ backgroundColor: rightIsOpen ? '#B36704' : '#D97706', border: 'none', boxShadow: '5px 5px #000' }}>
           <svg height="60px" width="60px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,20)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,14.0246)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,8.04921)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g></svg>
         </button>
@@ -115,7 +115,7 @@ const menuStyle = {
   alignItems: 'center', 
   padding: '20px', 
   boxSizing: 'border-box', 
-  zIndex: 999,
+  zIndex: 1000,
   boxShadow: '5px 5px #000'
 };
 

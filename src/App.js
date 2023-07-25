@@ -5,6 +5,7 @@ import { initJuno } from "@junobuild/core";
 import { Auth } from "./Auth";
 import Navbar from './Navbar';
 import { BrowserRouter as Router } from 'react-router-dom';
+import Background  from "./Background";
 
 
 function App() {
@@ -40,7 +41,10 @@ function App() {
   return (
     <>
       <Router>
+
       <main style={{ margin: 0, padding: 0 }}>
+      <Background />
+
         <div className="mx-auto pt-16" style={{ paddingLeft: leftPadding, margin: 0, padding: 0 }}>
           <div className="text-center" >
             {activeView === "gallery" ? (

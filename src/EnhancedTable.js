@@ -290,7 +290,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
 
     <header className="px-5 py-4 w-full flex justify-between">
         
-    <h2 className="font-semibold text-gray-800 text-center">
+    <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999 }}>
   {topTags.length > 0 && showTopTags && (
     <div className="mt-2">
       <div className="flex flex-wrap justify-center mt-2">

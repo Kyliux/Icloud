@@ -93,11 +93,6 @@ const Background = () => {
               Basel 🌟<br />A place of interest.
             </Popup>
           </Marker>
-          <MenuButton>Menu</MenuButton>
-          <ButtonContainer>
-            <button>Add Location</button>
-            <button>Remove Location</button>
-          </ButtonContainer>
         </StyledMapContainer>
       </BackgroundContainer>
     );

@@ -1,11 +1,16 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./Auth";
 import ReactDOM from "react-dom";
+import MapComponent from "./MapComponent";
+
+
 
 const Navbar = ({ leftPadding  }) => {
   const [leftIsOpen, setLeftIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const leftNavItems = ["Home", "Map", "Story", "Gallery", "Donate"];
+const leftNavItems = ["🏠 Home", "🗺️  Map ", "📖  Story ", "🖼️ Gallery", "💰 Donate"];
+const [showMap, setShowMap] = useState(false);
+
 
   const handleLeftNavToggle = () => {
     setLeftIsOpen(prevState => !prevState);
@@ -14,7 +19,7 @@ const Navbar = ({ leftPadding  }) => {
   const handleDonate = () => {
     const address = "c6469203131ae3a107f303fd85de7e39bd148e74643c97d5131da08eea567124";
     const message = `Cheers 🥂 ! If you like what I do, feel free to donate to keep this page online. Just send ICP to the following address, it is instantly 🔥 to create cycle 🔄 for this website: ${address}`;
-
+1
     const handleCopy = () => {
       navigator.clipboard.writeText(address).then(() => {
         alert("Address copied to clipboard!");
@@ -44,7 +49,10 @@ const Navbar = ({ leftPadding  }) => {
   };
 
   const handleItemClick = (item) => {
-    if (item === "Donate") {
+    if (item === "Maps") {
+      // Open the MapComponent
+      setSelectedItem(item);
+    } else if (item === "💰 Donate") {
       handleDonate();
     }
     setSelectedItem(item);
@@ -69,7 +77,7 @@ const Navbar = ({ leftPadding  }) => {
           <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 0 24 24" width="60px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
         </button>
       </nav>
-      
+      {showMap && <MapComponent />}
       {renderMenu(leftIsOpen, leftNavItems, handleItemClick, selectedItem)}
     </>
   );

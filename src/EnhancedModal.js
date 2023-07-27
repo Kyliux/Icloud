@@ -3,17 +3,19 @@ import { setDoc, uploadFile } from "@junobuild/core";
 import { AuthContext } from "./Auth";
 import { nanoid } from "nanoid";
 import { principal } from "./Principalid";
-import ReactDOM from "react-dom";
-import CryptoJS from 'crypto-js';
+import emojiRegex from 'emoji-regex';
 
-export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
-  const [showModal, setShowModal] = useState(false);
+export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, setShowModal }) => {
   const [inputText, setInputText] = useState("");
   const [tags, setTags] = useState("");
+  const [logos, setLogos] = useState("");
   const [valid, setValid] = useState(false);
   const [progress, setProgress] = useState(false);
   const [files, setFiles] = useState([]);
   const [hasCRUDAccess, setHasCRUDAccess] = useState(false); // Flag for CRUD access
+  const [gps, setGps] = useState(null);
+  const [loadingLocation, setLoadingLocation] = useState(true);
+  const isEmoji = input => emojiRegex().test(input);
 
   const { user } = useContext(AuthContext);
 
@@ -24,9 +26,35 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
     }
   }, [showModal, inputText, user]);
 
+  useEffect(() => {
+    // Set loadingLocation to true when starting request
+    setLoadingLocation(true);
+  
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        setGps({ lat: position.coords.latitude, lng: position.coords.longitude });
+  
+        // Set loadingLocation to false when request is done
+        setLoadingLocation(false);
+      },
+      error => {
+        console.error("Error occurred while getting user's location", error);
+  
+        // Set loadingLocation to false even if request fails
+        setLoadingLocation(false);
+      }
+    );
+  }, []);
+
   const reload = () => {
     let event = new Event("reload");
     window.dispatchEvent(event);
+  };
+
+  const getCoordinates = () => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
   };
 
   const getClosestRatio = (ratio) => {
@@ -46,6 +74,28 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
     setProgress(true);
 
     try {
+      const position = await getCoordinates();
+      setGps({ lat: position.coords.latitude, lng: position.coords.longitude });
+     
+       if (files.length === 0) {
+        // If no files, just add other data.
+        const key = nanoid();
+        const currentDate = new Date().toISOString();
+
+        await setDoc({
+          collection: notes,
+          doc: {
+            key,
+            data: {
+              text: inputText,
+              tags,
+              date: currentDate,
+              gps,
+              logos,
+            },
+          },
+        });
+      } else {
       await Promise.all(
         files.map(async (file) => {
           const filename = `${user.key}-${file.name}`;
@@ -103,6 +153,8 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
                 tags,
                 ratio,
                 date: currentDate,
+                gps,
+                logos,
                 ...(url !== undefined && { url }),
               },
             },
@@ -114,6 +166,7 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
           };
         })
       );
+    };
 
       setShowModal(false);
       reload();
@@ -129,7 +182,7 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
     <div id="modal-root"></div>
 
       <div className="mt-10 flex items-center justify-center gap-x-6" style={{ zIndex: 999 }}>
-        {hasCRUDAccess && (
+        {/*hasCRUDAccess && (
           <button style={{ zIndex: 999 }}
             type="button"
             onClick={() => setShowModal(true)}
@@ -137,7 +190,7 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
           >
             Add an entry
           </button>
-        )}
+        )*/}
 
       </div>
 
@@ -145,6 +198,18 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio }) => {
       {showModal && hasCRUDAccess && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" style={{ zIndex: 999 }}>
           <div className="bg-white rounded p-8 shadow-lg">
+            <input
+              type="text"
+              className="form-control mb-4 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
+              placeholder="Feeling ? (only Emoji)"
+              onChange={(e) => {
+                if (isEmoji(e.target.value) || e.target.value === '') {
+                  setLogos(e.target.value);
+                }
+              }}
+              value={logos}
+              disabled={progress}
+            />
             <textarea
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"
               rows="5"

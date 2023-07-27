@@ -3,12 +3,11 @@ import { AuthContext } from "./Auth";
 import { signIn, signOut } from "@junobuild/core";
 
 
-const Navbarr = ({ setShowTopTags, showModal, setShowModal }) => {
+const Navbarrm = ({ setShowTopTags, showModal, setShowModal }) => {
   const { user } = useContext(AuthContext);
   const [rightIsOpen, setRightIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  let rightNavItems = ["Tags 👀", user !== undefined && user !== null ? "Add media" : null , user !== undefined && user !== null ? "Logout 🔒 " : "Login 🔑 "];
-  rightNavItems = rightNavItems.filter(item => item);
+  const rightNavItems = ["Show GPSlist", "Add spot", user !== undefined && user !== null ? "Logout 🔒 " : "Login 🔑 "];
   const rightMenuRef = useRef(null);
 
  
@@ -23,12 +22,12 @@ const Navbarr = ({ setShowTopTags, showModal, setShowModal }) => {
       user ? signOut() : signIn();
     } else if (item === "Logout 🔒 ") {
       user ? signOut() : signIn();
-    } else if (item === "Tags 👀"){
+    } else if (item === "Show GPSlist") {
       setShowTopTags((prevShowTopTags) => !prevShowTopTags);
-    } else if (user ? item === "Add media" : false) {
-      setShowModal(true);
-      console.log(showModal); // Add this line to debug the value of showModal
 
+    } else if (item === "Add spot") {
+      setShowModal(true);
+      console.log(showModal);
     }
     setSelectedItem(item);
     setRightIsOpen(false);
@@ -86,7 +85,21 @@ const renderMenu = (isOpen, menuRef, navItems, handleItemClick, user, setShowTop
             </div>
           </li>
         ))}
-
+        {/*hasExtraItems && (
+          <li style={liStyle}>
+            <div 
+              style={{
+                ...navItemStyle,
+                backgroundColor: selectedItem === "Donate" ? '#B36704' : 'inherit'
+              }}
+              onClick={() => handleItemClick("Donate")}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#B36704'}
+              onMouseOut={(e) => e.target.style.backgroundColor = 'inherit'}
+            >
+              Donate
+            </div>
+          </li>
+            )*/}
       </ul>
     </div>
   );
@@ -136,4 +149,4 @@ const navItemStyle = {
   transition: '0.5s'
 };
 
-export default Navbarr;
+export default Navbarrm;

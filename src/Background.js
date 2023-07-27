@@ -62,20 +62,15 @@ const position = [47.5596, 7.5886]; // The coordinates for Basel
 
 const Background = () => {
   const location = useLocation();
-  const showMap = location.pathname === "/map"; // adjust this condition as needed
-  const [contentHeight, setContentHeight] = useState(window.innerHeight);
+  const showMap = location.pathname.startsWith("/map"); // Check if the current location starts with "/map"
 
-  useEffect(() => {
-    const handleResize = () => {
-      setContentHeight(document.body.clientHeight);
-    }
+  const key = location.pathname;
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
     return (
-      <BackgroundContainer>
+      <BackgroundContainer key={key}>
+        { (
+
         <StyledMapContainer
           center={position}
           zoom={13}
@@ -94,6 +89,9 @@ const Background = () => {
             </Popup>
           </Marker>
         </StyledMapContainer>
+          )}
+        {!showMap && <DarkOverlay height={window.innerHeight} />}
+
       </BackgroundContainer>
     );
   };

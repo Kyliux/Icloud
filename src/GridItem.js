@@ -22,7 +22,7 @@ const GridItem = ({
   packeryInit,
 }) => {
   const isFirstItem = index === 0;
-
+  let url2 = window.location.href; // or however you get the URL
   const [showLabel, setShowLabel] = useState(false);
   const [showRemoveLogo, setShowRemoveLogo] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -69,6 +69,13 @@ const GridItem = ({
     }
   }, [packeryInit, url]);
   
+  let division = 1;
+  
+  if (url2.includes('gallery')) {
+    division = 1;
+  } else if (url2.includes('map')) {
+    division = 3;
+  }
 
   const handleMouseEnter = () => {
     setShowLabel(true);
@@ -99,11 +106,11 @@ const GridItem = ({
   };
 
   const getUrlWidth = (ratio) => {
-    return ratio < 1 ? `${30}vh` : `${(ratio * 30)}vh`;
+    return ratio < 1 ? `${30 / division }vh` : `${(ratio * 30 / division)}vh`;
   };
 
   const getUrlHeight = (ratio) => {
-    return ratio > 1 ? `${30}vh` : `${(30 / ratio)}vh`;
+    return ratio > 1 ? `${30 / division }vh` : `${((30 / ratio ) / division)}vh`;
   };
 
   const itemStyle = {
@@ -141,8 +148,8 @@ const GridItem = ({
             top: "0",
             right: "0",
             zIndex: "999",
-            width: "32px",
-            height: "32px",
+            width: `${32 / division }px`,
+            height: `${32 / division }px`,
             borderRadius: "50%",
             background: "rgba(255, 0, 0, 0.9)",
             display: "flex",

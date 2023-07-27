@@ -9,7 +9,8 @@ import { delDoc, deleteAsset, listAssets } from "@junobuild/core";
 import { ImageSwiper } from './ImageSwiper';
 import Navbarr from './Navbarr';
 
-export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding}) => {
+
+export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding, showModal, setShowModal,showTopTags, setShowTopTags }) => {
   const { user } = useContext(AuthContext);
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -19,7 +20,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   const [inProgress, setInProgress] = useState(false);
   const [showSwiper, setShowSwiper] = useState(false);
   const [swiperIndex, setSwiperIndex] = useState(0);
-  const [showTopTags, setShowTopTags] = useState(false);
 
 
   const gridRef = useRef(null);
@@ -282,7 +282,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
 
 
     <div className="w-full">
-      <Navbarr setShowTopTags={setShowTopTags} />
 
     {showSwiper && (
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />

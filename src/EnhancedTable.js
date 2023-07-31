@@ -54,31 +54,22 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     initializePackery();
   }, [user]);
 
-/*  useEffect(() => {
-    if (gridRef.current) {
-      initializePackery();
-    }
-  }, [filteredItems]);*/
-
   const fetchTopTags = () => {
     // Initialize the object to store the count of each tag
     const tagCount = {};
     // Initialize the object to map tags to items
     const itemTagsMap = {};
   
-    console.log("Starting to process items");
   
     // Iterate over each item
     items.forEach((item) => {
       // Extract tags from the item, or use an empty array if no tags are present
       const tags = item.data.tags ? String(item.data.tags).split(",") : [];
-      console.log(`Processing item: ${item}, with tags: ${tags}`);
   
       // Iterate over each tag
       tags.forEach((tag) => {
         // Normalize the tag to lowercase
         const normalizedTag = tag.toLowerCase();
-        console.log(`Processing tag: ${normalizedTag}`);
   
         // Increase the count for the tag, or set it to 1 if it hasn't been encountered yet
         tagCount[normalizedTag] = tagCount[normalizedTag] ? tagCount[normalizedTag] + 1 : 1;
@@ -92,7 +83,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
       });
     });
   
-    console.log("Finished processing items, starting to sort tags");
   
     // Sort the tags by their counts in descending order
     const sortedTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]);
@@ -100,32 +90,27 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     const topTags = sortedTags.slice(0, 20);
     setTopTags(topTags);
   
-    console.log(`Top tags: ${topTags}`);
   
     // Initialize a Set to store the selected items
     const selectedItems = new Set();
     // Initialize an array to store the filtered items
     const filtered = [];
   
-    console.log("Starting to process top tags");
   
     // Iterate over each top tag
     topTags.forEach((tag) => {
       // Get the items with the current tag, or use an empty array if none exist
       const itemsWithTag = itemTagsMap[tag] || [];
   
-      console.log(`Processing tag: ${tag}, with items: ${itemsWithTag}`);
   
       if (itemsWithTag.length > 0) {
         // Filter out the items that have already been selected
         const remainingItems = itemsWithTag.filter((item) => !selectedItems.has(item));
-        console.log(`Remaining items: ${remainingItems}`);
   
         if (remainingItems.length > 0) {
           // Select a random item from the remaining ones
           const randomIndex = Math.floor(Math.random() * remainingItems.length);
           const selectedItem = remainingItems[randomIndex];
-          console.log(`Selected item: ${selectedItem}`);
   
           // Add the selected item to the filtered items
           filtered.push(selectedItem);
@@ -135,13 +120,11 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
       }
     });
     
-    console.log("Finished processing top tags");
     // Set the filtered items
     setFilteredItems(filtered);
     initializePackery();
   
-    console.log("Finished fetching top tags");
-  };
+    };
   
   
   const handleShowSwiper = (index) => {

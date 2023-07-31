@@ -216,13 +216,13 @@ const GridItem = ({
         <img src={mediaUrl} alt={text} className="media-element w-full h-auto" onClick={() => setShowSwiper(index)} />
       ) : null}
 
-      {showLabel && (
+      {/*showLabel && (
         <div className="absolute bottom-0 left-0 w-full">
           <div className="bg-black opacity-75">
             <p className="text-white text-lg font-semibold text-center">{text}</p>
           </div>
         </div>
-      )}
+      )*/}
 
     </div>
   );

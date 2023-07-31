@@ -20,9 +20,9 @@ function App() {
       }))();
   }, []);
 
-  const toggleView = () => {
-    setActiveView(activeView === "gallery" ? "gallery" /*iscan */ : "gallery");
-  };
+  /*const toggleView = () => {
+    setActiveView(activeView === "gallery" ? "gallery" /*iscan  : "gallery");
+  };*/
 
   useEffect(() => {
     const handleResize = () => {
@@ -45,10 +45,11 @@ function App() {
 
       <main style={{ margin: 0, padding: 0 }}>
       <Background />
-
+      
         <div className="mx-auto pt-16" style={{ paddingLeft: leftPadding, margin: 0, padding: 0 }}>
           <div className="text-center" >
-            {activeView === "gallery" ? (
+            {/* USELESS BS
+            activeView === "gallery" ? (
               <h1
                 onClick={toggleView}
                 className="cursor-pointer text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
@@ -68,13 +69,13 @@ function App() {
                 <span className="text-red-500">S</span>can
                 <h2>"my private stuff, nothing to see here"</h2>
               </h1> 
-            )}
+            )*/}
             <Auth >
               {/*
               became useless, rly ??
               
               activeView === "gallery" ? <Gallery style={{ padding: leftPadding }} /> : <Iscan style={{ padding: leftPadding }} />*/}
-              
+
             </Auth>
           </div>
         </div>

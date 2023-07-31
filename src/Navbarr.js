@@ -11,7 +11,14 @@ const Navbarr = ({ setShowTopTags, showModal, setShowModal }) => {
   rightNavItems = rightNavItems.filter(item => item);
   const rightMenuRef = useRef(null);
 
- 
+  useEffect(() => {
+    console.log("Navbarr component rendered"); // Add this line to check if the component gets rendered
+    const handleClickOutside = (event) => {
+      // ... (existing code)
+    };
+    window.addEventListener('mousedown', handleClickOutside);
+    return () => window.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
 
   const handleRightNavToggle = () => {

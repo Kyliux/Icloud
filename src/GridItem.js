@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { colors } from "./Colorpalette";
 import { Spinner } from "./Spinner";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 const GridItem = ({
   itemKey,
@@ -27,6 +29,8 @@ const GridItem = ({
   const [showRemoveLogo, setShowRemoveLogo] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [mediaUrl, setMediaUrl] = useState(null); // Will hold the media url once it's time to load
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const itemRef = useRef(); // Reference to the item for intersection observing
 
@@ -87,6 +91,7 @@ const GridItem = ({
     setShowRemoveLogo(false);
   };
 
+
   const tagsArray = tags ? String(tags).toLowerCase().split(",") : [];
 
   const getTagColor = (tag) => {
@@ -124,8 +129,19 @@ const GridItem = ({
   };
 
   const handleClickTag = (tag) => {
-    filterItems(tag);
+    // Check if the URL contains "/map/"
+    if (location.pathname.includes("/map")) {
+      // Change the URL to reflect the filtered tag in "/map/tagname" format
+      navigate(`/map/${tag}`);
+    } else if (location.pathname.includes("/gallery")) {
+      // Change the URL to reflect the filtered tag in "/gallery/tagname" format
+      navigate(`/gallery/${tag}`);
+    } else {
+      // If the URL doesn't contain "/map/" or "/gallery/", use the default behavior
+      navigate(`/gallery/${tag}`);
+    }
   };
+
 
   const handleDoubleClickTag = (tag) => {
     filterItems(tag, true);

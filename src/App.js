@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Background  from "./Background";
 
 
+
 function App() {
   const [activeView, setActiveView] = useState("gallery");
   const [leftPadding, setLeftPadding] = useState(0);

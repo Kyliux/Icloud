@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { listDocs } from "@junobuild/core";
+import { listDocs, delDoc, deleteAsset, listAssets } from "@junobuild/core";
 import { AuthContext } from "./Auth";
 import Packery from "packery";
 import GridItem from "./GridItem";
 import { colors } from "./Colorpalette";
 import { principal } from "./Principalid";
-import { delDoc, deleteAsset, listAssets } from "@junobuild/core";
 import { ImageSwiper } from './ImageSwiper';
-import Navbarr from './Navbarr';
+import { useLocation } from "react-router-dom";
 
-
-export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding, showModal, setShowModal,showTopTags, setShowTopTags }) => {
+export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding, showModal, setShowModal, showTopTags, setShowTopTags }) => {
   const { user } = useContext(AuthContext);
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -20,71 +18,147 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   const [inProgress, setInProgress] = useState(false);
   const [showSwiper, setShowSwiper] = useState(false);
   const [swiperIndex, setSwiperIndex] = useState(0);
-
-
+  const location = useLocation();
   const gridRef = useRef(null);
   const packeryRef = useRef(null);
   const activeTagsRef = useRef([]);
   const excludedTagsRef = useRef([]);
+  const itemTagsMapRef = useRef({}); // New addition here
 
+  //fetchTopTags should populate the toptags
+  useEffect(() => {
+    fetchTopTags();
+  }, [items]);
+
+  useEffect(() => {
+    handleItemsFiltering();
+  }, [items, location.pathname]);
+
+  useEffect(() => {
+  if (gridRef.current) {
+    initializePackery();
+   }
+   return () => {
+     if (packeryRef.current) {
+       packeryRef.current.destroy();
+     }
+   };
+ }, [filteredItems]); //was no dependency before
+
+  useEffect(() => {
+    if (user && user.key === principal[0]) {
+      setHasCRUDAccess(true);
+    }
+    
+    list();
+    initializePackery();
+  }, [user]);
+
+/*  useEffect(() => {
+    if (gridRef.current) {
+      initializePackery();
+    }
+  }, [filteredItems]);*/
+
+  const fetchTopTags = () => {
+    // Initialize the object to store the count of each tag
+    const tagCount = {};
+    // Initialize the object to map tags to items
+    const itemTagsMap = {};
+  
+    console.log("Starting to process items");
+  
+    // Iterate over each item
+    items.forEach((item) => {
+      // Extract tags from the item, or use an empty array if no tags are present
+      const tags = item.data.tags ? String(item.data.tags).split(",") : [];
+      console.log(`Processing item: ${item}, with tags: ${tags}`);
+  
+      // Iterate over each tag
+      tags.forEach((tag) => {
+        // Normalize the tag to lowercase
+        const normalizedTag = tag.toLowerCase();
+        console.log(`Processing tag: ${normalizedTag}`);
+  
+        // Increase the count for the tag, or set it to 1 if it hasn't been encountered yet
+        tagCount[normalizedTag] = tagCount[normalizedTag] ? tagCount[normalizedTag] + 1 : 1;
+  
+        // If the tag hasn't been encountered yet, initialize an empty array for it in itemTagsMap
+        if (!itemTagsMap[normalizedTag]) {
+          itemTagsMap[normalizedTag] = [];
+        }
+        // Add the current item to the array for the current tag in itemTagsMap
+        itemTagsMap[normalizedTag].push(item);
+      });
+    });
+  
+    console.log("Finished processing items, starting to sort tags");
+  
+    // Sort the tags by their counts in descending order
+    const sortedTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]);
+    // Get the top 20 tags
+    const topTags = sortedTags.slice(0, 20);
+    setTopTags(topTags);
+  
+    console.log(`Top tags: ${topTags}`);
+  
+    // Initialize a Set to store the selected items
+    const selectedItems = new Set();
+    // Initialize an array to store the filtered items
+    const filtered = [];
+  
+    console.log("Starting to process top tags");
+  
+    // Iterate over each top tag
+    topTags.forEach((tag) => {
+      // Get the items with the current tag, or use an empty array if none exist
+      const itemsWithTag = itemTagsMap[tag] || [];
+  
+      console.log(`Processing tag: ${tag}, with items: ${itemsWithTag}`);
+  
+      if (itemsWithTag.length > 0) {
+        // Filter out the items that have already been selected
+        const remainingItems = itemsWithTag.filter((item) => !selectedItems.has(item));
+        console.log(`Remaining items: ${remainingItems}`);
+  
+        if (remainingItems.length > 0) {
+          // Select a random item from the remaining ones
+          const randomIndex = Math.floor(Math.random() * remainingItems.length);
+          const selectedItem = remainingItems[randomIndex];
+          console.log(`Selected item: ${selectedItem}`);
+  
+          // Add the selected item to the filtered items
+          filtered.push(selectedItem);
+          // Add the selected item to the selected items
+          selectedItems.add(selectedItem);
+        }
+      }
+    });
+    
+    console.log("Finished processing top tags");
+    // Set the filtered items
+    setFilteredItems(filtered);
+    initializePackery();
+  
+    console.log("Finished fetching top tags");
+  };
+  
+  
   const handleShowSwiper = (index) => {
-    console.log('handleShowSwiper triggered with index:', index);
     setShowSwiper(true);
     setSwiperIndex(index);
   };
 
   const handleCloseSwiper = () => {
-    console.log('handleCloseSwiper triggered');
     setShowSwiper(false);
   };
 
-  useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.keyCode === 27) handleCloseSwiper();
-    };
-    window.addEventListener('keydown', handleEsc);
-
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("reload", list);
-    return () => {
-      window.removeEventListener("reload", list);
-    };
-  }, []);
-
-  useEffect(() => {
-    if ([undefined, null].includes(user)) {
-     // setItems([]);
-     // setFilteredItems([]);
-     // return;
-    }
-    list();
-    if (user && user.key === principal[0]) {
-      setHasCRUDAccess(true);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (gridRef.current) {
-      initializePackery();
-    }
-  }, [filteredItems]);
-
-  useEffect(() => {
-    fetchTopTags();
-  }, [items]);
-
-  const list = async () => {
+  async function list () {
     const { items } = await listDocs({
       collection: notes,
       filter: {},
     });
     setItems(items);
-    setFilteredItems(items);
   };
 
   const initializePackery = () => {
@@ -99,13 +173,53 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   };
 
   const reloadPackery = () => {
-    packeryRef.current.reloadItems();
-    packeryRef.current.layout();
+    if (packeryRef.current) {
+      packeryRef.current.reloadItems();
+      packeryRef.current.layout();
+    }
   };
 
+  const getTagFromURL = () => {
+    let tagSuffix = undefined;
+    if (location.pathname.includes('/gallery')) {
+      tagSuffix = location.pathname.split('/gallery/')[1];
+    } else if (location.pathname.includes('/map')) {
+      tagSuffix = location.pathname.split('/map/')[1];
+    }
+    return tagSuffix;
+  };
+
+  const handleItemsFiltering = () => {
+    console.log("handleItemsFiltering called");
+
+    // Extract tag from URL
+    const tagSuffix = getTagFromURL();
+    let filtered;
+
+    // Check if tagSuffix is empty or null
+    if (!tagSuffix || tagSuffix === "") {
+      console.log("No specific tag selected, showing items for all top tags");
+      // Use all items
+      filtered = items;
+    } else {
+      console.log(`Specific tag selected: ${tagSuffix}, filtering items with this tag`);
+      // Filter items with tag matching tagSuffix
+      filtered = items.filter((item) => {
+        const itemTags = item.data.tags
+          ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
+          : [];
+        return itemTags.includes(tagSuffix.toLowerCase());
+      });
+    }
+    console.log(`Total filtered items: ${filtered.length}`);
+    // Update state with the filtered items
+    setFilteredItems(filtered);
+    // Initialize packery after items filtering
+    initializePackery();
+  }
 
 
-  const filterItems = (tag, exclude = false) => {
+  const filterItems = (tag, exclude = false, items = []) => {
     tag = tag.toLowerCase();
     const activeTags = exclude
       ? activeTagsRef.current.filter((t) => t !== tag)
@@ -119,9 +233,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
 
     const filtered = items.filter((item) => {
       const itemTags = item.data.tags
-        ? String(item.data.tags)
-            .split(",")
-            .map((tag) => tag.toLowerCase().trim())
+        ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
         : [];
       return (
         activeTags.every((t) => itemTags.includes(t)) &&
@@ -129,8 +241,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
       );
     });
 
-    setFilteredItems(filtered);
-    reloadPackery();
+    return filtered;
   };
 
   const handleRemoveItem = async (doc, key, url) => {
@@ -143,48 +254,27 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
       if (url !== undefined) {
         const { pathname } = new URL(url);
         const extension = pathname.split(".").pop();
+        const collection = (extension === "jpg" || extension === "jpeg" || extension === "png") ? images : videos;
 
-        if (extension === "jpg" || extension === "jpeg" || extension === "png") {
-          const { assets } = await listAssets({
-            collection: images,
-            filter: {
-              matcher: {
-                key: pathname,
-              },
+        const { assets } = await listAssets({
+          collection,
+          filter: {
+            matcher: {
+              key: pathname,
             },
-          });
+          },
+        });
 
-          if (assets.length !== 1) {
-            setInProgress(false);
-            alert("More than one corresponding asset found");
-            return;
-          }
-
-          await deleteAsset({
-            collection: images,
-            storageFile: assets[0],
-          });
-        } else if (extension === "mp4" || extension === "mov") {
-          const { assets } = await listAssets({
-            collection: videos,
-            filter: {
-              matcher: {
-                key: pathname,
-              },
-            },
-          });
-
-          if (assets.length !== 1) {
-            setInProgress(false);
-            alert("More than one corresponding asset found");
-            return;
-          }
-
-          await deleteAsset({
-            collection: videos,
-            storageFile: assets[0],
-          });
+        if (assets.length !== 1) {
+          setInProgress(false);
+          alert("More than one corresponding asset found");
+          return;
         }
+
+        await deleteAsset({
+          collection,
+          storageFile: assets[0],
+        });
       }
 
       const {
@@ -213,153 +303,93 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     setFilteredItems(items);
   };
 
-  const fetchTopTags = () => {
-    const tagCount = {};
-    const itemTagsMap = {};
-
-    items.forEach((item) => {
-      const tags = item.data.tags ? String(item.data.tags).split(",") : [];
-      tags.forEach((tag) => {
-        const normalizedTag = tag.toLowerCase();
-        tagCount[normalizedTag] = tagCount[normalizedTag] ? tagCount[normalizedTag] + 1 : 1;
-
-        if (!itemTagsMap[normalizedTag]) {
-          itemTagsMap[normalizedTag] = [];
-        }
-        itemTagsMap[normalizedTag].push(item);
-      });
-    });
-
-    const sortedTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]);
-    const topTags = sortedTags.slice(0, 20);
-    setTopTags(topTags);
-
-    const selectedItems = new Set();
-    const filtered = [];
-
-    topTags.forEach((tag) => {
-      const itemsWithTag = itemTagsMap[tag] || [];
-
-      if (itemsWithTag.length > 0) {
-        const remainingItems = itemsWithTag.filter((item) => !selectedItems.has(item));
-        if (remainingItems.length > 0) {
-          const randomIndex = Math.floor(Math.random() * remainingItems.length);
-          const selectedItem = remainingItems[randomIndex];
-          filtered.push(selectedItem);
-          selectedItems.add(selectedItem);
-        }
-      }
-    });
-
-    setFilteredItems(filtered);
-    initializePackery();
-  };
-
   const getTagColor = (tag) => {
     const hashCode = tag.split("").reduce((acc, char) => {
-      return acc + char.charCodeAt(0);
+      return char.charCodeAt(0) + ((acc << 5) - acc);
     }, 0);
 
-    const colorIndex = Math.abs(hashCode) % colors.length;
-
-    return colors[colorIndex];
+    const index = Math.abs(hashCode % colors.length);
+    return colors[index];
   };
 
-  useEffect(() => {
-    if (gridRef.current) {
-      initializePackery();
-    }
 
-    // Clean up the previous Packery instance when the component unmounts
-    return () => {
-      if (packeryRef.current) {
-        packeryRef.current.destroy();
-      }
-    };
-  }, []);
 
   return (
-
-
     <div className="w-full">
-
-    {showSwiper && (
+      {showSwiper && (
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
-    )}
-
-    <header className="px-5 py-4 w-full flex justify-between">
-        
-    <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999 }}>
-  {topTags.length > 0 && showTopTags && (
-    <div className="mt-2">
-      <div className="flex flex-wrap justify-center mt-2">
-        <button
-          className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${
-            activeTags.length === 0 ? "bg-indigo-600" : "bg-gray-400"
-          }`}
-          onClick={resetFilters}
+      )}
+      <header className="px-5 py-4 w-full flex justify-between">
+        <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999 }}>
+          {topTags.length > 0 && showTopTags && (
+            <div className="mt-2">
+              <div className="flex flex-wrap justify-center mt-2">
+                <button
+                  className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${
+                    activeTags.length === 0 ? "bg-indigo-600" : "bg-gray-400"
+                  }`}
+                  onClick={resetFilters}
+                >
+                  All
+                </button>
+                {topTags.map((tag) => (
+                  <button
+                    key={tag}
+                    className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(
+                      tag
+                    )}`}
+                    onClick={() => filterItems(tag)}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </h2>
+      </header>
+      <div className="p-3">
+        <div
+          ref={gridRef}
+          className="grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          }}
         >
-          All
-        </button>
-        {topTags.map((tag) => (
-          <button
-            key={tag}
-            className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(
-              tag
-            )}`}
-            onClick={() => filterItems(tag)}
-          >
-            {tag}
-          </button>
-        ))}
+          {filteredItems.map((item, index) => {
+            const {
+              key,
+              data: { text, url, ratio, tags, type },
+            } = item;
+
+            return (
+              <GridItem
+                key={key}
+                itemKey={key}
+                packeryInit={packeryRef.current !== null}
+                item={item}
+                text={text}
+                url={url}
+                ratio={defaultratio ? defaultratio : ratio}
+                tags={tags}
+                setShowSwiper={handleShowSwiper}
+                type={type}
+                filterItems={filterItems}
+                hasCRUDAccess={hasCRUDAccess}
+                index={index}
+                inProgress={inProgress}
+                handleRemoveItem={handleRemoveItem}
+                items={items}
+                setItems={setItems}
+                setFilteredItems={setFilteredItems}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
-  )}
-</h2>
-    </header>
-
-    <div className="p-3">
-        <div
-            ref={gridRef}
-            className="grid"
-            style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-            }}
-        >
-            {filteredItems.map((item, index) => {
-                const {
-                    key,
-                    data: { text, url, ratio, tags, type },
-                } = item;
-
-                return (
-                    <GridItem
-                        key={key}
-                        itemKey={key}
-                        packeryInit={packeryRef.current !== null}
-                        item={item}
-                        text={text}
-                        url={url}
-                        ratio={defaultratio ? defaultratio : ratio}
-                        tags={tags}
-                        setShowSwiper={handleShowSwiper}
-                        type={type}
-                        filterItems={filterItems}
-                        hasCRUDAccess={hasCRUDAccess}
-                        index={index}
-                        inProgress={inProgress}
-                        handleRemoveItem={handleRemoveItem}
-                        items={items}
-                        setItems={setItems}
-                        setFilteredItems={setFilteredItems}
-                    />
-                );
-            })}
-        </div>
-    </div>
-</div>
-);
+  );
 };
 
 export default EnhancedTable;

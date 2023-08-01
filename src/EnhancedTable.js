@@ -173,7 +173,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   };
 
   const handleItemsFiltering = () => {
-    console.log("handleItemsFiltering called");
 
     // Extract tag from URL
     const tagSuffix = getTagFromURL();
@@ -181,11 +180,9 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
 
     // Check if tagSuffix is empty or null
     if (!tagSuffix || tagSuffix === "") {
-      console.log("No specific tag selected, showing items for all top tags");
       // Use all items
       filtered = items;
     } else {
-      console.log(`Specific tag selected: ${tagSuffix}, filtering items with this tag`);
       // Filter items with tag matching tagSuffix
       filtered = items.filter((item) => {
         const itemTags = item.data.tags
@@ -194,7 +191,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
         return itemTags.includes(tagSuffix.toLowerCase());
       });
     }
-    console.log(`Total filtered items: ${filtered.length}`);
     // Update state with the filtered items
     setFilteredItems(filtered);
     // Initialize packery after items filtering

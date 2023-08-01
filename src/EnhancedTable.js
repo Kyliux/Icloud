@@ -46,7 +46,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
  }, [filteredItems]); //was no dependency before
 
   useEffect(() => {
-    if (user && user.key === principal[0]) {
+    if (user && principal.includes(user.key)) {
       setHasCRUDAccess(true);
     }
     

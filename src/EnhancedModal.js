@@ -21,9 +21,9 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, 
 
   useEffect(() => {
     setValid(inputText !== "" && user !== undefined && user !== null);
-    if (user && user.key === principal[0]) {
-      setHasCRUDAccess(true);
-    }
+if (user && principal.includes(user.key)) {
+  setHasCRUDAccess(true);
+}
   }, [showModal, inputText, user]);
 
   useEffect(() => {

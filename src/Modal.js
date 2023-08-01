@@ -18,9 +18,10 @@ export const Modal = () => {
 
   useEffect(() => {
     setValid(inputText !== "" && user !== undefined && user !== null);
-    if (user && user.key === principal[0]) {
+    if (user && principal.includes(user.key)) {
       setHasCRUDAccess(true);
     }
+    
   }, [showModal, inputText, user]);
 
   const reload = () => {

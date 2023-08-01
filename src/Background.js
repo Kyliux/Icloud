@@ -8,6 +8,8 @@ import { listDocs, delDoc, deleteAsset, listAssets } from "@junobuild/core";
 import { authSubscribe } from "@junobuild/core";
 import { initJuno } from "@junobuild/core";
 import { GeoJSON } from 'react-leaflet';
+import { format } from 'date-fns';
+
 
 const BackgroundContainer = styled.div`
   position: fixed;
@@ -66,7 +68,7 @@ L.Icon.Default.mergeOptions({
 
 const Background = () => {
   const location = useLocation();
-  const showMap = location.pathname.startsWith("/map"); // Check if the current location starts with "/map"
+  const showMap = location.pathname.includes("/map"); // Check if the current location contains "/map"
   const key = location.pathname;
   const [items, setItems] = useState([]);
   const [user, setUser] = useState(undefined);
@@ -106,12 +108,14 @@ const Background = () => {
     });
     console.log("Fetched items: ", items); // Debug line
     setItems(items);
+
   }
 
   const handleMarkerClick = (item) => {
     const tagSuffix = item.data.tags;
     const currentUrl = location.pathname;
-    navigate(`${currentUrl}/${tagSuffix}`);
+    const newUrl = currentUrl.replace(/\/map\/[^/]+$/, "/map"); // Remove any previous suffix from the current URL
+    navigate(`${newUrl}/${tagSuffix}`);
     setShowPopup(true);
     // Update the center of the map to the clicked marker's position
     setCenterPosition([item.data.gps.lat, item.data.gps.lng]);
@@ -119,17 +123,13 @@ const Background = () => {
 
   // Find the latest item by date
   const latestItem = items.reduce((latest, item) => {
-    console.log("Current item date:", item.data.date); // Debug line
     if (!latest) {
-      console.log("No latest item yet, setting current item as latest"); // Debug line
       return item;
     }
     if (new Date(item.data.date) > new Date(latest.data.date)) {
-      console.log("Current item is newer than latest, updating latest"); // Debug line
       return item;
     }
-    console.log("Current item is not newer than latest, keeping existing latest"); // Debug line
-    return latest;
+      return latest;
   }, null);
 
   // Update the center position whenever the latestItem changes
@@ -147,6 +147,18 @@ const Background = () => {
     return null; // No need to return anything
   };
 
+  const screenHeight = window.innerHeight;
+  const screenWidth = window.innerWidth;
+  let result;
+  result = screenWidth > screenHeight? 1.1 : 1 ;
+
+    // Calculate the shifted center position to center the map 25% higher
+    const shiftedCenterPosition = [
+      centerPosition[0] - (centerPosition[0] * 0.30 * result * 0.01 * (100 / screenHeight)),
+      centerPosition[1]
+    ];
+
+
   const createMarker = (item) => {
     console.log("Creating marker for item: ", item); // Debug line
     if (!item.data.gps) {
@@ -163,28 +175,50 @@ const Background = () => {
         key={item.data.date}
         onClick={() => handleMarkerClick(item)} // Attach the onClick handler directly to the Marker component
       >
-        <Popup>
-          {/* Customize the content of the popup */}
-          <div>{item.data.text}</div>
-        </Popup>
+    <Popup>
+        {/* Custom template for the Popup */}
+        <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{item.data.tags}</div>
+        <div>{item.data.text}</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          
+          <div
+            style={{
+              color: 'blue',
+              textDecoration: 'underline',
+              cursor: 'pointer',
+              marginLeft: '20px',
+            }}
+            onClick={() => handleMarkerClick(item)}
+          >
+            Show Gallery
+          </div>
+          <div style={{ fontSize: '0.8em' }}>
+            {format(new Date(item.data.date), 'EEEE, dd MMMM yyyy')}
+          </div>
+        </div>
+      </Popup>
       </Marker>
     );
   };
 
   return (
     <BackgroundContainer key={key}>
-      {showMap && (
+      {(
         <StyledMapContainer
-          center={centerPosition}
-          zoom={13}
-          style={{
-            filter: showMap ? "none" : "brightness(50%)",
-            height: '100%'
+        center={centerPosition}
+        zoom={13}
+        style={{
+          filter: showMap ? "none" : "brightness(50%)", // Apply overlay if not in "/map"
+          height: '100%',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
           }}
         >
           {bikeRoutes && <GeoJSON data={bikeRoutes} />}
 
-          <MapUpdater center={centerPosition} />
+          <MapUpdater center={shiftedCenterPosition} />
 
           <TileLayer
             url="https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg"

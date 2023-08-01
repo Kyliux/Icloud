@@ -75,11 +75,11 @@ const GridItem = ({
   
   let division = 1;
   
-  if (url2.includes('gallery')) {
+  /*if (url2.includes('gallery')) {
     division = 1;
   } else if (url2.includes('map')) {
     division = 3;
-  }
+  }*/
 
   const handleMouseEnter = () => {
     setShowLabel(true);

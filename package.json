@@ -8,6 +8,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "crypto-js": "^4.1.1",
+    "date-fns": "^2.30.0",
     "draggabilly": "^3.0.0",
     "emoji-regex": "^10.2.1",
     "imagesloaded": "^5.0.0",

@@ -111,11 +111,11 @@ const GridItem = ({
   };
 
   const getUrlWidth = (ratio) => {
-    return ratio < 1 ? `${30 / division }vh` : `${(ratio * 30 / division)}vh`;
+    return ratio < 1 ? `${19.80 / division }vw` : `${(ratio * 19.80 / division)}vw`;
   };
 
   const getUrlHeight = (ratio) => {
-    return ratio > 1 ? `${30 / division }vh` : `${((30 / ratio ) / division)}vh`;
+    return ratio > 1 ? `${19.80 / division }vw` : `${((19.80 / ratio ) / division)}vw`;
   };
 
   const itemStyle = {

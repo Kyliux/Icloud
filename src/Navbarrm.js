@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "./Auth";
 import { signIn, signOut } from "@junobuild/core";
-
+import { principal } from "./Principalid";
 
 const Navbarrm = ({ setShowTopTags, showModal, setShowModal }) => {
   const { user } = useContext(AuthContext);
@@ -26,6 +26,10 @@ const Navbarrm = ({ setShowTopTags, showModal, setShowModal }) => {
       setShowTopTags((prevShowTopTags) => !prevShowTopTags);
 
     } else if (item === "Add spot") {
+      console.log("userkey :", user.key);
+
+      console.log("has cliked on add spot principal ? :", principal.includes(user.key));
+
       setShowModal(true);
       console.log(showModal);
     }

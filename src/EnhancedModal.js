@@ -4,6 +4,8 @@ import { AuthContext } from "./Auth";
 import { nanoid } from "nanoid";
 import { principal } from "./Principalid";
 import emojiRegex from 'emoji-regex';
+import  { useRef } from "react";
+
 
 export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, setShowModal }) => {
   const [inputText, setInputText] = useState("");
@@ -45,6 +47,28 @@ if (user && principal.includes(user.key)) {
       }
     );
   }, []);
+
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const handleFileInputClick = () => {
+      console.log("Choose File input clicked!");
+      // You can perform any actions you want here when the input is clicked.
+    };
+  
+    if (fileInputRef.current) {
+      fileInputRef.current.addEventListener("click", handleFileInputClick);
+    }
+  
+    // Clean up the event listener on unmount
+    return () => {
+      if (fileInputRef.current) {
+        fileInputRef.current.removeEventListener("click", handleFileInputClick);
+      }
+    };
+  }, []);
+
+  
 
   const reload = () => {
     let event = new Event("reload");
@@ -196,7 +220,7 @@ if (user && principal.includes(user.key)) {
 
       {/* Modal Root */}
       {showModal && hasCRUDAccess && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" style={{ zIndex: 999 }}>
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" style={{ zIndex: 2 }}>
           <div className="bg-white rounded p-8 shadow-lg">
             <input
               type="text"
@@ -222,6 +246,7 @@ if (user && principal.includes(user.key)) {
             ></textarea>
             <input
               type="file"
+              ref={fileInputRef}
               className="my-4 text-slate-500 text-lg leading-relaxed"
               accept="image/*, video/*"
               onChange={(event) => setFiles(Array.from(event.target.files))}

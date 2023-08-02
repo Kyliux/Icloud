@@ -46,7 +46,7 @@ function App() {
       <main style={{ margin: 0, padding: 0 }}>
       <Background />
       
-        <div className="mx-auto pt-16" style={{ paddingLeft: leftPadding, margin: 0, padding: 0 }}>
+        <div className="mx-auto pt-16" style={{  margin: 0, padding: 0 }}>
           <div className="text-center" >
             {/* USELESS BS
             activeView === "gallery" ? (
@@ -70,7 +70,7 @@ function App() {
                 <h2>"my private stuff, nothing to see here"</h2>
               </h1> 
             )*/}
-            <Auth >
+            <Auth>
               {/*
               became useless, rly ??
               

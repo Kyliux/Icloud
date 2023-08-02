@@ -19,7 +19,7 @@ const MapComponent = () => {
     <>
       <Navbarrm showModal={showModal} setShowModal={setShowModal} />
       <EnhancedModal notes="spot" images="spot" videos="spot" defaultratio="" showModal={showModal} setShowModal={setShowModal} />
-      <div style={{ position: 'absolute', transform: 'translateY(50%)', width: '100%' }}>
+      <div style={{ position: 'absolute', top: '70vh', width: '100%',backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
         {showTable && <EnhancedTable notes="spot" images="spot" videos="spot" defaultratio="" />}
       </div>
     </>

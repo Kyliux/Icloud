@@ -35,13 +35,13 @@ export function ImageSwiper({ items, activeIndex, onClose }) {
         width: '100vw',
         height: '100vh',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        overflow: 'hidden', // Prevent content overflow
       }}
       onClick={onClose}
     >
+      {/* Apply styles directly to the Swiper component */}
       <Swiper
+        ref={swiperRef}
         initialSlide={activeIndex}
         navigation
         spaceBetween={10}
@@ -49,14 +49,17 @@ export function ImageSwiper({ items, activeIndex, onClose }) {
         centeredSlides
         loop
         style={{
-          width: '100%',
-          height: '100%',
+          width: '100%', // Set the swiper width to 100% (viewport width)
+          height: '100%', // Set the swiper height to 100% (viewport height)
         }}
+        containerModifierClass="swiper-container" // Add a container modifier class
+        wrapperTag="ul" // Use ul tag for the wrapper element
         onClick={handleMediaClick}
       >
         {items.map((item, index) => (
           <SwiperSlide
             key={index}
+            tag="li" // Use li tag for each slide
             style={{
               display: 'flex',
               justifyContent: 'center',

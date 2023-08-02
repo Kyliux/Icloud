@@ -299,7 +299,8 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
       )}
       <header className="px-5 py-4 w-full flex justify-between">
-        <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999 }}>
+        <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999
+}}>
           {topTags.length > 0 && showTopTags && (
             <div className="mt-2">
               <div className="flex flex-wrap justify-center mt-2">
@@ -327,7 +328,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
           )}
         </h2>
       </header>
-      <div className="p-3">
+      <div>
         <div
           ref={gridRef}
           className="grid"

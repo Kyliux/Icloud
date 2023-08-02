@@ -160,7 +160,6 @@ const Background = () => {
 
 
   const createMarker = (item) => {
-    console.log("Creating marker for item: ", item); // Debug line
     if (!item.data.gps) {
       console.log('Missing gps data for item: ', item);
       return null; // or handle it in any other way
@@ -208,7 +207,7 @@ const Background = () => {
         center={centerPosition}
         zoom={13}
         style={{
-          filter: showMap ? "none" : "brightness(50%)", // Apply overlay if not in "/map"
+          filter: showMap ? "none" : "brightness(70%)", // Apply overlay if not in "/map"
           height: '100%',
           position: 'fixed',
           top: 0,

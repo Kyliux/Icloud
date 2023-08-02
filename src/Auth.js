@@ -13,7 +13,7 @@ import EnhancedTable from './EnhancedTable'; // Make sure to import EnhancedTabl
 
 export const AuthContext = createContext();
 
-export const Auth = ({ children }) => {
+export const Auth = ({  children }) => {
   const [user, setUser] = useState(undefined);
   const [busy, setBusy] = useState(undefined);
   const [leftIsOpen, setLeftIsOpen] = useState(false);

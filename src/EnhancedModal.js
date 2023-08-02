@@ -55,18 +55,18 @@ if (user && principal.includes(user.key)) {
       console.log("Choose File input clicked!");
       // You can perform any actions you want here when the input is clicked.
     };
-  
-    if (fileInputRef.current) {
+
+    if (fileInputRef.current && !progress) {
       fileInputRef.current.addEventListener("click", handleFileInputClick);
     }
-  
+
     // Clean up the event listener on unmount
     return () => {
       if (fileInputRef.current) {
         fileInputRef.current.removeEventListener("click", handleFileInputClick);
       }
     };
-  }, []);
+  }, [progress]);
 
   
 
@@ -220,9 +220,9 @@ if (user && principal.includes(user.key)) {
 
       {/* Modal Root */}
       {showModal && hasCRUDAccess && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" style={{ zIndex: 2 }}>
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" style={{ zIndex: 1000 }}>
           <div className="bg-white rounded p-8 shadow-lg">
-            <input
+            <textarea
               type="text"
               className="form-control mb-4 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
               placeholder="Feeling ? (only Emoji)"

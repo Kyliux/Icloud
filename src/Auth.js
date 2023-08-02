@@ -50,7 +50,7 @@ setSelectedItem(item.name);
 
   return (
     <AuthContext.Provider value={{ user, setBusy }}>
-      <nav style={{ position: 'fixed', top: '20px', zIndex: 2 }}>
+      <nav style={{ position: 'fixed', top: '10px',left: '10px', zIndex: 2 }}>
         <button type="button" onClick={handleLeftNavToggle} style={{ backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', border: 'none', boxShadow: '5px 5px #000' }}>
           <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 0 24 24" width="60px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
         </button>

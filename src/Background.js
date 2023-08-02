@@ -10,7 +10,6 @@ import { initJuno } from "@junobuild/core";
 import { GeoJSON } from 'react-leaflet';
 import { format } from 'date-fns';
 
-
 const BackgroundContainer = styled.div`
   position: fixed;
   top: 0;
@@ -20,9 +19,6 @@ const BackgroundContainer = styled.div`
   z-index: 0;
 `;
 
-
-
-// Style for MapContainer to make it take full screen
 const StyledMapContainer = styled(MapContainer)`
   position: absolute;
   top: 0;
@@ -30,7 +26,6 @@ const StyledMapContainer = styled(MapContainer)`
   width: 100%;
   height: ${props => props.height}px;
   z-index: 0;
-
 `;
 
 const DarkOverlay = styled.div`
@@ -43,19 +38,6 @@ const DarkOverlay = styled.div`
   z-index: 1;
 `;
 
-const ButtonContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-
-const MenuButton = styled.button`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-`;
-
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -63,7 +45,6 @@ L.Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
-
 
 
 const Background = () => {
@@ -78,6 +59,9 @@ const Background = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [centerPosition, setCenterPosition] = useState([48.5734, 7.7521]);
+  const [mapStyle, setMapStyle] = useState('watercolor');
+
+
 
   useEffect(() => {
     fetch('https://data.public.lu/fr/datasets/r/ca2c3945-6c5c-4ce6-a0cb-4164ce6112af')
@@ -158,7 +142,20 @@ const Background = () => {
       centerPosition[1]
     ];
 
+<StyledMapContainer
+  center={centerPosition}
+  zoom={9}
+  style={{
+    filter: showMap ? "none" : "brightness(70%)", // Apply overlay if not in "/map"
+    height: '100%',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+  }}
+>
 
+</StyledMapContainer>
   const createMarker = (item) => {
     if (!item.data.gps) {
       console.log('Missing gps data for item: ', item);
@@ -174,61 +171,56 @@ const Background = () => {
         key={item.data.date}
         onClick={() => handleMarkerClick(item)} // Attach the onClick handler directly to the Marker component
       >
-    <Popup>
-        {/* Custom template for the Popup */}
-        <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{item.data.tags}</div>
-        <div>{item.data.text}</div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          
-          <div
-            style={{
-              color: 'blue',
-              textDecoration: 'underline',
-              cursor: 'pointer',
-              marginLeft: '20px',
-            }}
-            onClick={() => handleMarkerClick(item)}
-          >
-            Show Gallery
-          </div>
-          <div style={{ fontSize: '0.8em' }}>
-            {format(new Date(item.data.date), 'EEEE, dd MMMM yyyy')}
-          </div>
-        </div>
-      </Popup>
+<Popup>
+  <div className="text-xl font-bold flex justify-between items-center mb-2">
+    <span>{item.data.tags}</span>
+    <span className="text-sm">{format(new Date(item.data.date), 'dd MM yyyy')}</span>
+  </div>
+  <div className="text-xl">{item.data.text}</div>
+  <div className="flex justify-between items-center mt-4">
+    <span></span>
+    <span 
+      className="text-blue-500 underline cursor-pointer ml-5"
+      onClick={() => handleMarkerClick(item)}
+    >
+      Show Gallery
+    </span>
+  </div>
+</Popup>
       </Marker>
     );
   };
 
   return (
-    <BackgroundContainer key={key}>
-      {(
+
+      <BackgroundContainer key={key}>
         <StyledMapContainer
-        center={centerPosition}
-        zoom={13}
-        style={{
-          filter: showMap ? "none" : "brightness(70%)", // Apply overlay if not in "/map"
-          height: '100%',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
+          center={centerPosition}
+          zoom={9}
+          style={{
+            filter: showMap ? "none" : "brightness(70%)",
+            height: '100%',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
           }}
         >
           {bikeRoutes && <GeoJSON data={bikeRoutes} />}
-
           <MapUpdater center={shiftedCenterPosition} />
-
           <TileLayer
             url="https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg"
             attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
+          <TileLayer
+            url="https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png"
+            opacity={0.5}
+          />
           {items.map(item => createMarker(item))}
         </StyledMapContainer>
-      )}
-      {!showMap && <DarkOverlay height={window.innerHeight} />}
-    </BackgroundContainer>
-  );
-};
-
+        {!showMap && <DarkOverlay height={window.innerHeight} />}
+      </BackgroundContainer>
+    );
+  };
+  
 export default Background;

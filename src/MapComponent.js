@@ -19,7 +19,7 @@ const MapComponent = () => {
     <>
       <Navbarrm showModal={showModal} setShowModal={setShowModal} />
       <EnhancedModal notes="spot" images="spot" videos="spot" defaultratio="" showModal={showModal} setShowModal={setShowModal} />
-      <div style={{
+      {/^\/map\//.test(location.pathname) &&  <div style={{
   position: 'absolute', 
   top: '70vh', 
   width: '100%', 
@@ -30,7 +30,7 @@ const MapComponent = () => {
   justifyContent: 'flex-end' // this will align the table to the bottom
 }}>
   {showTable && <EnhancedTable notes="spot" images="spot" videos="spot" defaultratio="" />}
-</div>
+      </div> }
     </>
   );
 };

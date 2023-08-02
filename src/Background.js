@@ -98,7 +98,7 @@ const Background = () => {
   const handleMarkerClick = (item) => {
     const tagSuffix = item.data.tags;
     const currentUrl = location.pathname;
-    const newUrl = currentUrl.replace(/\/map\/[^/]+$/, "/map"); // Remove any previous suffix from the current URL
+    const newUrl = currentUrl.replace(/\/map\/.*$/, "/map");
     navigate(`${newUrl}/${tagSuffix}`);
     setShowPopup(true);
     // Update the center of the map to the clicked marker's position

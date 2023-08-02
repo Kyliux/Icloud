@@ -2,6 +2,8 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "./Auth";
 import { signIn, signOut } from "@junobuild/core";
 import { principal } from "./Principalid";
+import textureImage from './paper.jpg';
+
 
 const Navbarrm = ({ setShowTopTags, showModal, setShowModal }) => {
   const { user } = useContext(AuthContext);
@@ -10,7 +12,19 @@ const Navbarrm = ({ setShowTopTags, showModal, setShowModal }) => {
   const rightNavItems = ["Show GPSlist", "Add spot", user !== undefined && user !== null ? "Logout 🔒 " : "Login 🔑 "];
   const rightMenuRef = useRef(null);
 
- 
+  const Overlay = () => {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        zIndex: 998, // increase the zIndex
+      }}></div>
+    )
+  }
 
 
   const handleRightNavToggle = () => {
@@ -50,8 +64,9 @@ const Navbarrm = ({ setShowTopTags, showModal, setShowModal }) => {
 
   return (
     <>
+      {rightIsOpen && <Overlay />}
       <nav style={{ position: 'fixed', right: '10px', top: '10px', zIndex: 1000 }}>
-        <button type="button" onClick={handleRightNavToggle} style={{ backgroundColor: rightIsOpen ? '#B36704' : '#D97706', border: 'none', boxShadow: '5px 5px #000' }}>
+        <button type="button" onClick={handleRightNavToggle} style={{ backgroundColor: rightIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', border: 'none', boxShadow: '5px 5px #000' }}>
           <svg height="60px" width="60px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,20)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,14.0246)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,8.04921)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g></svg>
         </button>
       </nav>
@@ -79,10 +94,10 @@ const renderMenu = (isOpen, menuRef, navItems, handleItemClick, user, setShowTop
             <div 
               style={{
                 ...navItemStyle,
-                backgroundColor: item === selectedItem ? '#B36704' : 'inherit'
+                backgroundColor: item === selectedItem ? 'rgba(0, 0, 0, 0.3)' : 'inherit'
               }}
               onClick={() => handleItemClick(item)}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#B36704'}
+              onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.3)'}
               onMouseOut={(e) => e.target.style.backgroundColor = 'inherit'}
             >
               {item === "Login 🔑 " ? (user ? 'Logout 🔒 ' : 'Login 🔑 ') : item}
@@ -114,7 +129,9 @@ const menuStyle = {
   top: '15%', 
   left: '15%', 
   width: '70%',  
-  backgroundColor: '#D97706', 
+  background: `linear-gradient(0deg, rgba(169, 169, 169, 0.7), rgba(169, 169, 169, 0.7)), url(${textureImage})`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
   color: '#fff', 
   display: 'flex', 
   flexDirection: 'column', 
@@ -122,29 +139,30 @@ const menuStyle = {
   alignItems: 'center', 
   padding: '20px', 
   boxSizing: 'border-box', 
-  zIndex: 1000,
+  zIndex: 999,
   boxShadow: '5px 5px #000'
 };
 
+
 const ulStyle = {
-  listStyle: 'none', 
-  padding: 0, 
-  margin: 0, 
-  width: '100%', 
-  display: 'flex', 
-  flexDirection: 'column', 
-  justifyContent: 'space-between', 
+  listStyle: 'none',
+  padding: 0,
+  margin: 0,
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
   height: '100%'
 };
 
 const liStyle = {
-  textAlign: 'center', 
+  textAlign: 'center',
   fontSize: `calc(2em * ${window.innerHeight / 1000})`
 };
 
 const navItemStyle = {
   width: '100%', 
-  backgroundColor: 'inherit', 
+  background: 'inherit', 
   color: '#fff', 
   fontSize: 'calc(2em * 0.7)',
   border: 'none',
@@ -152,5 +170,7 @@ const navItemStyle = {
   textAlign: 'center',
   transition: '0.5s'
 };
+
+
 
 export default Navbarrm;

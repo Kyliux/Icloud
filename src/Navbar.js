@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./Auth";
 import ReactDOM from "react-dom";
 import MapComponent from "./MapComponent";
+import textureImage from './paper.jpg';
 
 
 
@@ -120,8 +121,7 @@ const menuStyle = {
   top: '15%', 
   left: '15%', 
   width: '70%',  
-  backgroundColor: '#D97706', 
-  color: '#fff', 
+  background: `linear-gradient(0deg, rgba(217, 119, 6, 0.7), rgba(217, 119, 6, 0.7)), url(${textureImage})`,
   display: 'flex', 
   flexDirection: 'column', 
   justifyContent: 'space-around', 
@@ -129,7 +129,8 @@ const menuStyle = {
   padding: '20px', 
   boxSizing: 'border-box', 
   zIndex: 999,
-  boxShadow: '5px 5px #000'
+  boxShadow: '5px 5px #000',
+  backgroundSize: 'cover'
 };
 
 const ulStyle = {
@@ -150,8 +151,7 @@ const liStyle = {
 
 const navItemStyle = {
   width: '100%', 
-  backgroundColor: 'inherit', 
-  color: '#fff', 
+  background: 'inherit', // this inherits the textured background from the parent component
   fontSize: 'calc(2em * 0.7)',
   border: 'none',
   padding: '20px',

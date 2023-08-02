@@ -10,6 +10,7 @@ import Story from './Story';
 import Void from './Void';
 import Donate from './Donate';
 import EnhancedTable from './EnhancedTable'; // Make sure to import EnhancedTable
+import textureImage from './paper.jpg';
 
 export const AuthContext = createContext();
 
@@ -66,7 +67,7 @@ setSelectedItem(item.name);
               width: '100%',
               height: '100%',
               zIndex: 998, // One level below the menu
-              backgroundColor: 'rgba(0,0,0,0.5)', // Optional, can provide a semi-transparent black background
+              backgroundColor: 'rgba(0,0,0,0.7)', // Optional, can provide a semi-transparent black background
             }}
           />
           <div style={menuStyle} className="menu">
@@ -76,10 +77,10 @@ setSelectedItem(item.name);
                   <div
                     style={{
                       ...navItemStyle,
-                      backgroundColor: item.name === selectedItem ? 'rgb(151, 125, 31)' : 'inherit'
+                      backgroundColor: item.name === selectedItem ? 'rgba(0, 0, 0, 0.3)' : 'inherit'
                     }}
                     onClick={() => handleItemClick(item)}
-                    onMouseOver={(e) => e.target.style.backgroundColor = 'rgb(151, 125, 31)'}
+                    onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.3)'}
                     onMouseOut={(e) => e.target.style.backgroundColor = 'inherit'}
                   >
                     {item.name}
@@ -112,21 +113,24 @@ setSelectedItem(item.name);
 };
 
 const menuStyle = {
-  position: 'fixed',
-  top: '15%',
-  left: '15%',
-  width: '70%',
-  backgroundColor: 'rgb(208, 180, 46)',
-  color: '#fff',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  padding: '20px',
-  boxSizing: 'border-box',
+  position: 'fixed', 
+  top: '15%', 
+  left: '15%', 
+  width: '70%',  
+  background: `linear-gradient(0deg, rgba(169, 169, 169, 0.7), rgba(169, 169, 169, 0.7)), url(${textureImage})`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+  color: '#fff', 
+  display: 'flex', 
+  flexDirection: 'column', 
+  justifyContent: 'space-around', 
+  alignItems: 'center', 
+  padding: '20px', 
+  boxSizing: 'border-box', 
   zIndex: 999,
   boxShadow: '5px 5px #000'
 };
+
 
 const ulStyle = {
   listStyle: 'none',
@@ -145,12 +149,13 @@ const liStyle = {
 };
 
 const navItemStyle = {
-  width: '100%',
-  backgroundColor: 'inherit',
-  color: '#fff',
+  width: '100%', 
+  background: 'inherit', 
+  color: '#fff', 
   fontSize: 'calc(2em * 0.7)',
   border: 'none',
   padding: '20px',
   textAlign: 'center',
   transition: '0.5s'
 };
+

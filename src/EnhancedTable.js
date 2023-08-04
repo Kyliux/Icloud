@@ -298,12 +298,13 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
       {showSwiper && (
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
       )}
-      <header className="px-5 py-4 w-full flex justify-between">
+      <header className="py-8 w-full flex flex-col items-center justify-center">
         <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999
 }}>
           {topTags.length > 0 && showTopTags && (
-            <div className="mt-2">
-              <div className="flex flex-wrap justify-center mt-2">
+            <div className="mt-2 mx-auto">
+              <div className="flex flex-wrap justify-center mt-2"                     style={{ width: "90%",marginLeft: "4%"  }} // Add this line
+>
                 <button
                   className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${
                     activeTags.length === 0 ? "bg-indigo-600" : "bg-gray-400"
@@ -315,10 +316,35 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
                 {topTags.map((tag) => (
                   <button
                     key={tag}
-                    className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(
-                      tag
-                    )}`}
-                    onClick={() => filterItems(tag)}
+                    className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(tag)}`}
+                    onClick={() => {
+                      // Update active tags and refilter items a bit ugly but works as intented for now
+
+  // Extract tag from URL
+  const tagSuffix = tag;
+  let filtered;
+
+  // Check if tagSuffix is empty or null
+  if (!tagSuffix || tagSuffix === "") {
+    // Use all items
+    filtered = items;
+  } else {
+    // Filter items with tag matching tagSuffix
+    filtered = items.filter((item) => {
+      const itemTags = item.data.tags
+        ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
+        : [];
+      return itemTags.includes(tagSuffix.toLowerCase());
+    });
+  }
+  // Update state with the filtered items
+  setFilteredItems(filtered);
+  // Initialize packery after items filtering
+  initializePackery();
+
+
+
+                    }}
                   >
                     {tag}
                   </button>

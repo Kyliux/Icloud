@@ -122,7 +122,7 @@ const menuStyle = {
   top: '15%', 
   left: '15%', 
   width: '70%',  
-  background: `linear-gradient(0deg, rgba(169, 169, 169, 0.7), rgba(169, 169, 169, 0.7)), url(${textureImage})`,
+  background: `linear-gradient(0deg, rgba(169, 169, 169, 0.2), rgba(169, 169, 169, 0.2)), url(${textureImage})`,
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
   color: '#fff', 

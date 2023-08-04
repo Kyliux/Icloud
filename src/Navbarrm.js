@@ -9,7 +9,7 @@ const Navbarrm = ({ setShowTopTags, showModal, setShowModal }) => {
   const { user } = useContext(AuthContext);
   const [rightIsOpen, setRightIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const rightNavItems = ["Show GPSlist", "Add spot", user !== undefined && user !== null ? "Logout 🔒 " : "Login 🔑 "];
+  const rightNavItems = [ "Add spot", user !== undefined && user !== null ? "Logout 🔒 " : "Login 🔑 "];
   const rightMenuRef = useRef(null);
 
   const Overlay = () => {
@@ -129,7 +129,7 @@ const menuStyle = {
   top: '15%', 
   left: '15%', 
   width: '70%',  
-  background: `linear-gradient(0deg, rgba(169, 169, 169, 0.7), rgba(169, 169, 169, 0.7)), url(${textureImage})`,
+  background: `linear-gradient(0deg, rgba(169, 169, 169, 0.2), rgba(169, 169, 169, 0.2)), url(${textureImage})`,
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
   color: '#fff', 

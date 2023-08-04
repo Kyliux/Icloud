@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { EnhancedTable } from "./EnhancedTable";
 import { EnhancedModal } from "./EnhancedModal";
-import Navbarr from './Navbarr';
+import Navbarr from '../navbar/Navbarr';
 
 
 export const Gallery = () => {

@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
-import { AuthContext } from "./Auth";
+import { AuthContext } from "../Auth";
 import { signIn, signOut } from "@junobuild/core";
-import textureImage from './paper.jpg';
+import textureImage from '../config/paper.jpg';
 
 
 const Navbarr = ({ setShowTopTags, showModal, setShowModal }) => {

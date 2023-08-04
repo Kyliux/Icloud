@@ -3,9 +3,9 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L, { DivIcon } from 'leaflet';
 import styled from 'styled-components';
-import Navbarrm from './Navbarrm';
-import { EnhancedModal } from './EnhancedModal';
-import { EnhancedTable } from "./EnhancedTable";
+import Navbarrm from '../navbar/Navbarrm';
+import { EnhancedModal } from '../gallery/EnhancedModal';
+import { EnhancedTable } from "../gallery/EnhancedTable";
 import { useLocation } from 'react-router-dom';
 
 

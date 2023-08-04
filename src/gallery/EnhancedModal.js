@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { setDoc, uploadFile } from "@junobuild/core";
-import { AuthContext } from "./Auth";
+import { AuthContext } from "../Auth";
 import { nanoid } from "nanoid";
-import { principal } from "./Principalid";
+import { principal } from "../config/Principalid";
 import emojiRegex from 'emoji-regex';
 import  { useRef } from "react";
 

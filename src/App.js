@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Gallery } from "./Gallery";
+import { Gallery } from "./gallery/Gallery";
 import { Iscan } from "./Iscan";
 import { initJuno } from "@junobuild/core";
 import { Auth } from "./Auth";
-import Navbar from './Navbar';
+import Navbar from './navbar/Navbar';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Background  from "./Background";
+import Background  from "./map/Background";
 
 
 

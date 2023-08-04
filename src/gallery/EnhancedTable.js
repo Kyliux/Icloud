@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { listDocs, delDoc, deleteAsset, listAssets } from "@junobuild/core";
-import { AuthContext } from "./Auth";
+import { AuthContext } from "../Auth";
 import Packery from "packery";
 import GridItem from "./GridItem";
-import { colors } from "./Colorpalette";
-import { principal } from "./Principalid";
+import { colors } from "../config/Colorpalette";
+import { principal } from "../config/Principalid";
 import { ImageSwiper } from './ImageSwiper';
 import { useLocation } from "react-router-dom";
 

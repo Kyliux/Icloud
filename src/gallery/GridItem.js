@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { colors } from "./Colorpalette";
-import { Spinner } from "./Spinner";
+import { colors } from "../config/Colorpalette";
+import { Spinner } from "../Spinner";
 import { useNavigate, useLocation } from "react-router-dom";
 
 

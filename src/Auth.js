@@ -4,13 +4,13 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { Spinner } from "./Spinner";
 import Home from './Home';
 import About from './About';
-import { Gallery } from './Gallery';
-import MapComponent from './MapComponent';
+import { Gallery } from './gallery/Gallery';
+import MapComponent from './map/MapComponent';
 import Story from './Story';
 import Void from './Void';
 import Donate from './Donate';
-import EnhancedTable from './EnhancedTable'; // Make sure to import EnhancedTable
-import textureImage from './paper.jpg';
+import EnhancedTable from './gallery/EnhancedTable'; // Make sure to import EnhancedTable
+import textureImage from './config/paper.jpg';
 
 export const AuthContext = createContext();
 

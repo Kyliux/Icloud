@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "./Auth";
+import { AuthContext } from "../Auth";
 import ReactDOM from "react-dom";
-import MapComponent from "./MapComponent";
-import textureImage from './paper.jpg';
+import MapComponent from "../map/MapComponent";
+import textureImage from '../config/paper.jpg';
 
 
 

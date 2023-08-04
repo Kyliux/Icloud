@@ -1,5 +1,5 @@
-import { EnhancedTable } from "./EnhancedTable";
-import { EnhancedModal } from "./EnhancedModal";
+import { EnhancedTable } from "./gallery/EnhancedTable";
+import { EnhancedModal } from "./gallery/EnhancedModal";
 
 export const Iscan = () => (
   <>

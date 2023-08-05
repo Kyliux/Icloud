@@ -3,13 +3,13 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L, { DivIcon } from 'leaflet';
 import styled from 'styled-components';
-import Navbarrm from '../navbar/Navbarrm';
+import Navbarx from '../navbar/Navbarx';
 import { EnhancedModal } from '../gallery/EnhancedModal';
 import { EnhancedTable } from "../gallery/EnhancedTable";
 import { useLocation } from 'react-router-dom';
 
 
-const MapComponent = () => {
+const MapComponent = (props) => {
   const location = useLocation();
   const showTable = location.pathname.startsWith('/map/'); // Check if the current location starts with "/map/" followed by a suffix (you can update the condition as needed)
   const position = [47.5596, 7.5886]; // The coordinates for Basel
@@ -17,7 +17,7 @@ const MapComponent = () => {
 
   return (
     <>
-      <Navbarrm showModal={showModal} setShowModal={setShowModal} />
+      <Navbarx navitems={props.navitems} showModal={showModal} setShowModal={setShowModal} />
       <EnhancedModal notes="spot" images="spot" videos="spot" defaultratio="" showModal={showModal} setShowModal={setShowModal} />
       {/^\/map\//.test(location.pathname) &&  <div style={{
   position: 'absolute', 

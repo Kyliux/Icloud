@@ -6,7 +6,7 @@ import Home from './Home';
 import About from './About';
 import { Gallery } from './gallery/Gallery';
 import MapComponent from './map/MapComponent';
-import Story from './Story';
+import Story from './story/Story';
 import Void from './Void';
 import Donate from './Donate';
 import EnhancedTable from './gallery/EnhancedTable'; // Make sure to import EnhancedTable
@@ -20,13 +20,20 @@ export const Auth = ({  children }) => {
   const [leftIsOpen, setLeftIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const leftNavItems = [
+  const navitemsleft = [
     { name: "🏠 Home", path: "/" },
-    { name: "🗺️  Map", path: "/map" },
+    { name: "🗺️  Map ", path: "/map" },
     { name: "📖  Story", path: "/story" },
     { name: "🖼️ Gallery", path: "/gallery" },
-    { name: "💰 Donate", path: "/donate" },
+    { name: "💰 Donate", path: "/donate" } // assuming you have a route for this, change accordingly
   ];
+  
+  const navitemsright = [
+    { name: "🔑" }, // assuming you have a route for this, change accordingly
+    { name: "✍️" } // assuming you have a route for this, change accordingly
+  ];
+  const navitems = {navitemsleft, navitemsright};
+  
 
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
@@ -51,55 +58,16 @@ setSelectedItem(item.name);
 
   return (
     <AuthContext.Provider value={{ user, setBusy }}>
-      <nav style={{ position: 'fixed', top: '10px',left: '10px', zIndex: 2 }}>
-        <button type="button" onClick={handleLeftNavToggle} style={{ backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', border: 'none', boxShadow: '5px 5px #000' }}>
-          <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 0 24 24" width="60px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
-        </button>
-      </nav>
-      {leftIsOpen &&
-        <>
-          <div
-            onClick={handleLeftNavToggle}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 998, // One level below the menu
-              backgroundColor: 'rgba(0,0,0,0.7)', // Optional, can provide a semi-transparent black background
-            }}
-          />
-          <div style={menuStyle} className="menu">
-            <ul style={ulStyle}>
-              {leftNavItems.map((item, index) => (
-                <li key={index} style={liStyle}>
-                  <div
-                    style={{
-                      ...navItemStyle,
-                      backgroundColor: item.name === selectedItem ? 'rgba(0, 0, 0, 0.3)' : 'inherit'
-                    }}
-                    onClick={() => handleItemClick(item)}
-                    onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.3)'}
-                    onMouseOut={(e) => e.target.style.backgroundColor = 'inherit'}
-                  >
-                    {item.name}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </>
-      }
+    
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         {/* Render EnhancedTable with or without the tag parameter */}
-        <Route path="/gallery/:tag" element={<Gallery />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/map/:tag" element={<MapComponent />} />
-        <Route path="/map" element={<MapComponent />} />
-        <Route path="/story" element={<Story />} />
+        <Route path="/gallery/:tag" element={<Gallery navitems={navitems}/>} />
+        <Route path="/gallery" element={<Gallery navitems={navitems}/>} />
+        <Route path="/map/:tag" element={<MapComponent navitems={navitems}/>} />
+        <Route path="/map" element={<MapComponent navitems={navitems}/>} />
+        <Route path="/story" element={<Story navitems={navitems} />} />
         <Route path="/donate" element={<Donate />} />
       </Routes>
       {busy ? <Spinner /> : undefined}

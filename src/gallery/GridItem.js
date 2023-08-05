@@ -181,7 +181,7 @@ const GridItem = ({
       )}
 
       <div className="absolute top-0 left-0 w-full">
-        <div className="top-0 left-0 w-full max-h-80 overflow-y-auto flex flex-wrap justify-center">
+        <div className="top-0 left-0 w-full max-h-80 flex flex-wrap justify-center">
           {tagsArray.length > 0 ? (
             tagsArray.map((tag) => (
               <button

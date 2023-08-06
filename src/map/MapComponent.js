@@ -19,18 +19,23 @@ const MapComponent = (props) => {
     <>
       <Navbarx navitems={props.navitems} showModal={showModal} setShowModal={setShowModal} />
       <EnhancedModal notes="spot" images="spot" videos="spot" defaultratio="" showModal={showModal} setShowModal={setShowModal} />
-      {/^\/map\//.test(location.pathname) &&  <div style={{
-  position: 'absolute', 
-  top: '70vh', 
-  width: '100%', 
-  minHeight: '30vh', // this will make sure it stretches at least until the bottom of the viewport
-  backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  display: 'flex', // this will make the child elements (the table) use flexbox
-  flexDirection: 'column', // this will make the table stack vertically
-  justifyContent: 'flex-end' // this will align the table to the bottom
-}}>
-  {showTable && <EnhancedTable notes="spot" images="spot" videos="spot" defaultratio="" />}
-      </div> }
+      {/^\/map\//.test(location.pathname) && (
+        <div style={{
+          position: 'absolute', 
+          top: '70vh', 
+          width: '100%', 
+          minHeight: '30vh', // this will make sure it stretches at least until the bottom of the viewport
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          display: 'flex', // this will make the child elements (the table) use flexbox
+          flexDirection: 'column', // this will make the table stack vertically
+        }}>
+          {showTable && (
+            <div  style={{ marginTop: '10px' }}>
+              <EnhancedTable notes="spot" images="spot" videos="spot" defaultratio="" />
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

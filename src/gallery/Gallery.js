@@ -12,7 +12,8 @@ export const Gallery = (props ) => {
     <>
       <Navbarx navitems={props.navitems} setShowTopTags={setShowTopTags} showModal={showModal} setShowModal={setShowModal} />
       <EnhancedModal notes="notes" images="images" videos="videos" defaultratio="" showModal={showModal} setShowModal={setShowModal} />
-      <EnhancedTable notes="notes" images="images" videos="videos" defaultratio="" showModal={showModal} setShowModal={setShowModal} showTopTags={showTopTags} setShowTopTags={setShowTopTags}  />
-    </>
+<div className="py-8">
+  <EnhancedTable notes="notes" images="images" videos="videos" defaultratio="" showModal={showModal} setShowModal={setShowModal} showTopTags={showTopTags} setShowTopTags={setShowTopTags} />
+</div> </>
   );
 };

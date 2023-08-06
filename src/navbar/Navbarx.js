@@ -69,6 +69,48 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
     ReactDOM.render(<Modal />, modalRoot);
   };
 
+  const overlayStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    zIndex: 2, // Make sure it's below the menu's z-index but above the overlayStyle
+    display: 'none', // By default, set it to not display
+  };
+
+  const buttonStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgb(245, 226, 133)',
+    border: 'none',
+    zIndex: 2,
+    transition: '0.3s all ease',
+  };
+  
+
+  const buttonContainerStyle = {
+    position: 'fixed',
+    width: '60px',
+    height: '60px',
+    top: '10px',
+  };
+  
+  const buttonShadowStyle = {
+    content: '""',
+    position: 'absolute',
+    top: '5px',
+    left: '5px',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#000',
+    zIndex: 1,
+  };
+
   const handleItemClick = (item, menuSide) => {
     console.log(`Item clicked: ${item.name}, menuSide: ${menuSide}`);
     const setSelectedItem = menuSide === 'left' ? setSelectedLeftItem : setSelectedRightItem;
@@ -108,24 +150,35 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
     if (reorderedNavItems.includes("🔑")) {
       reorderedNavItems = ["Login", ...reorderedNavItems.filter(item => item.name !== "Login")];
     }
+    if (leftIsOpen || rightIsOpen) {
+      overlayStyle.display = 'block';
+    } else {
+      overlayStyle.display = 'none';
+    }
     return (
       <div ref={ref} style={menuStyle} className="menu">
         <ul style={ulStyle} onClick={() => console.log('UL was clicked!')}>
-          {reorderedNavItems.map((item, index) => (
-            <li key={index} style={liStyle}>
-              <div 
-                style={{
-                  ...navItemStyle,
-                  backgroundColor: item === selectedItem ?  'rgba(0,0,0,0.7)' : 'inherit'
-                }}
-                onClick={() => handleItemClick(item, menuSide)}
-                onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(0,0,0,0.7)'}
-                onMouseOut={(e) => e.target.style.backgroundColor = 'inherit'}
-              >
-                {item.name === "🔑" ? (user ? '🔒 ' : '🔑') : item.name}
-              </div>
-            </li>
-          ))}
+        {reorderedNavItems.map((item, index) => (
+  <li 
+    key={index} 
+    style={{
+      ...liStyle,
+      borderBottom: index === reorderedNavItems.length - 1 ? 'none' : liStyle.borderBottom
+    }}
+  >
+    <div 
+      style={{
+        ...navItemStyle,
+        backgroundColor: item === selectedItem ?  'rgba(0,0,0,0.7)' : 'inherit'
+      }}
+      onClick={() => handleItemClick(item, menuSide)}
+      onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(0,0,0,0.7)'}
+      onMouseOut={(e) => e.target.style.backgroundColor = 'inherit'}
+    >
+      {item.name === "🔑" ? (user ? '🔒 ' : '🔑') : item.name}
+    </div>
+  </li>
+))}
         </ul>
       </div>
     );
@@ -150,21 +203,40 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
 
   return (
     <>
-    <nav style={{ position: 'fixed', top: '10px', left:"10px", zIndex: 2}}>
-      <button type="button" onClick={handleNavToggleLeft} style={{ backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', border: 'none', boxShadow: '5px 5px #000' }}>
+    <div style={overlayStyle}></div>
+    <div style={{ ...buttonContainerStyle, left: '8px' }}>
+      <div style={buttonShadowStyle}></div>
+      <button 
+        type="button" 
+        onClick={handleNavToggleLeft} 
+        style={{ 
+          ...buttonStyle, 
+          backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', 
+          transform: leftIsOpen ? 'translate(5px, 5px)' : 'none' 
+        }}
+      >
         <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 0 24 24" width="60px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
       </button>
-    </nav>
-    <nav style={{ position: 'fixed', top: '10px', right:"10px", zIndex: 2}}>
-      <button type="button" onClick={handleNavToggleRight} style={{ backgroundColor: rightIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', border: 'none', boxShadow: '5px 5px #000' }}>
-        <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 0 24 24" width="60px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
+    </div>
+    <div style={{ ...buttonContainerStyle, right: '8px' }}>
+      <div style={buttonShadowStyle}></div>
+      <button 
+        type="button" 
+        onClick={handleNavToggleRight} 
+        style={{ 
+          ...buttonStyle, 
+          backgroundColor: rightIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', 
+          transform: rightIsOpen ? 'translate(5px, 5px)' : 'none' 
+        }}
+      >
+          <svg height="60px" width="60px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,20)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,14.0246)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,8.04921)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g></svg>
       </button>
-    </nav>
+    </div>
     {showMap && <MapComponent />}
     {renderMenu(leftIsOpen, leftNavItems, handleItemClick, user, selectedLeftItem, leftMenuRef, 'left')}
     {renderMenu(rightIsOpen, rightNavItems, handleItemClick, user, selectedRightItem, rightMenuRef, 'right')}
   </>
-  );
+);
 };
 
 
@@ -201,7 +273,9 @@ const ulStyle = {
 
 const liStyle = {
   textAlign: 'center',
-  fontSize: `calc(2em * ${window.innerHeight / 1000})`
+  fontSize: `calc(2em * ${window.innerHeight / 1000})`,
+  borderBottom: '1px solid rgba(255, 255, 255, 0.2)', // Light thin line
+  padding: '0 20px'
 };
 
 const navItemStyle = {

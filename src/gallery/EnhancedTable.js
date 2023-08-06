@@ -298,7 +298,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
       {showSwiper && (
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
       )}
-      <header className="py-8 w-full flex flex-col items-center justify-center">
+      <header className=" w-full flex flex-col items-center justify-center">
         <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999
 }}>
           {topTags.length > 0 && showTopTags && (

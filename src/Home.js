@@ -7,6 +7,7 @@ import Navbarx from './navbar/Navbarx';
 import { Modalx } from './gallery/Modalx';
 import { EnhancedTable } from "./gallery/EnhancedTable";
 import { useLocation } from 'react-router-dom';
+import { stylo } from '@papyrs/stylo/';
 
 //data type button to give Navbarx
 // button name + onclickfct
@@ -28,6 +29,7 @@ const Home = (props) => {
   return (
     <>
       <Navbarx navitems={props.navitems} showModal={showModal} setShowModal={setShowModal} />
+      <stylo />
       <Modalx notes="story" images="story" videos="story" defaultratio="" showModal={showModal} setShowModal={setShowModal} />
       <div style={{ position: 'absolute', top: 100, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.9)', zIndex: 2 }}>
         <h1 style={{ textAlign: 'center', paddingTop: '10%', fontSize: '3em', fontWeight: 'bold', color: 'white' }}>Site Under Construction</h1>

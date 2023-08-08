@@ -267,16 +267,23 @@ if (user && principal.includes(user.key)) {
               disabled={progress}
               multiple
             />
-            <input
-              type="text"
-              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
-              placeholder="Tags (separated by commas)"
-              onChange={(e) => {
-                setTags(e.target.value);
-              }}
-              value={tags}
-              disabled={progress}
-            />
+<input
+  type="text"
+  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
+  placeholder="Tags (separated by commas)"
+  onChange={(e) => {
+    // Trim whitespace from the value
+    const trimmedValue = e.target.value.trim();
+
+    // If you want to trim the whitespace between tags as well, you can do so like this
+    const tagsArray = trimmedValue.split(',').map(tag => tag.trim());
+    const cleanedTags = tagsArray.join(',');
+
+    setTags(cleanedTags);
+  }}
+  value={tags}
+  disabled={progress}
+/>
             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
               {progress ? (
                 <div

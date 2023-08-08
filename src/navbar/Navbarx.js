@@ -96,7 +96,7 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
     height: '100%',
     backgroundColor: 'rgb(245, 226, 133)',
     border: 'none',
-    zIndex: 2,
+    zIndex: 1000,
     transition: '0.3s all ease',
   };
   
@@ -106,6 +106,8 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
     width: '60px',
     height: '60px',
     top: '10px',
+    zIndex: 1000,
+
   };
   
   const buttonShadowStyle = {
@@ -116,7 +118,7 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
     width: '100%',
     height: '100%',
     backgroundColor: '#000',
-    zIndex: 1,
+    zIndex: 1000,
   };
 
   const handleItemClick = (item, menuSide) => {
@@ -169,7 +171,7 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
         {reorderedNavItems.map((item, index) => {
              // Skip rendering the item if the name is "✍️" and the user is not logged in
       if (item.name === "✍️" && !user) return null;
-      
+
           const backgroundColor = randomGrey();
           return (
             <li 
@@ -222,13 +224,20 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
         style={{ 
           ...buttonStyle, 
          // backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)',
-         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.81), rgba(169, 169, 169, 0.81)), url(${textureImage})`,
+         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.1), rgba(169, 169, 169, 0.1)), url(${textureImage})`,
           transform: leftIsOpen ? 'translate(5px, 5px)' : 'none' 
         }}
       >
-    <div style={{ position: 'relative', height: '60px', width: '60px' }}>
-      <img src={bikeImage1} alt="Bike" style={{ height: '60px', width: '60px' }} />
-    </div>
+     <div style={{ position: 'relative', height: '60px', width: '60px' }}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 60 60"
+      style={{ height: '60px', width: '60px' }}
+    >
+      {<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="58px" height="58px" baseProfile="basic">
+      <path d="M46,39h-0.011c0.002-0.297-0.037-0.597-0.13-0.893c-1.228-3.885-4.502-14.715-8.373-31.334 c-0.063-0.271-0.238-0.503-0.48-0.641c-0.241-0.139-0.529-0.17-0.796-0.086C36.179,6.056,33.072,7,25.51,7 C17.836,7,12.75,6.029,12.7,6.019c-0.271-0.054-0.55,0.009-0.773,0.168c-0.223,0.16-0.371,0.405-0.409,0.678 c-1.315,9.583-4.749,18.678-7.256,25.318c-0.893,2.364-1.664,4.405-2.13,5.945C2.044,38.417,2.009,38.71,2.012,39H2v2h0.015 c-0.002,0.636,0.185,1.26,0.578,1.789C3.165,43.559,4.043,44,5.003,44c0.127,0,0.253-0.024,0.371-0.071L7.7,43h14.725l0.162,0.387 C22.743,43.758,23.107,44,23.51,44h1.431c0.634,0,1.231-0.247,1.678-0.695L26.924,43h13.394l2.301,0.928 C42.738,43.976,42.865,44,42.993,44c0.97,0,1.855-0.448,2.427-1.229c0.385-0.526,0.566-1.143,0.564-1.771H46V39z"/><path fill="#fff" d="M44.902,38.409C43.173,32.938,40.004,22,36.51,7c0,0-3.124,1-11,1s-13-1-13-1 C10.695,20.228,4.8,32.773,3.092,38.418C2.702,39.705,3.661,41,5.006,41l2.504-1H23l0.51,1h1.431c0.364,0,0.713-0.145,0.971-0.402 L26.51,40h14l2.481,1C44.34,41,45.309,39.696,44.902,38.409z"/><path d="M42.99,42c-0.128,0-0.255-0.024-0.374-0.072L40.316,41H26.924l-0.305,0.305C26.171,41.753,25.575,42,24.941,42H23.51 c-0.376,0-0.72-0.211-0.891-0.546L22.387,41H7.702l-2.325,0.929C5.259,41.976,5.133,42,5.006,42c-0.96,0-1.838-0.441-2.41-1.211 c-0.572-0.771-0.74-1.74-0.461-2.661c0.466-1.54,1.237-3.581,2.129-5.945c2.507-6.641,5.94-15.735,7.255-25.318 c0.038-0.272,0.186-0.518,0.409-0.678c0.224-0.159,0.503-0.222,0.773-0.168C12.751,6.028,17.837,7,25.51,7 c7.562,0,10.668-0.944,10.698-0.953c0.267-0.084,0.556-0.053,0.796,0.086c0.242,0.138,0.416,0.369,0.479,0.641 c3.871,16.619,7.145,27.449,8.372,31.334l0,0c0.29,0.917,0.129,1.888-0.439,2.663C44.845,41.552,43.96,42,42.99,42z M24.123,40 h0.818c0.1,0,0.193-0.039,0.263-0.108l0.599-0.599C25.99,39.105,26.245,39,26.51,39h14c0.128,0,0.255,0.024,0.374,0.072l2.269,0.915 c0.26-0.041,0.492-0.182,0.651-0.398c0.188-0.256,0.241-0.576,0.145-0.878l0,0c-1.21-3.83-4.396-14.368-8.184-30.503 C34.248,8.519,31.007,9,25.51,9c-5.92,0-10.269-0.551-12.157-0.843c-1.438,9.423-4.765,18.236-7.217,24.731 c-0.88,2.331-1.64,4.344-2.086,5.819c-0.093,0.308-0.037,0.632,0.153,0.889c0.158,0.213,0.387,0.351,0.643,0.391l2.293-0.916 C7.257,39.024,7.383,39,7.51,39H23c0.376,0,0.72,0.211,0.891,0.546L24.123,40z"/><path d="M14.492,24.718L19,42h-8l2-17.091C13,24.02,14.267,23.857,14.492,24.718z" fill="green"/><path d="M13.992,6.876l-1.984,0.248c1.002,8.018,9.682,32.189,10.051,33.215l1.882-0.678C23.851,39.412,14.967,14.675,13.992,6.876z"/>
+      </svg>} </svg>
+  </div>
           </button>
     </div>
     <div style={{ ...buttonContainerStyle, right: '8px' }}>
@@ -239,13 +248,23 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
         style={{ 
           ...buttonStyle, 
          // backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)',
-         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.81), rgba(169, 169, 169, 0.81)), url(${textureImage})`,
+         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.1), rgba(169, 169, 169, 0.1)), url(${textureImage})`,
           transform: rightIsOpen ? 'translate(5px, 5px)' : 'none' 
         }}
       >
-    <div style={{ position: 'relative', height: '60px', width: '60px' }}>
-      <img src={bikeImage2} alt="Bike" style={{ height: '60px', width: '60px' }} />
-    </div>
+  <div style={{ position: 'relative', height: '60px', width: '60px' }}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 60 60"
+      style={{ height: '60px', width: '60px' }}
+    >
+      {<svg fill="none" height="60" viewBox="0 0 40 40" width="60" xmlns="http://www.w3.org/2000/svg"><g stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+<path d="m19.2883 12.4768c1.0529-5.56302 7.9042-7.67615 11.9076-3.67269 4.0035 4.00349 1.8904 10.85479-3.6726 11.90769l-3.4357.6502c-1.3825.2617-2.4638 1.343-2.7254 2.7255l-.6503 3.4357c-1.0529 5.5629-7.9042 7.6761-11.90766 3.6726-4.00346-4.0034-1.89033-10.8547 3.67266-11.9076l3.4357-.6503c1.3824-.2617 2.4638-1.343 2.7254-2.7254z" fill={'white'}/>
+<path d="m28.8389 15.8752c-1.3017 1.3017-3.4123 1.3017-4.714 0-1.3018-1.3018-1.3018-3.4123 0-4.7141 1.3017-1.30172 3.4123-1.30172 4.714 0 1.3018 1.3018 1.3018 3.4123 0 4.7141z" fill={user ? 'green' : 'red'} />
+<path d="m15.8753 28.8388c-1.3017 1.3017-3.4123 1.3017-4.714 0-1.30178-1.3018-1.30178-3.4123 0-4.7141 1.3017-1.3017 3.4123-1.3017 4.714 0 1.3018 1.3018 1.3018 3.4123 0 4.7141z" fill="none"/>
+</g></svg>}
+    </svg>
+  </div>
           </button>
     </div>
     {showMap && <MapComponent />}
@@ -273,7 +292,7 @@ const menuStyle = {
   alignItems: 'center',
   padding: '20px',
   boxSizing: 'border-box',
-  zIndex: 999,
+  zIndex: 2000,
   boxShadow: '5px 5px #000'
 };
 
@@ -287,7 +306,8 @@ const ulStyle = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  height: '100%'
+  height: '100%',
+  zIndex: 2000,
 };
 
 const liStyle = {

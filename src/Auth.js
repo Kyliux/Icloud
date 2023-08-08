@@ -59,6 +59,7 @@ export const Auth = ({  children }) => {
         <Route path="/map/:tag" element={<MapComponent navitems={navitems}/>} />
         <Route path="/map" element={<MapComponent navitems={navitems}/>} />
         <Route path="/story" element={<Story navitems={navitems} />} />
+        <Route path="/story/:tag" element={<Story navitems={navitems} />} />
         <Route path="/donate" element={<Donate />} />
       </Routes>
       {busy ? <Spinner /> : undefined}

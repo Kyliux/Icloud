@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { colors } from "../config/Colorpalette";
 import { Spinner } from "../Spinner";
 
@@ -24,6 +24,7 @@ const GridItem = ({   itemKey,
   const itemRef = useRef();
   const [showLabel, setShowLabel] = useState(false);
   const [gridItemStyle, setGridItemStyle] = useState({});
+  const location = useLocation();
 
 
 // Code related to the Intersection Observer API
@@ -66,12 +67,17 @@ useEffect(() => {
 }, [packeryInit, url]);
 
   const handleClickTitle = () => {
-    navigate(`/titlename`);
+    navigate(`/story/titlename`);
   };
 
   const handleClickTag = (tag) => {
-    filterItems(tag);
+    // Check if the URL contains "/map/"
+    if (location.pathname.includes("/story")) {
+      // Change the URL to reflect the filtered tag in "/map/tagname" format
+      navigate(`/story/${tag}`);
+    } 
   };
+
 
   useEffect(() => {
     const updateGridItemStyle = () => {

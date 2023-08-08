@@ -16,6 +16,7 @@ const GridItem = ({
   handleRemoveItem,
   inProgress,
   index,
+
   hasCRUDAccess,
   setShowSwiper,
   packeryInit,
@@ -23,7 +24,6 @@ const GridItem = ({
   const isFirstItem = index === 0;
   const [showLabel, setShowLabel] = useState(false);
   const [showRemoveLogo, setShowRemoveLogo] = useState(false);
-  const [isInView, setIsInView] = useState(false);
   const [mediaUrl, setMediaUrl] = useState(null); // Will hold the media url once it's time to load
   const navigate = useNavigate();
   const location = useLocation();

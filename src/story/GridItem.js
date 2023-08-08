@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../config/Colorpalette";
+import { Spinner } from "../Spinner";
 
 
 const GridItem = ({   itemKey,
@@ -99,6 +100,13 @@ useEffect(() => {
     };
   }, []);
   
+  // Determine whether to show only the picture
+  const showOnlyPicture =
+  !item.data.text.trim() &&
+  !item.data.title.trim();
+
+
+
   const getTagColor = (tag) => {
     const hashCode = tag.split("").reduce((acc, char) => {
       return acc + char.charCodeAt(0);
@@ -113,6 +121,29 @@ useEffect(() => {
 
   return (
     <div ref={itemRef} style={gridItemStyle} className="grid-item">
+      { hasCRUDAccess && (
+  <div
+    className="remove-logo"
+    style={{
+      position: "absolute",
+      top: "0",
+      right: "0",
+      zIndex: "999",
+      width: `${32 }px`,
+      height: `${32 }px`,
+      borderRadius: "50%",
+      background: "rgba(255, 0, 0, 0.9)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      cursor: "pointer",
+    }}
+    onClick={() => handleRemoveItem(item, item.key, item.url)} // Pass the necessary arguments
+  >
+    <span style={{ color: "#fff", fontSize: "20px" }}>&times;</span>
+    {inProgress && <Spinner />}
+  </div>
+)}
       {/* Media Element */}
       {type === "video" && mediaUrl ? (
         <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -128,6 +159,9 @@ useEffect(() => {
         <img src={mediaUrl} alt={item.data.text} className="media-element w-full h-auto" />
       ) : null}
 
+ {/* Content - Hide if showing only the picture */}
+ {!showOnlyPicture && (
+      <>
 
 {/* Title*/}
 <div
@@ -150,7 +184,7 @@ useEffect(() => {
   </div>
 
 {/* Author and Date */}
-<div style={{ display: 'flex',  top: '-30px', position: 'relative'  }}>
+<div style={{ display: 'flex',  top: '-40px', position: 'relative'  }}>
 <div className="author-section text-grey" style={{ color: 'grey', fontSize: '1rem' , position: 'absolute', right: '10px'  }}>
   @{item.data.authorName ?item.data.authorName : 'Kyliux'} {/* Assuming author name is available */}
 </div>
@@ -187,7 +221,8 @@ useEffect(() => {
       <p>No tags available</p>
     )}
   </div>
-
+  </>
+      )}
 
       {showLabel && (
         <div className="absolute bottom-0 left-0 w-full">
@@ -198,6 +233,8 @@ useEffect(() => {
       )}
 
     </div>
+
+      
   );
 };
 export default GridItem;

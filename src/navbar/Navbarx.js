@@ -167,6 +167,9 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
 <div ref={ref} style={menuStyle} className="menu">
       <ul style={ulStyle} onClick={() => console.log('UL was clicked!')}>
         {reorderedNavItems.map((item, index) => {
+             // Skip rendering the item if the name is "✍️" and the user is not logged in
+      if (item.name === "✍️" && !user) return null;
+      
           const backgroundColor = randomGrey();
           return (
             <li 

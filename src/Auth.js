@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { authSubscribe } from "@junobuild/core";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
 import Home from './Home';
 import About from './About';
@@ -21,21 +22,20 @@ export const Auth = ({  children }) => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const navitemsleft = [
-    { name: "🏠 Home", path: "/" },
-    { name: "🗺️  Map ", path: "/map" },
-    { name: "📖  Story", path: "/story" },
-    { name: "🖼️ Gallery", path: "/gallery" },
-    { name: "💰 Donate", path: "/donate" } // assuming you have a route for this, change accordingly
+    { emoji: "🏠" , name: "Home", path: "/home" },
+    { emoji: "🗺️ " ,name: "Map ", path: "/map" },
+    { emoji: "📖 " ,name: "Story", path: "/story" },
+    { emoji: "🖼️" ,name: "Gallery", path: "/gallery" },
+    { emoji: "💰" ,name: "Donate", path: "/donate" } // assuming you have a route for this, change accordingly
   ];
   
   const navitemsright = [
-    { name: "🔑" }, // assuming you have a route for this, change accordingly
-    { name: "✍️" } // assuming you have a route for this, change accordingly
+    { emoji: "🔑" ,name: "🔑" }, // assuming you have a route for this, change accordingly
+    { emoji: "✍️" , name: "✍️" } // assuming you have a route for this, change accordingly
   ];
   const navitems = {navitemsleft, navitemsright};
   
 
-  const navigate = useNavigate();
   const location = useLocation(); // Get the current location
 
   useEffect(() => {
@@ -46,21 +46,12 @@ export const Auth = ({  children }) => {
 
 
 
-  const handleLeftNavToggle = () => {
-    setLeftIsOpen(prevState => !prevState);
-  };
-
-  const handleItemClick = (item) => {
-setSelectedItem(item.name);
-      navigate(item.path);
-    setLeftIsOpen(false);
-  };
-
   return (
     <AuthContext.Provider value={{ user, setBusy }}>
     
       <Routes>
-        <Route path="/" element={<Home />} />
+      <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<Home navitems={navitems}/>} />
         <Route path="/about" element={<About />} />
         {/* Render EnhancedTable with or without the tag parameter */}
         <Route path="/gallery/:tag" element={<Gallery navitems={navitems}/>} />

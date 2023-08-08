@@ -5,13 +5,15 @@ import MapComponent from "../map/MapComponent";
 import textureImage from '../config/paper.jpg';
 import { signIn, signOut } from "@junobuild/core";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-
+import bikeImage1 from '../config/bike0.png';
+import bikeImage2 from '../config/bike2.png';
 
 const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
   const [leftIsOpen, setLeftIsOpen] = useState(false);
   const [rightIsOpen, setRightIsOpen] = useState(false);
   const [selectedLeftItem, setSelectedLeftItem] = useState(null);
   const [selectedRightItem, setSelectedRightItem] = useState(null);
+
   const { user } = useContext(AuthContext);
   const leftNavItems = navitems.navitemsleft;
   const rightNavItems = navitems.navitemsright;
@@ -21,7 +23,8 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
   const leftButtonRef = useRef(null);
   const rightButtonRef = useRef(null);
   const navigate = useNavigate();
-
+  const img = new Image();
+  img.src = textureImage;
 
   const handleNavToggleLeft = () => {
     setLeftIsOpen(prevState => !prevState);
@@ -37,10 +40,15 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
     }
   };
 
+  const randomGrey = () => `rgba(${Math.random() * 40}, ${Math.random() * 40}, ${Math.random() * 40}, 0.5)`;
+
+  
   const handleDonate = () => {
     const address = "c6469203131ae3a107f303fd85de7e39bd148e74643c97d5131da08eea567124";
     const message = `Cheers 🥂 ! If you like what I do, feel free to donate to keep this page online. Just send ICP to the following address, it is instantly 🔥 to create cycle 🔄 for this website: ${address}`;
 
+    setLeftIsOpen(false);
+    setRightIsOpen(false);
     const handleCopy = () => {
       navigator.clipboard.writeText(address).then(() => {
         alert("Address copied to clipboard!");
@@ -156,31 +164,30 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
       overlayStyle.display = 'none';
     }
     return (
-      <div ref={ref} style={menuStyle} className="menu">
-        <ul style={ulStyle} onClick={() => console.log('UL was clicked!')}>
-        {reorderedNavItems.map((item, index) => (
-  <li 
-    key={index} 
-    style={{
-      ...liStyle,
-      borderBottom: index === reorderedNavItems.length - 1 ? 'none' : liStyle.borderBottom
-    }}
-  >
-    <div 
-      style={{
-        ...navItemStyle,
-        backgroundColor: item === selectedItem ?  'rgba(0,0,0,0.7)' : 'inherit'
-      }}
-      onClick={() => handleItemClick(item, menuSide)}
-      onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(0,0,0,0.7)'}
-      onMouseOut={(e) => e.target.style.backgroundColor = 'inherit'}
-    >
-      {item.name === "🔑" ? (user ? '🔒 ' : '🔑') : item.name}
+<div ref={ref} style={menuStyle} className="menu">
+      <ul style={ulStyle} onClick={() => console.log('UL was clicked!')}>
+        {reorderedNavItems.map((item, index) => {
+          const backgroundColor = randomGrey();
+          return (
+            <li 
+              key={index} 
+              style={{
+                ...liStyle,
+                borderBottom: index === reorderedNavItems.length - 1 ? 'none' : liStyle.borderBottom,
+                background: backgroundColor
+              }}
+              className="nav-item"
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = backgroundColor}
+            >
+              <div style={navItemStyle} onClick={() => handleItemClick(item)}>
+                {item.name === "🔑" ? (user ? '🔒 ' : '🔑') : item.name}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </div>
-  </li>
-))}
-        </ul>
-      </div>
     );
   };
 
@@ -211,12 +218,15 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
         onClick={handleNavToggleLeft} 
         style={{ 
           ...buttonStyle, 
-          backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', 
+         // backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)',
+         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.81), rgba(169, 169, 169, 0.81)), url(${textureImage})`,
           transform: leftIsOpen ? 'translate(5px, 5px)' : 'none' 
         }}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 0 24 24" width="60px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
-      </button>
+    <div style={{ position: 'relative', height: '60px', width: '60px' }}>
+      <img src={bikeImage1} alt="Bike" style={{ height: '60px', width: '60px' }} />
+    </div>
+          </button>
     </div>
     <div style={{ ...buttonContainerStyle, right: '8px' }}>
       <div style={buttonShadowStyle}></div>
@@ -225,12 +235,15 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
         onClick={handleNavToggleRight} 
         style={{ 
           ...buttonStyle, 
-          backgroundColor: rightIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)', 
+         // backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)',
+         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.81), rgba(169, 169, 169, 0.81)), url(${textureImage})`,
           transform: rightIsOpen ? 'translate(5px, 5px)' : 'none' 
         }}
       >
-          <svg height="60px" width="60px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,20)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,14.0246)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g><g transform="matrix(1.03309e-17,-0.168717,1.25,7.65404e-17,-3,8.04921)"><path d="M24,10.4L0,10.4L0,13.6L24,13.6L24,10.4Z"></path></g></svg>
-      </button>
+    <div style={{ position: 'relative', height: '60px', width: '60px' }}>
+      <img src={bikeImage2} alt="Bike" style={{ height: '60px', width: '60px' }} />
+    </div>
+          </button>
     </div>
     {showMap && <MapComponent />}
     {renderMenu(leftIsOpen, leftNavItems, handleItemClick, user, selectedLeftItem, leftMenuRef, 'left')}
@@ -241,23 +254,26 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
 
 
 const menuStyle = {
-  position: 'fixed', 
-  top: '15%', 
-  left: '15%', 
-  width: '70%',  
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  width: '80%',
+  maxWidth: '400px',
+  transform: 'translate(-50%, -50%)', // Centers the menu
   background: `linear-gradient(0deg, rgba(169, 169, 169, 0.2), rgba(169, 169, 169, 0.2)), url(${textureImage})`,
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
-  color: '#fff', 
-  display: 'flex', 
-  flexDirection: 'column', 
-  justifyContent: 'space-around', 
-  alignItems: 'center', 
-  padding: '20px', 
-  boxSizing: 'border-box', 
+  color: '#fff',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  alignItems: 'center',
+  padding: '20px',
+  boxSizing: 'border-box',
   zIndex: 999,
   boxShadow: '5px 5px #000'
 };
+
 
 
 const ulStyle = {
@@ -272,22 +288,20 @@ const ulStyle = {
 };
 
 const liStyle = {
-  textAlign: 'center',
-  fontSize: `calc(2em * ${window.innerHeight / 1000})`,
-  borderBottom: '1px solid rgba(255, 255, 255, 0.2)', // Light thin line
-  padding: '0 20px'
+  borderBottom: '1px solid #fff',
+  boxShadow: 'none', // Remove left and right semi-shades
 };
 
 const navItemStyle = {
-  width: '100%', 
-  background: 'inherit', 
-  color: '#fff', 
-  fontSize: 'calc(2em * 0.7)',
+  width: '100%',
+  background: 'inherit',
+  color: '#fff',
+  fontSize: 'calc(3em * 0.7)',
   border: 'none',
   padding: '20px',
   textAlign: 'center',
-  transition: '0.5s'
+  transition: '0.5s',
+  fontFamily: 'Arial Black, Gadget, sans-serif'
 };
-
 
 export default Navbarx;

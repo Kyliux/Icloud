@@ -5,10 +5,11 @@ import Packery from "packery";
 import GridItem from "./GridItem";
 import { colors } from "../config/Colorpalette";
 import { principal } from "../config/Principalid";
-import { ImageSwiper } from './ImageSwiper';
 import { useLocation } from "react-router-dom";
+import imagesLoaded from 'imagesloaded';
 
-export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding, showModal, setShowModal, showTopTags, setShowTopTags }) => {
+
+export const Book = ({ notes, images, videos, defaultratio, leftPadding, showModal, setShowModal, showTopTags, setShowTopTags }) => {
   const { user } = useContext(AuthContext);
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -52,8 +53,22 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     
     list();
     initializePackery();
+
   }, [user]);
 
+  useEffect(() => {
+  
+      // Set an interval to reload Packery every 3 seconds
+      const interval = setInterval(() => {
+        console.log('3 seconds have passed, reloading Packery');
+        reloadPackery();
+      }, 3000);
+  
+      // Clean up the interval when the component is unmounted
+      return () => clearInterval(interval);
+
+  }, []);
+  
   const fetchTopTags = () => {
     // Initialize the object to store the count of each tag
     const tagCount = {};
@@ -151,8 +166,9 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     packeryRef.current = new Packery(gridRef.current, {
       itemSelector: ".grid-item",
       percentPosition: true,
-      gutter: 0,
+      gutter: 40,
     });
+    
   };
 
   const reloadPackery = () => {
@@ -295,9 +311,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
 
   return (
     <div className="w-full">
-      {showSwiper && (
-        <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
-      )}
       <header className=" w-full flex flex-col items-center justify-center">
         <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999
 }}>
@@ -361,6 +374,8 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            marginLeft: "40px", // Adding a 20px left margin
+
           }}
         >
           {filteredItems.map((item, index) => {
@@ -379,13 +394,15 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
                 url={url}
                 ratio={defaultratio ? defaultratio : ratio}
                 tags={tags}
-                setShowSwiper={handleShowSwiper}
                 type={type}
                 filterItems={filterItems}
                 hasCRUDAccess={hasCRUDAccess}
                 index={index}
                 inProgress={inProgress}
                 handleRemoveItem={handleRemoveItem}
+                items={items}
+                setItems={setItems}
+                setFilteredItems={setFilteredItems}
               />
             );
           })}
@@ -395,4 +412,4 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   );
 };
 
-export default EnhancedTable;
+export default Book;

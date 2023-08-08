@@ -9,6 +9,7 @@ import  { useRef } from "react";
 
 export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, setShowModal }) => {
   const [inputText, setInputText] = useState("");
+  const [inputTitle, setInputTitle] = useState("");
   const [tags, setTags] = useState("");
   const [logos, setLogos] = useState("");
   const [valid, setValid] = useState(false);
@@ -112,6 +113,7 @@ if (user && principal.includes(user.key)) {
             key,
             data: {
               text: inputText,
+              title : inputTitle,
               tags,
               date: currentDate,
               gps,
@@ -174,6 +176,7 @@ if (user && principal.includes(user.key)) {
               data: {
                 text: inputText,
                 type,
+                title : inputTitle,
                 tags,
                 ratio,
                 date: currentDate,
@@ -234,7 +237,18 @@ if (user && principal.includes(user.key)) {
               value={logos}
               disabled={progress}
             />
-            <textarea
+               <textarea
+              className="form-control mb-4 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"
+              rows="5"
+              type="text"
+              placeholder="Title"
+              onChange={(e) => {
+                setInputTitle(e.target.value);
+              }}
+              value={inputTitle}
+              disabled={progress}
+            ></textarea>
+             <textarea
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"
               rows="5"
               placeholder="Your diary entry"

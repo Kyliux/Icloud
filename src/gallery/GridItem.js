@@ -16,15 +16,11 @@ const GridItem = ({
   handleRemoveItem,
   inProgress,
   index,
-  items,
-  setItems,
-  setFilteredItems,
   hasCRUDAccess,
   setShowSwiper,
   packeryInit,
 }) => {
   const isFirstItem = index === 0;
-  let url2 = window.location.href; // or however you get the URL
   const [showLabel, setShowLabel] = useState(false);
   const [showRemoveLogo, setShowRemoveLogo] = useState(false);
   const [isInView, setIsInView] = useState(false);

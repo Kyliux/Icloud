@@ -4,9 +4,8 @@ import ReactDOM from "react-dom";
 import MapComponent from "../map/MapComponent";
 import textureImage from '../config/paper.jpg';
 import { signIn, signOut } from "@junobuild/core";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import bikeImage1 from '../config/bike0.png';
-import bikeImage2 from '../config/bike2.png';
+import {  useNavigate } from "react-router-dom";
+
 
 const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
   const [leftIsOpen, setLeftIsOpen] = useState(false);
@@ -20,8 +19,6 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
   const [showMap, setShowMap] = useState(false);
   const leftMenuRef = useRef(null);
   const rightMenuRef = useRef(null);
-  const leftButtonRef = useRef(null);
-  const rightButtonRef = useRef(null);
   const navigate = useNavigate();
   const img = new Image();
   img.src = textureImage;

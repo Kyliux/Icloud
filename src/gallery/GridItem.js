@@ -27,6 +27,7 @@ const GridItem = ({
   const [mediaUrl, setMediaUrl] = useState(null); // Will hold the media url once it's time to load
   const navigate = useNavigate();
   const location = useLocation();
+  const [isInView, setIsInView] = useState(false);
 
   const itemRef = useRef(); // Reference to the item for intersection observing
 

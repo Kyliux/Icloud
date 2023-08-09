@@ -32,23 +32,22 @@ Example : https://m5rwi-daaaa-aaaal-acrpq-cai.icp0.io/ Please note that only the
 
 ## Optimisation Gallery
 
-- Make the code better / refactorize to improve reusability and maintenance : half done
 - Lazyload the pictures / videos inside the swiper too
-- make close swiper when clicking around the picture, also make the button bigger : done
 - add a button to print the latest media first
 - make the gallery use all the space available on mobile
 - Decide how to deal with big resolution picture / video 
 - when the Table is rly functionnal, add data
 - video tag default for videos
-- url / video tag filtered. : done
+- initial filter in the gallery should be randomized
+- better logos / harmony
+- Story lazyload do not work yet
 
 
 ## Functionality
 
 - make Iscan data encrypted with https://docs.cossacklabs.com/themis/languages/react-native/features/#secure-cell
-- Add travel/home tab with maps  with function add coord and recent pic and tweet : half done
 - Add tweet archive section
-- add article section
+- allow more complex articles
 
 ## inspiration
 

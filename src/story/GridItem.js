@@ -7,16 +7,11 @@ import { Spinner } from "../Spinner";
 const GridItem = ({   itemKey,
   text,
   url,
-  ratio,
   type,
-  tags,
   item,
-  filterItems,
   handleRemoveItem,
   inProgress,
-  index,
   hasCRUDAccess,
-  setShowSwiper,
   packeryInit}) => {
   const navigate = useNavigate();
   const [mediaUrl, setMediaUrl] = useState(null);
@@ -150,6 +145,9 @@ useEffect(() => {
     {inProgress && <Spinner />}
   </div>
 )}
+
+
+
       {/* Media Element */}
       {type === "video" && mediaUrl ? (
         <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -200,11 +198,8 @@ useEffect(() => {
 </div>
 
 
-
-      <hr style={{ borderColor: 'rgba(34,36,38,.03)', borderWidth: '1px', width: '100%' }} />
-
       {/* Text */}
-      <div style={{  width : '85%', marginLeft:'7%', marginTop: '10px' }} className="text-section">{item.data.text}</div>
+      <div style={{  width : '85%', marginLeft:'7%' }} className="text-section">{item.data.text}</div>
 
       {/* Horizontal Line */}
       <hr style={{ borderColor: 'rgba(34,36,38,.1)', borderWidth: '1px', width: '100%' }} />

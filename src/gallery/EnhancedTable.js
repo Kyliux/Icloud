@@ -164,9 +164,9 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
 
   const getTagFromURL = () => {
     let tagSuffix = undefined;
-    if (location.pathname.includes('/gallery')) {
+    if (location.pathname.includes('/gallery/')) {
       tagSuffix = location.pathname.split('/gallery/')[1];
-    } else if (location.pathname.includes('/map')) {
+    } else if (location.pathname.includes('/map/')) {
       tagSuffix = location.pathname.split('/map/')[1];
     }
     return tagSuffix;
@@ -179,7 +179,10 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     let filtered;
 
     // Check if tagSuffix is empty or null
-    if (!tagSuffix || tagSuffix === "") {
+    if (tagSuffix == undefined ) {
+      return;
+      
+    } else  if  ( tagSuffix === "") {
       // Use all items
       filtered = items;
     } else {

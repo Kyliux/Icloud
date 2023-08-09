@@ -180,20 +180,19 @@ export const Book = ({ notes, images, videos, defaultratio, leftPadding, showMod
 
   const getTagFromURL = () => {
     let tagSuffix = undefined;
-    if (location.pathname.includes('/gallery')) {
-      tagSuffix = location.pathname.split('/gallery/')[1];
-    } else if (location.pathname.includes('/map')) {
-      tagSuffix = location.pathname.split('/map/')[1];
+    if (location.pathname.includes('/story')) {
+      tagSuffix = location.pathname.split('/story/')[1];
     }
     return tagSuffix;
   };
 
   const handleItemsFiltering = () => {
-
     // Extract tag from URL
     const tagSuffix = getTagFromURL();
+    console.log("tagSuffix from URL:", tagSuffix); // Print the extracted tagSuffix
+  
     let filtered;
-
+  
     // Check if tagSuffix is empty or null
     if (!tagSuffix || tagSuffix === "") {
       // Use all items
@@ -204,14 +203,19 @@ export const Book = ({ notes, images, videos, defaultratio, leftPadding, showMod
         const itemTags = item.data.tags
           ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
           : [];
+        console.log("itemTags for item:", item, itemTags); // Print the tags for each item
         return itemTags.includes(tagSuffix.toLowerCase());
       });
     }
+  
+    console.log("Filtered items:", filtered); // Print the filtered items
+  
     // Update state with the filtered items
     setFilteredItems(filtered);
     // Initialize packery after items filtering
     initializePackery();
   }
+  
 
 
   const filterItems = (tag, exclude = false, items = []) => {
@@ -386,23 +390,21 @@ export const Book = ({ notes, images, videos, defaultratio, leftPadding, showMod
 
             return (
               <GridItem
-                key={key}
-                itemKey={key}
-                packeryInit={packeryRef.current !== null}
-                item={item}
-                text={text}
-                url={url}
-                ratio={defaultratio ? defaultratio : ratio}
-                tags={tags}
-                type={type}
-                filterItems={filterItems}
-                hasCRUDAccess={hasCRUDAccess}
-                index={index}
-                inProgress={inProgress}
-                handleRemoveItem={handleRemoveItem}
-                items={items}
-                setItems={setItems}
-                setFilteredItems={setFilteredItems}
+              key={key}
+              itemKey={key}
+              packeryInit={packeryRef.current !== null}
+              item={item}
+              text={text}
+              url={url}
+              ratio={defaultratio ? defaultratio : ratio}
+              tags={tags}
+              setShowSwiper={handleShowSwiper}
+              type={type}
+              filterItems={filterItems}
+              hasCRUDAccess={hasCRUDAccess}
+              index={index}
+              inProgress={inProgress}
+              handleRemoveItem={handleRemoveItem}
               />
             );
           })}

@@ -12,11 +12,11 @@ import { stylo } from '@papyrs/stylo/';
 //data type button to give Navbarx
 // button name + onclickfct
 
-//data type modal for the story
-// 1. title, date, author, publishedbool, imgurl, articleurl, text
-// 2.                                                             , poolid
-// 3. 
-// keyDBname
+//HOME SECTION
+// WELCOME
+// 
+// CONTACT + github
+// 
 
 
 

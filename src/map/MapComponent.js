@@ -30,7 +30,7 @@ const MapComponent = (props) => {
           flexDirection: 'column', // this will make the table stack vertically
         }}>
           {showTable && (
-            <div  style={{ marginTop: '10px' }}>
+            <div  style={{ marginTop: '10px', width:'104%' }}>
               <EnhancedTable notes="spot" images="spot" videos="spot" defaultratio="" />
             </div>
           )}

@@ -111,6 +111,7 @@ const Background = () => {
       collection: "spot",
       filter: {},
     });
+
     //console.log("Fetched items: ", items); // Debug line
     setItems(items);
 
@@ -140,7 +141,6 @@ const Background = () => {
   
       return { isCountryOrCity: false }; // The location is neither a country nor a city
     } catch (error) {
-      console.error('Error fetching location data:', error);
       return { isCountryOrCity: false }; // Handle error as you see fit
     }
   }
@@ -152,11 +152,19 @@ const Background = () => {
     for (const tag of tags) {
       try {
         const result = await getCountryOrCityData(tag);
+        console.log(`Fetched data for ${tag}:`, result);
+
         if (result.isCountryOrCity) {
           newItemg.push({
-            tag: tag, // Changed from 'tags' to 'tag'
-            position: [result.lat, result.lng],
-            icon: "🖼️",
+            data: {
+              gps: {
+                lat: result.lat,
+                lng: result.lon, // 'lng' instead of 'lon'
+              },
+              logos: "🖼️", // Assuming this is the correct icon
+              date: new Date().toISOString(), // Or any other key that makes sense for your items
+            },
+            tag: tag,
           });
         }
       } catch (error) {
@@ -167,6 +175,7 @@ const Background = () => {
     console.log("Generated itemg:", newItemg);
     setItemg(newItemg);
   }
+  
 
   
 
@@ -174,17 +183,24 @@ const Background = () => {
   const getIntermediatePoints = (start, end) => {
     const count = 10; // Number of intermediate points
     const points = [];
+  
+    // Convert start and end coordinates to numbers
+    const startLat = parseFloat(start[0]);
+    const startLng = parseFloat(start[1]);
+    const endLat = parseFloat(end[0]);
+    const endLng = parseFloat(end[1]);
+  
     for (let i = 0; i <= count; i++) {
       const t = i / count;
-      const lat = start[0] + t * (end[0] - start[0]);
-      const lng = start[1] + t * (end[1] - start[1]);
+      const lat = startLat + t * (endLat - startLat);
+      const lng = startLng + t * (endLng - startLng);
       points.push([lat, lng]);
     }
     return points;
   };
 
   const handleMarkerClick = (item) => {
-    const tagSuffix = item.data.tags;
+    const tagSuffix = item.data.tags.split(',')[0];
     const currentUrl = location.pathname;
     const newUrl = currentUrl.replace(/\/map\/.*$/, "/map");
     navigate(`${newUrl}/${tagSuffix}`);
@@ -260,12 +276,22 @@ const Background = () => {
       console.log('Missing gps data for item: ', item);
       return null; // or handle it in any other way
     }
+
+    const lat = parseFloat(item.data.gps.lat);
+    const lng = parseFloat(item.data.gps.lng);
+  
+    
+    if (isNaN(lat) || isNaN(lng)) {
+      console.log('Invalid coordinates for item: ', item);
+      return null;
+    }
+    
     const icon = new L.DivIcon({
       html: `<div style="font-size:24px;">${item.data.logos}</div>`
     });
     return (
       <Marker
-        position={[item.data.gps.lat, item.data.gps.lng]}
+        position={[lat, lng]}
         icon={icon}
         key={item.data.date}
         onClick={() => handleMarkerClick(item)} // Attach the onClick handler directly to the Marker component
@@ -314,7 +340,7 @@ const Background = () => {
             width: '100%',
           }}
         >
-{coordinates.reduce((acc, curr, index, array) => {
+{ coordinates.reduce((acc, curr, index, array) => {
         if (index < array.length - 1) {
           acc.push(...getIntermediatePoints(curr, array[index + 1]));
         }
@@ -340,6 +366,7 @@ const Background = () => {
           />
 {items.map(item => createMarker(item))}
 {itemg.map(item => createMarker(item))}
+
         </StyledMapContainer>
         {!showMap && <DarkOverlay height={window.innerHeight} />}
       </BackgroundContainer>

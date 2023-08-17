@@ -11,6 +11,7 @@ const GridItem = ({   itemKey,
   item,
   handleRemoveItem,
   inProgress,
+  ratio, // this is the raito we will
   hasCRUDAccess,
   packeryInit}) => {
   const navigate = useNavigate();
@@ -20,7 +21,36 @@ const GridItem = ({   itemKey,
   const [showLabel, setShowLabel] = useState(false);
   const [gridItemStyle, setGridItemStyle] = useState({});
   const location = useLocation();
+  const [imageStyle, setImageStyle] = useState({});
 
+
+  useEffect(() => {
+    const updateImageStyle = () => {
+      const elementWidth = 400;
+      const gutter = 40;
+
+const numElementsPerLine = Math.floor(window.innerWidth / elementWidth);
+const margin = (window.innerWidth % elementWidth) - (gutter * (numElementsPerLine + 1));
+const additionalWidth = margin / numElementsPerLine;
+      const calculatedWidth = elementWidth + additionalWidth; // Use the grid item's width or a fallback value
+      const calculatedHeight = calculatedWidth * 1/ ratio; // Calculate height using the given ratio
+      const newStyle = {
+        width: `${calculatedWidth}px`,
+        height: `${calculatedHeight}px`, // Apply the calculated height
+      };
+      console.log("Calculated Width:", calculatedWidth, "px");
+console.log("Calculated Height:", calculatedHeight, "px");
+      setImageStyle(newStyle);
+    };
+  
+    // Update styles initially and on window resize
+    updateImageStyle();
+    window.addEventListener('resize', updateImageStyle);
+  
+    return () => {
+      window.removeEventListener('resize', updateImageStyle);
+    };
+  }, []);
 
 // Code related to the Intersection Observer API
 useEffect(() => {
@@ -160,7 +190,9 @@ useEffect(() => {
           </video>
         </div>
       ) : mediaUrl ? (
-        <img src={mediaUrl} alt={item.data.text} className="media-element w-full h-auto" />
+        <img src={mediaUrl} className="media-element w-full h-auto"
+        style={imageStyle} // Apply the calculated width and height
+        />
       ) : null}
 
  {/* Content - Hide if showing only the picture */}

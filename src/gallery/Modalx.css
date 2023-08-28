@@ -1,0 +1,36 @@
+/* Modalx.css */
+
+/* Default styles */
+.modal-content {
+  max-width: 90%;
+  font-size: 14px;
+}
+
+.textarea, .input {
+  padding: 0.5rem 1rem;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+}
+
+/* iPhone SE styles */
+@media (min-width: 375px) and (max-height: 667px) {
+  .modal-content {
+      /* Adjust these styles for iPhone SE as needed */
+      max-width: 80%;
+      font-size: 12px;
+  }
+
+  .textarea, .input {
+      /* Adjust these styles for iPhone SE as needed */
+      padding: 0.25rem 0.5rem;
+  }
+
+  .button {
+      /* Adjust these styles for iPhone SE as needed */
+      padding: 0.25rem 0.5rem;
+      font-size: 12px;
+  }
+}

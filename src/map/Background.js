@@ -36,7 +36,7 @@ const DarkOverlay = styled.div`
   left: 0;
   width: 100%;
   height: ${props => props.height}px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   z-index: 1;
 `;
 

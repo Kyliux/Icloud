@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L, { DivIcon } from 'leaflet';
 import styled from 'styled-components';
 import Navbarx from '../navbar/Navbarx';
-import { EnhancedModal } from '../gallery/EnhancedModal';
+import { Modalx } from '../gallery/Modalx';
 import { EnhancedTable } from "../gallery/EnhancedTable";
 import { useLocation } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const MapComponent = (props) => {
   return (
     <>
       <Navbarx navitems={props.navitems} showModal={showModal} setShowModal={setShowModal} />
-      <EnhancedModal notes="spot" images="spot" videos="spot" defaultratio="" showModal={showModal} setShowModal={setShowModal} />
+      <Modalx notes="spot" images="spot" videos="spot" defaultratio="" showModal={showModal} setShowModal={setShowModal} />
       {/^\/map\//.test(location.pathname) && (
         <div style={{
           position: 'absolute', 

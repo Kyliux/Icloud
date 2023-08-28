@@ -221,7 +221,7 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
         style={{ 
           ...buttonStyle, 
          // backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)',
-         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.1), rgba(169, 169, 169, 0.1)), url(${textureImage})`,
+         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.9), rgba(169, 169, 169, 0.9)), url(${textureImage})`,
           transform: leftIsOpen ? 'translate(5px, 5px)' : 'none' 
         }}
       >
@@ -245,7 +245,7 @@ const Navbarx = ({ setShowTopTags, navitems, showModal, setShowModal  }) => {
         style={{ 
           ...buttonStyle, 
          // backgroundColor: leftIsOpen ? 'rgb(208, 180, 46)' : 'rgb(245, 226, 133)',
-         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.1), rgba(169, 169, 169, 0.1)), url(${textureImage})`,
+         background: `linear-gradient(0deg, rgba(169, 169, 169, 0.9), rgba(169, 169, 169, 0.9)), url(${textureImage})`,
           transform: rightIsOpen ? 'translate(5px, 5px)' : 'none' 
         }}
       >

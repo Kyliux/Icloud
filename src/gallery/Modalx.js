@@ -5,11 +5,14 @@ import { nanoid } from "nanoid";
 import { principal } from "../config/Principalid";
 import emojiRegex from 'emoji-regex';
 import  { useRef } from "react";
+import './Modalx.css';
 
 
 export const Modalx = ({ notes, images, videos, defaultratio, showModal, setShowModal }) => {
   const [inputText, setInputText] = useState("");
   const [tags, setTags] = useState("");
+  const [inputTitle, setInputTitle] = useState("");
+
   const [logos, setLogos] = useState("");
   const [valid, setValid] = useState(false);
   const [progress, setProgress] = useState(false);
@@ -112,6 +115,7 @@ if (user && principal.includes(user.key)) {
             key,
             data: {
               text: inputText,
+              title : inputTitle,
               tags,
               date: currentDate,
               gps,
@@ -175,6 +179,7 @@ if (user && principal.includes(user.key)) {
                 text: inputText,
                 type,
                 tags,
+                title : inputTitle,
                 ratio,
                 date: currentDate,
                 gps,
@@ -203,7 +208,7 @@ if (user && principal.includes(user.key)) {
 
   return (
     <>
-    <div id="modal-root"></div>
+    <div className="modal-content" id="modal-root"></div>
 
       <div className="mt-10 flex items-center justify-center gap-x-6" style={{ zIndex: 999 }}>
         {/*hasCRUDAccess && (
@@ -222,9 +227,9 @@ if (user && principal.includes(user.key)) {
       {showModal && hasCRUDAccess && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" style={{ zIndex: 1000 }}>
           <div className="bg-white rounded p-8 shadow-lg">
-            <textarea
+            <textarea 
               type="text"
-              className="form-control mb-4 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
+              className="textarea form-control mb-4 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
               placeholder="Feeling ? (only Emoji)"
               onChange={(e) => {
                 if (isEmoji(e.target.value) || e.target.value === '') {
@@ -235,8 +240,18 @@ if (user && principal.includes(user.key)) {
               disabled={progress}
             />
             <textarea
-              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"
-              rows="5"
+              className="form-control mb-4 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"
+              type="text"
+              placeholder="Title"
+              onChange={(e) => {
+                setInputTitle(e.target.value);
+              }}
+              value={inputTitle}
+              disabled={progress}
+            ></textarea>
+
+            <textarea
+              className=" textarea form-control mb-4 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"
               placeholder="Your diary entry"
               onChange={(e) => {
                 setInputText(e.target.value);
@@ -247,22 +262,29 @@ if (user && principal.includes(user.key)) {
             <input
               type="file"
               ref={fileInputRef}
-              className="my-4 text-slate-500 text-lg leading-relaxed"
+              className="input my-4 text-slate-500 text-lg leading-relaxed"
               accept="image/*, video/*"
               onChange={(event) => setFiles(Array.from(event.target.files))}
               disabled={progress}
               multiple
             />
-            <input
-              type="text"
-              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
-              placeholder="Tags (separated by commas)"
-              onChange={(e) => {
-                setTags(e.target.value);
-              }}
-              value={tags}
-              disabled={progress}
-            />
+<input
+  type="text"
+  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
+  placeholder="Tags (separated by commas)"
+  onChange={(e) => {
+    // Trim whitespace from the value
+    const trimmedValue = e.target.value.trim();
+
+    // If you want to trim the whitespace between tags as well, you can do so like this
+    const tagsArray = trimmedValue.split(',').map(tag => tag.trim());
+    const cleanedTags = tagsArray.join(',');
+
+    setTags(cleanedTags);
+  }}
+  value={tags}
+  disabled={progress}
+/>
             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
               {progress ? (
                 <div
@@ -275,7 +297,7 @@ if (user && principal.includes(user.key)) {
               ) : (
                 <>
                   <button
-                    className="background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none ease-linear transition-all duration-150"
+                    className="button background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => setShowModal(false)}
                   >
@@ -283,7 +305,7 @@ if (user && principal.includes(user.key)) {
                   </button>
 
                   <button
-                    className="rounded-md bg-indigo-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-25"
+                    className="button rounded-md bg-indigo-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-25"
                     type="button"
                     onClick={add}
                     disabled={!valid}

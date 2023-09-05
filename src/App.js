@@ -24,6 +24,10 @@ function App() {
     setActiveView(activeView === "gallery" ? "gallery" /*iscan  : "gallery");
   };*/
 
+
+
+
+
   useEffect(() => {
     const handleResize = () => {
       const imageWidth = window.innerHeight * 0.312;  // 30vh in pixels
@@ -44,6 +48,7 @@ function App() {
       <Router>
 
       <main style={{ margin: 0, padding: 0 }}>
+
       <Background />
       
         <div className="mx-auto pt-16" style={{  margin: 0, padding: 0 }}>

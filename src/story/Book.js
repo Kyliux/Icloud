@@ -154,7 +154,12 @@ export const Book = ({ notes, images, videos, defaultratio, leftPadding, showMod
   async function list () {
     const { items } = await listDocs({
       collection: notes,
-      filter: {},
+      filter:  {
+        order: {
+          desc: true,
+          field: "updated_at",
+        },
+      },
     });
     setItems(items);
   };

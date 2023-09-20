@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { colors } from "../config/Colorpalette";
 import { Spinner } from "../Spinner";
+import ReactMarkdown from 'react-markdown';
+import './style.css';  // adjust path as needed
 
 
 const GridItem = ({   itemKey,
@@ -92,13 +94,13 @@ useEffect(() => {
 }, [packeryInit, url]);
 
   const handleClickTitle = () => {
-    navigate(`/story/titlename`);
+    //navigate(`/story/titlename`);
   };
 
   const handleClickTag = (tag) => {
-    // Check if the URL contains "/map/"
+    // Check if the URL contains "/story/"
     if (location.pathname.includes("/story")) {
-      // Change the URL to reflect the filtered tag in "/map/tagname" format
+      // Change the URL to reflect the filtered tag in "/story/tagname" format
       navigate(`/story/${tag}`);
     } 
   };
@@ -231,7 +233,9 @@ useEffect(() => {
 
 
       {/* Text */}
-      <div style={{  width : '85%', marginLeft:'7%' }} className="text-section">{item.data.text}</div>
+      <div style={{  width : '85%', marginLeft:'7%' }} className="text-section">
+    <ReactMarkdown>{item.data.text}</ReactMarkdown>
+</div>
 
       {/* Horizontal Line */}
       <hr style={{ borderColor: 'rgba(34,36,38,.1)', borderWidth: '1px', width: '100%' }} />

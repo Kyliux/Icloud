@@ -1,0 +1,39 @@
+/* markdown-styles.css */
+
+.text-section h1, .text-section h2, .text-section h3 {
+  text-align: left;
+  margin-bottom: 0.5em;
+  font-size: 1.5em;  /* Increased font size */
+  font-weight: bold;  /* Bold text */
+}
+
+.text-section h1::before, .text-section h2::before, .text-section h3::before {
+  content: "# ";  /* Adds a # before the title */
+}
+
+.text-section p {
+  text-align: left;
+  margin-bottom: 1em;
+}
+
+.text-section a {
+  color: black;  
+  text-decoration: underline;  /* Underlined links */
+}
+
+.text-section ul {
+  list-style-type: disc;
+  padding-left: 2em;
+  margin-bottom: 1em;
+}
+
+.text-section ol {
+  list-style-type: decimal;
+  padding-left: 2em;
+  margin-bottom: 1em;
+}
+
+.text-section li {
+  text-align: left;
+  margin: 0.5em 0;
+}

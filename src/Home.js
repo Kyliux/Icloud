@@ -149,7 +149,7 @@ const Home = (props) => {
 <div style={{ 
     width: '100%', 
     top: '100',  
-    backgroundColor: 'rgba(0, 0, 0, 0.3)', 
+    backgroundColor: 'rgba(0, 0, 0, 0.1)', 
     padding: '2% 5%', // Increase padding for better readability
     zIndex: 1000 
   }}>
@@ -206,7 +206,7 @@ const Home = (props) => {
         fontSize: '2em',  // Increased size for emphasis
         marginBottom: '1em' // Added margin for better spacing
       }}> 
-        My Journey Beyond Tradition 
+        Journey Beyond Tradition 
       </h1>
       Everyone has their own purpose in life. While many people find comfort and direction in the path set by their culture, family, or traditions, my experience has been a bit different. Introspection serves as a valuable tool for challenging these conventional paths, as it lends a rational approach to life decisions.
 
@@ -222,7 +222,7 @@ Inspired by the idea that we should be the change we wish to see in the world, I
         marginBottom: '1em',  // Added margin for better spacing
         marginTop: '2em'  // Added margin for better spacing
       }}> 
-        My Passions in Tech and Travel 
+        Passions in Tech and Travel 
       </h1>
       I have a background in Information Technology, and even though my career hasn't followed that path, my interest in the field remains unabated. Over the years, I've regularly updated my personal website, always staying attuned to the latest technological advancements. A few years ago, I was captivated by the idea of hosting my website on the blockchain to immortalize it. Discovering the Internet Computer prior to its genesis solidified my belief that it could revolutionize digital experiences while also addressing issues of democracy, transparency, sustainability, and decentralization.
 
@@ -277,10 +277,16 @@ I am optimistic that my goals are attainable through a combination of factors: m
     <div style={{ width: '100px', height: '100px', margin: '5px', cursor: 'pointer' }} onClick={() => window.location.href="https://www.decathlon.fr/p/antivol-velo-u-920-art2-cable/_/R-p-168739?mc=8385299&c=jaune"}>
       <img src="https://contents.mediadecathlon.com/p2094309/k$b2b831d7d3c2382c99364c56da422a40/sq/antivol-velo-u-920-art2-cable.jpg" alt="Tool 1" style={{ width: '100%', height: '100%' }} />
     </div>
-    
+    <div style={{ width: '100px', height: '100px', margin: '5px', cursor: 'pointer' }} onClick={() => window.location.href="https://www.cdiscount.com/pret-a-porter/vetements/pantalon-viscose-thai-pour-femme-coline/f-1133022-mp77909528.html#mpos=0|mp"}>
+      <img src="https://www.cdiscount.com/pdt2/5/2/8/1/550x550/mp77909528/rw/pantalon-viscose-thai-pour-femme-coline.jpg" alt="Tool 1" style={{ width: '100%', height: '100%' }} />
+    </div>
     <div style={{ width: '100px', height: '100px', margin: '5px', cursor: 'pointer' }} onClick={() => window.location.href="https://st2.depositphotos.com/1575949/7899/v/450/depositphotos_78999108-stock-illustration-under-construction-red-stamp-text.jpg"}>
       <img src="https://st2.depositphotos.com/1575949/7899/v/450/depositphotos_78999108-stock-illustration-under-construction-red-stamp-text.jpg" alt="Tool 2" style={{ width: '100%', height: '100%' }} />
     </div>
+    <div style={{ width: '100px', height: '100px', margin: '5px', cursor: 'pointer' }} onClick={() => window.location.href="https://www.decathlon.fr/p/bob-chasse-520-impermeable-et-resistant/_/R-p-329444?mc=8607186&c=marron"}>
+      <img src="https://contents.mediadecathlon.com/p1999311/k$82c89e3d3e864edfe3a3bf983157aad2/sq/bob-chasse-520-impermeable-et-resistant-marron.jpg" alt="Tool 2" style={{ width: '100%', height: '100%' }} />
+    </div>
+    
     {/* Add more images similarly */}
 
     </div>
@@ -288,7 +294,7 @@ I am optimistic that my goals are attainable through a combination of factors: m
 
         {/* Adding Supporter Section */}
         <div style={{ width: '100%', top: '100', padding: '1% 0' , zIndex: 1000 }}>
-        <h1 style={{ textAlign: 'left', color: 'white', fontSize: '2.2em', }}>My supporters</h1>
+        <h1 style={{ textAlign: 'left', color: 'white', fontSize: '2.2em', }}>Supporters</h1>
 
         <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
     {/* You can replace `image1.jpg`, `image2.jpg`, etc. with your actual image URLs */}
@@ -315,11 +321,11 @@ I am optimistic that my goals are attainable through a combination of factors: m
         <div style={{ zIndex: 1000 }}>
       </div>
         <hr style={{ margin: '0 auto', width: '100%' , borderColor: 'white', opacity: 0.3 }} />
-
-            {/* Adding Q&A Section */}
-            <div style={{ width: '100%', top: '100',  backgroundColor: 'rgba(0, 0, 0, 0.3)', padding: '1% 0' , zIndex: 1000 }}>
         <h1 style={{ textAlign: 'center', color: 'white', fontSize: '2.2em', }}>Q&A Section</h1>
         <hr style={{ margin: '0 auto', width: '100%', borderColor: 'white', opacity: 0.3 }} />
+            {/* Adding Q&A Section */}
+            <div style={{ width: '100%', top: '100', padding: '1% 5%' , zIndex: 1000 }}>
+ 
 
         <div onClick={() => toggleAnswer("answer0")} style={questionStyle}>
           Is this website ... ? <span>▼</span>

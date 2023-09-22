@@ -22,3 +22,8 @@ pk.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Jetbrains editors
+.idea
+
+public/workers

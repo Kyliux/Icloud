@@ -6,7 +6,7 @@ import { Auth } from "./Auth";
 import Navbar from './navbar/Navbar';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Background  from "./map/Background";
-
+import { initOrbiter } from "@junobuild/analytics";
 
 
 function App() {
@@ -18,12 +18,16 @@ function App() {
       await initJuno({
         satelliteId: "m5rwi-daaaa-aaaal-acrpq-cai",
       }))();
+      (async () =>
+      await initOrbiter({
+        satelliteId: "m5rwi-daaaa-aaaal-acrpq-cai",
+        orbiterId: "pqr2h-ziaaa-aaaal-ac2uq-cai",
+      }))();
   }, []);
 
   /*const toggleView = () => {
     setActiveView(activeView === "gallery" ? "gallery" /*iscan  : "gallery");
   };*/
-
 
 
 

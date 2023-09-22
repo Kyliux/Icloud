@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@junobuild/analytics": "^0.0.9",
     "@junobuild/core": "^0.0.20",
     "@papyrs/stylo": "^0.0.45",
     "@testing-library/jest-dom": "^5.16.5",
@@ -37,6 +38,7 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "postinstall": "node -e \"require('fs').cpSync('node_modules/@junobuild/analytics/dist/workers/', './src/config/workers', {recursive: true});\"",
     "format": "npx prettier --write ."
   },
   "eslintConfig": {

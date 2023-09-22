@@ -38,7 +38,7 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "node -e \"require('fs').cpSync('node_modules/@junobuild/analytics/dist/workers/', './src/config/workers', {recursive: true});\"",
+    "postinstall": "node -e \"require('fs').cpSync('node_modules/@junobuild/analytics/dist/workers/', './public/workers', {recursive: true});\"",
     "format": "npx prettier --write ."
   },
   "eslintConfig": {

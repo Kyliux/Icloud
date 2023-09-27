@@ -9,6 +9,7 @@ import { EnhancedTable } from "./gallery/EnhancedTable";
 import { Navigate, useLocation } from 'react-router-dom';
 import { stylo } from '@papyrs/stylo/';
 import logo from './config/logoi.png';
+import openc from './config/openchat.png';
 
 
 //data type button to give Navbarx
@@ -126,6 +127,12 @@ const Home = (props) => {
           <img src={logo} alt="Logo" style={{ width: '30%', margin: '1%' }} />
         </div>
 
+{/* OpenChat image */}
+<div style={{ position: 'absolute', top: '0px', right: '50%', transform: 'translate(110%, 0%)' }}>
+    <a href="openchat">  {/* Replace with your OpenChat URL */}
+      <img src={openc} alt="OpenChat" style={{ width: '25%', cursor: 'pointer' }} /> {/* 10% because it's a third of the 30% logo width */}
+    </a>
+  </div>
 
         {/* First part of the poem */}
         <div style={poemStyle}>

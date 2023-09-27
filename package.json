@@ -5,6 +5,7 @@
   "dependencies": {
     "@junobuild/analytics": "^0.0.9",
     "@junobuild/core": "^0.0.20",
+    "@open-ic/openchat-xframe": "^1.0.1",
     "@papyrs/stylo": "^0.0.45",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",

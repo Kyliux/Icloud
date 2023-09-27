@@ -10,6 +10,7 @@ import MapComponent from './map/MapComponent';
 import Story from './story/Story';
 import Void from './Void';
 import Donate from './Donate';
+import Openchat from './Openchat';
 import EnhancedTable from './gallery/EnhancedTable'; // Make sure to import EnhancedTable
 import textureImage from './config/paper.jpg';
 
@@ -61,6 +62,7 @@ export const Auth = ({  children }) => {
         <Route path="/story" element={<Story navitems={navitems} />} />
         <Route path="/story/:tag" element={<Story navitems={navitems} />} />
         <Route path="/donate" element={<Donate />} />
+        <Route path="/openchat" element={<Openchat />} />
       </Routes>
       {busy ? <Spinner /> : undefined}
       {/*user !== undefined && user !== null ? (

@@ -357,11 +357,11 @@ const Background = () => {
           {bikeRoutes && <GeoJSON data={bikeRoutes} />}
           <MapUpdater center={shiftedCenterPosition} />
           <TileLayer
-            url="https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg"
+            url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg?api_key=d2a885dc-e7da-4e2c-8b89-22e151ef15de"
             attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           <TileLayer
-            url="https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png"
+            url="https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}.png?api_key=d2a885dc-e7da-4e2c-8b89-22e151ef15de"
             opacity={0.5}
           />
 {items.map(item => createMarker(item))}

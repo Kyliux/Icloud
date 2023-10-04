@@ -129,7 +129,7 @@ const Home = (props) => {
 
 {/* OpenChat image */}
 <div style={{ position: 'absolute', top: '0px', right: '50%', transform: 'translate(110%, 0%)' }}>
-    <a href="openchat">  {/* Replace with your OpenChat URL */}
+    <a href="https://oc.app/user/t4uah-qiaaa-aaaaf-atmgq-cai">  {/* Replace with your OpenChat URL */}
       <img src={openc} alt="OpenChat" style={{ width: '25%', cursor: 'pointer' }} /> {/* 10% because it's a third of the 30% logo width */}
     </a>
   </div>

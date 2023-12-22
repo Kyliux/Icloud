@@ -87,7 +87,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     // Sort the tags by their counts in descending order
     const sortedTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]);
     // Get the top 20 tags
-    const topTags = sortedTags.slice(0, 20);
+    const topTags = sortedTags.slice(0, 40);
     setTopTags(topTags);
   
   
@@ -126,6 +126,50 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   
     };
   
+    const handleRemoveAllWithTag = async () => {
+      const tagSuffix = getTagFromURL();
+      
+      if (tagSuffix) {
+        const confirmRemoveAll = window.confirm(`Are you sure you want to remove all items with the tag "${tagSuffix}"?`);
+        
+        if (confirmRemoveAll) {
+          try {
+            setInProgress(true);
+  
+            // Filter items with the current tag
+            const itemsToRemove = items.filter((item) => {
+              const itemTags = item.data.tags
+                ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
+                : [];
+              return itemTags.includes(tagSuffix.toLowerCase());
+            });
+  
+            // Remove each item
+            for (const itemToRemove of itemsToRemove) {
+              const {
+                data: { url },
+              } = itemToRemove;
+  
+              await delDoc({
+                collection: notes,
+                doc: itemToRemove,
+              });
+  
+              const updatedItems = items.filter((item) => item.key !== itemToRemove.key);
+              setItems(updatedItems);
+              setFilteredItems(updatedItems);
+            }
+  
+            reloadPackery();
+          } catch (error) {
+            console.error("Error removing items:", error);
+          } finally {
+            setInProgress(false);
+          }
+        }
+      }
+    };
+
   
   const handleShowSwiper = (index) => {
     setShowSwiper(true);
@@ -302,6 +346,15 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
       )}
       <header className=" w-full flex flex-col items-center justify-center">
+      {hasCRUDAccess && (
+            <button
+            className="rounded-lg py-0.4 px-1 text-white text-lg font-semibold bg-red-500 mb-2"
+            onClick={handleRemoveAllWithTag}
+            style={{ zIndex: 9999 }}
+          >
+            Remove All
+          </button>
+        )}
         <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999
 }}>
           {topTags.length > 0 && showTopTags && (
@@ -352,6 +405,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
                     {tag}
                   </button>
                 ))}
+                
               </div>
             </div>
           )}

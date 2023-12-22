@@ -4,8 +4,7 @@ import { AuthContext } from "../Auth";
 import { nanoid } from "nanoid";
 import { principal } from "../config/Principalid";
 import emojiRegex from 'emoji-regex';
-import  { useRef } from "react";
-
+import { useRef } from "react";
 
 export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, setShowModal }) => {
   const [inputText, setInputText] = useState("");
@@ -15,7 +14,7 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, 
   const [valid, setValid] = useState(false);
   const [progress, setProgress] = useState(false);
   const [files, setFiles] = useState([]);
-  const [hasCRUDAccess, setHasCRUDAccess] = useState(false); // Flag for CRUD access
+  const [hasCRUDAccess, setHasCRUDAccess] = useState(false);
   const [gps, setGps] = useState(null);
   const [loadingLocation, setLoadingLocation] = useState(true);
   const isEmoji = input => emojiRegex().test(input);
@@ -24,26 +23,21 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, 
 
   useEffect(() => {
     setValid(inputText !== "" && user !== undefined && user !== null);
-if (user && principal.includes(user.key)) {
-  setHasCRUDAccess(true);
-}
+    if (user && principal.includes(user.key)) {
+      setHasCRUDAccess(true);
+    }
   }, [showModal, inputText, user]);
 
   useEffect(() => {
-    // Set loadingLocation to true when starting request
     setLoadingLocation(true);
-  
+
     navigator.geolocation.getCurrentPosition(
       position => {
         setGps({ lat: position.coords.latitude, lng: position.coords.longitude });
-  
-        // Set loadingLocation to false when request is done
         setLoadingLocation(false);
       },
       error => {
         console.error("Error occurred while getting user's location", error);
-  
-        // Set loadingLocation to false even if request fails
         setLoadingLocation(false);
       }
     );
@@ -54,22 +48,18 @@ if (user && principal.includes(user.key)) {
   useEffect(() => {
     const handleFileInputClick = () => {
       console.log("Choose File input clicked!");
-      // You can perform any actions you want here when the input is clicked.
     };
 
     if (fileInputRef.current && !progress) {
       fileInputRef.current.addEventListener("click", handleFileInputClick);
     }
 
-    // Clean up the event listener on unmount
     return () => {
       if (fileInputRef.current) {
         fileInputRef.current.removeEventListener("click", handleFileInputClick);
       }
     };
   }, [progress]);
-
-  
 
   const reload = () => {
     let event = new Event("reload");
@@ -91,122 +81,112 @@ if (user && principal.includes(user.key)) {
   };
 
   const add = async () => {
-    // Demo purpose therefore edge case not properly handled
     if ([null, undefined].includes(user)) {
       return;
     }
-
+  
     setProgress(true);
-
+  
     try {
       const position = await getCoordinates();
       setGps({ lat: position.coords.latitude, lng: position.coords.longitude });
-     
-       if (files.length === 0) {
-        // If no files, just add other data.
-        const key = nanoid();
-        const currentDate = new Date().toISOString();
-
-        await setDoc({
-          collection: notes,
-          doc: {
-            key,
-            data: {
-              text: inputText,
-              title : inputTitle,
-              tags,
-              date: currentDate,
-              gps,
-              logos,
-            },
-          },
-        });
-      } else {
-      await Promise.all(
-        files.map(async (file) => {
-          const filename = `${user.key}-${file.name}`;
-
-          let collection;
-          let ratio;
-          let url;
-          let type;
-
-          if (file.type.startsWith("image/")) {
-            collection = images;
-            const image = new Image();
-            image.src = URL.createObjectURL(file);
-            await image.decode();
-            ratio = getClosestRatio(image.width / image.height);
-          } else if (file.type.startsWith("video/")) {
-            collection = videos;
-            const video = document.createElement("video");
-            video.src = URL.createObjectURL(file);
-
-            const videoLoadPromise = new Promise((resolve, reject) => {
-              video.addEventListener("loadedmetadata", () => {
-                ratio = video.videoWidth / video.videoHeight;
-                resolve();
+  
+      const uploadQueue = [...files]; // Copy the files array to the upload queue
+  
+      const processNextBatch = async () => {
+        const currentBatch = uploadQueue.splice(0, 6); // Process up to 6 files at a time
+  
+        await Promise.all(
+          currentBatch.map(async (file, index) => {
+            console.log(`Uploading file ${index + 1} of ${currentBatch.length}`);
+            const filename = `${user.key}-${file.name}`;
+  
+            let collection;
+            let ratio;
+            let url;
+            let type;
+  
+            if (file.type.startsWith("image/")) {
+              collection = images;
+              const image = new Image();
+              image.src = URL.createObjectURL(file);
+              await image.decode();
+              ratio = getClosestRatio(image.width / image.height);
+            } else if (file.type.startsWith("video/")) {
+              collection = videos;
+              const video = document.createElement("video");
+              video.src = URL.createObjectURL(file);
+  
+              const videoLoadPromise = new Promise((resolve, reject) => {
+                video.addEventListener("loadedmetadata", () => {
+                  ratio = video.videoWidth / video.videoHeight;
+                  resolve();
+                });
+  
+                video.addEventListener("error", reject);
               });
-
-              video.addEventListener("error", reject);
-            });
-
-            await videoLoadPromise;
-          }
-
-          if (collection) {
-            const { downloadUrl } = await uploadFile({
-              collection,
-              data: file,
-              filename,
-              token: nanoid(),
-            });
-
-            url = downloadUrl;
-            type = collection.slice(0, -1);
-          }
-
-          const key = nanoid();
-          const currentDate = new Date().toISOString();
-
-          await setDoc({
-            collection: notes,
-            doc: {
-              key,
-              data: {
-                text: inputText,
-                type,
-                title : inputTitle,
-                tags,
-                ratio,
-                date: currentDate,
-                gps,
-                logos,
-                ...(url !== undefined && { url }),
+  
+              await videoLoadPromise;
+            }
+  
+            if (collection) {
+              const { downloadUrl } = await uploadFile({
+                collection,
+                data: file,
+                filename,
+                token: nanoid(),
+              });
+  
+              url = downloadUrl;
+              type = collection.slice(0, -1);
+            }
+  
+            const key = nanoid();
+            const currentDate = new Date().toISOString();
+  
+            await setDoc({
+              collection: notes,
+              doc: {
+                key,
+                data: {
+                  text: inputText,
+                  type,
+                  title: inputTitle,
+                  tags,
+                  ratio,
+                  date: currentDate,
+                  gps,
+                  logos,
+                  ...(url !== undefined && { url }),
+                },
               },
-            },
-          });
-
-          return {
-            url,
-            type,
-          };
-        })
-      );
-    };
-
+            });
+  
+            console.log(`File ${index + 1} of ${currentBatch.length} uploaded`);
+          })
+        );
+  
+        if (uploadQueue.length > 0) {
+          // If there are more files in the queue, process the next batch
+          await processNextBatch();
+        }
+      };
+  
+      await processNextBatch();
+  
+      console.log("All files uploaded successfully");
       setShowModal(false);
       reload();
     } catch (err) {
       console.error(err);
     }
-
+  
     setProgress(false);
   };
 
   return (
     <>
-    <div id="modal-root"></div>
+      <div id="modal-root"></div>
 
       <div className="mt-10 flex items-center justify-center gap-x-6" style={{ zIndex: 999 }}>
         {/*hasCRUDAccess && (
@@ -218,7 +198,6 @@ if (user && principal.includes(user.key)) {
             Add an entry
           </button>
         )*/}
-
       </div>
 
       {/* Modal Root */}
@@ -237,7 +216,7 @@ if (user && principal.includes(user.key)) {
               value={logos}
               disabled={progress}
             />
-               <textarea
+            <textarea
               className="form-control mb-4 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"
               rows="5"
               type="text"
@@ -248,7 +227,7 @@ if (user && principal.includes(user.key)) {
               value={inputTitle}
               disabled={progress}
             ></textarea>
-             <textarea
+            <textarea
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none resize-none"
               rows="5"
               placeholder="Your diary entry"
@@ -267,23 +246,38 @@ if (user && principal.includes(user.key)) {
               disabled={progress}
               multiple
             />
-<input
-  type="text"
-  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
-  placeholder="Tags (separated by commas)"
-  onChange={(e) => {
-    // Trim whitespace from the value
-    const trimmedValue = e.target.value.trim();
+            <input
+              type="text"
+              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none"
+              placeholder="Tags (separated by commas)"
+              onChange={(e) => {
+                const trimmedValue = e.target.value.trim();
+                const tagsArray = trimmedValue.split(',').map(tag => tag.trim());
+                const cleanedTags = tagsArray.join(',');
+                setTags(cleanedTags);
+              }}
+              value={tags}
+              disabled={progress}
+            />
+            {progress && (
+              <div className="text-center mb-4">
+                <p>Uploading...</p>
+                {/* Add your loading spinner or progress bar here */}
+              </div>
+            )}
 
-    // If you want to trim the whitespace between tags as well, you can do so like this
-    const tagsArray = trimmedValue.split(',').map(tag => tag.trim());
-    const cleanedTags = tagsArray.join(',');
+            {!progress && valid && (
+              <div className="text-center text-green-500 mb-4">
+                <p>Entry added successfully!</p>
+              </div>
+            )}
 
-    setTags(cleanedTags);
-  }}
-  value={tags}
-  disabled={progress}
-/>
+            {!progress && !valid && (
+              <div className="text-center text-red-500 mb-4">
+                <p>Failed to add entry. Please check your input.</p>
+              </div>
+            )}
+
             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
               {progress ? (
                 <div

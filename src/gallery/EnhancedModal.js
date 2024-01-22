@@ -130,10 +130,13 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, 
             }
   
             if (collection) {
+              const currentTimestamp = Date.now(); // Get the current timestamp
+              const mergedFilename = `${currentTimestamp}_${filename}`; // Merge timestamp with original filename
+
               const { downloadUrl } = await uploadFile({
                 collection,
                 data: file,
-                filename,
+                filename : mergedFilename,
                 token: nanoid(),
               });
   

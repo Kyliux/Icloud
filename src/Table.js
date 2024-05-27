@@ -237,7 +237,7 @@ export const Table = () => {
     const sortedTags = Object.keys(tagCount).sort(
       (a, b) => tagCount[b] - tagCount[a]
     );
-    const topTags = sortedTags.slice(0, 20);
+    const topTags = sortedTags.slice(0, 40);
     setTopTags(topTags);
   };
 

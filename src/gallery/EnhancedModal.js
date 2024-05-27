@@ -94,7 +94,7 @@ export const EnhancedModal = ({ notes, images, videos, defaultratio, showModal, 
       const uploadQueue = [...files]; // Copy the files array to the upload queue
   
       const processNextBatch = async () => {
-        const currentBatch = uploadQueue.splice(0, 6); // Process up to 6 files at a time
+        const currentBatch = uploadQueue.splice(0, 3); // Process up to 6 files at a time
   
         await Promise.all(
           currentBatch.map(async (file, index) => {

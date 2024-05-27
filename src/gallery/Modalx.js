@@ -257,7 +257,7 @@ if (user && principal.includes(user.key)) {
                 setInputText(e.target.value);
               }}
               value={inputText}
-              disabled={pr  ogress}
+              disabled={progress}
             ></textarea>
             <input
               type="file"

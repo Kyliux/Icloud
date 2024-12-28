@@ -23,9 +23,8 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   const packeryRef = useRef(null);
   const activeTagsRef = useRef([]);
   const excludedTagsRef = useRef([]);
-  const itemTagsMapRef = useRef({}); // New addition here
+  const itemTagsMapRef = useRef({});
 
-  //fetchTopTags should populate the toptags
   useEffect(() => {
     fetchTopTags();
   }, [items]);
@@ -35,142 +34,93 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   }, [items, location.pathname]);
 
   useEffect(() => {
-  if (gridRef.current) {
-    initializePackery();
-   }
-   return () => {
-     if (packeryRef.current) {
-       packeryRef.current.destroy();
-     }
-   };
- }, [filteredItems]); //was no dependency before
+    if (gridRef.current) {
+      initializePackery();
+    }
+    return () => {
+      if (packeryRef.current) {
+        packeryRef.current.destroy();
+      }
+    };
+  }, [filteredItems]);
 
   useEffect(() => {
     if (user && principal.includes(user.key)) {
       setHasCRUDAccess(true);
     }
-    
     list();
     initializePackery();
   }, [user]);
 
   const fetchTopTags = () => {
-    // Initialize the object to store the count of each tag
     const tagCount = {};
-    // Initialize the object to map tags to items
     const itemTagsMap = {};
-  
-  
-    // Iterate over each item
     items.forEach((item) => {
-      // Extract tags from the item, or use an empty array if no tags are present
       const tags = item.data.tags ? String(item.data.tags).split(",") : [];
-  
-      // Iterate over each tag
       tags.forEach((tag) => {
-        // Normalize the tag to lowercase
         const normalizedTag = tag.toLowerCase();
-  
-        // Increase the count for the tag, or set it to 1 if it hasn't been encountered yet
         tagCount[normalizedTag] = tagCount[normalizedTag] ? tagCount[normalizedTag] + 1 : 1;
-  
-        // If the tag hasn't been encountered yet, initialize an empty array for it in itemTagsMap
         if (!itemTagsMap[normalizedTag]) {
           itemTagsMap[normalizedTag] = [];
         }
-        // Add the current item to the array for the current tag in itemTagsMap
         itemTagsMap[normalizedTag].push(item);
       });
     });
-  
-  
-    // Sort the tags by their counts in descending order
+
     const sortedTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]);
-    // Get the top 20 tags
     const topTags = sortedTags.slice(0, 40);
     setTopTags(topTags);
-  
-  
-    // Initialize a Set to store the selected items
+
     const selectedItems = new Set();
-    // Initialize an array to store the filtered items
     const filtered = [];
-  
-  
-    // Iterate over each top tag
     topTags.forEach((tag) => {
-      // Get the items with the current tag, or use an empty array if none exist
       const itemsWithTag = itemTagsMap[tag] || [];
-  
-  
       if (itemsWithTag.length > 0) {
-        // Filter out the items that have already been selected
         const remainingItems = itemsWithTag.filter((item) => !selectedItems.has(item));
-  
         if (remainingItems.length > 0) {
-          // Select a random item from the remaining ones
           const randomIndex = Math.floor(Math.random() * remainingItems.length);
           const selectedItem = remainingItems[randomIndex];
-  
-          // Add the selected item to the filtered items
           filtered.push(selectedItem);
-          // Add the selected item to the selected items
           selectedItems.add(selectedItem);
         }
       }
     });
-    
-    // Set the filtered items
+
     setFilteredItems(filtered);
     initializePackery();
-  
-    };
-  
-    const handleRemoveAllWithTag = async () => {
-      const tagSuffix = getTagFromURL();
-      
-      if (tagSuffix) {
-        const confirmRemoveAll = window.confirm(`Are you sure you want to remove all items with the tag "${tagSuffix}"?`);
-        
-        if (confirmRemoveAll) {
-          try {
-            setInProgress(true);
-  
-            // Filter items with the current tag
-            const itemsToRemove = items.filter((item) => {
-              const itemTags = item.data.tags
-                ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
-                : [];
-              return itemTags.includes(tagSuffix.toLowerCase());
-            });
-  
-            // Remove each item
-            for (const itemToRemove of itemsToRemove) {
-              const {
-                data: { url },
-              } = itemToRemove;
-  
-              await delDoc({
-                collection: notes,
-                doc: itemToRemove,
-              });
-  
-              const updatedItems = items.filter((item) => item.key !== itemToRemove.key);
-              setItems(updatedItems);
-              setFilteredItems(updatedItems);
-            }
-  
-            reloadPackery();
-          } catch (error) {
-            console.error("Error removing items:", error);
-          } finally {
-            setInProgress(false);
+  };
+
+  const handleRemoveAllWithTag = async () => {
+    const tagSuffix = getTagFromURL();
+    if (tagSuffix) {
+      const confirmRemoveAll = window.confirm(`Are you sure you want to remove all items with the tag "${tagSuffix}"?`);
+      if (confirmRemoveAll) {
+        try {
+          setInProgress(true);
+          const itemsToRemove = items.filter((item) => {
+            const itemTags = item.data.tags
+              ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
+              : [];
+            return itemTags.includes(tagSuffix.toLowerCase());
+          });
+
+          for (const itemToRemove of itemsToRemove) {
+            const { data: { url } } = itemToRemove;
+            await delDoc({ collection: notes, doc: itemToRemove });
+            const updatedItems = items.filter((item) => item.key !== itemToRemove.key);
+            setItems(updatedItems);
+            setFilteredItems(updatedItems);
           }
+          reloadPackery();
+        } catch (error) {
+          console.error("Error removing items:", error);
+        } finally {
+          setInProgress(false);
         }
       }
-    };
+    }
+  };
 
-  
   const handleShowSwiper = (index) => {
     setShowSwiper(true);
     setSwiperIndex(index);
@@ -180,7 +130,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     setShowSwiper(false);
   };
 
-  async function list () {
+  async function list() {
     const { items } = await listDocs({
       collection: notes,
       filter: {},
@@ -207,7 +157,7 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   };
 
   const getTagFromURL = () => {
-    let tagSuffix = undefined;
+    let tagSuffix;
     if (location.pathname.includes('/gallery/')) {
       tagSuffix = location.pathname.split('/gallery/')[1];
     } else if (location.pathname.includes('/map/')) {
@@ -217,20 +167,13 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
   };
 
   const handleItemsFiltering = () => {
-
-    // Extract tag from URL
     const tagSuffix = getTagFromURL();
     let filtered;
-
-    // Check if tagSuffix is empty or null
-    if (tagSuffix == undefined ) {
+    if (tagSuffix == undefined) {
       return;
-      
-    } else  if  ( tagSuffix === "") {
-      // Use all items
+    } else if (tagSuffix === "") {
       filtered = items;
     } else {
-      // Filter items with tag matching tagSuffix
       filtered = items.filter((item) => {
         const itemTags = item.data.tags
           ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
@@ -238,12 +181,9 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
         return itemTags.includes(tagSuffix.toLowerCase());
       });
     }
-    // Update state with the filtered items
     setFilteredItems(filtered);
-    // Initialize packery after items filtering
     initializePackery();
-  }
-
+  };
 
   const filterItems = (tag, exclude = false, items = []) => {
     tag = tag.toLowerCase();
@@ -303,10 +243,6 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
         });
       }
 
-      const {
-        data: { url },
-      } = doc;
-
       await delDoc({
         collection: notes,
         doc,
@@ -338,16 +274,14 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
     return colors[index];
   };
 
-
-
   return (
     <div className="w-full">
       {showSwiper && (
         <ImageSwiper items={filteredItems} activeIndex={swiperIndex} onClose={handleCloseSwiper} />
       )}
       <header className=" w-full flex flex-col items-center justify-center">
-      {hasCRUDAccess && (
-            <button
+        {hasCRUDAccess && (
+          <button
             className="rounded-lg py-0.4 px-1 text-white text-lg font-semibold bg-red-500 mb-2"
             onClick={handleRemoveAllWithTag}
             style={{ zIndex: 9999 }}
@@ -355,12 +289,10 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
             Remove All
           </button>
         )}
-        <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999
-}}>
+        <h2 className="font-semibold text-gray-800 text-center" style={{ zIndex: 999 }}>
           {topTags.length > 0 && showTopTags && (
             <div className="mt-2 mx-auto">
-              <div className="flex flex-wrap justify-center mt-2"                     style={{ width: "90%",marginLeft: "4%"  }} // Add this line
->
+              <div className="flex flex-wrap justify-center mt-2" style={{ width: "90%", marginLeft: "4%" }}>
                 <button
                   className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${
                     activeTags.length === 0 ? "bg-indigo-600" : "bg-gray-400"
@@ -374,38 +306,25 @@ export const EnhancedTable = ({ notes, images, videos, defaultratio, leftPadding
                     key={tag}
                     className={`rounded-lg py-0.4 px-1 text-white text-lg font-semibold mr-2 ${getTagColor(tag)}`}
                     onClick={() => {
-                      // Update active tags and refilter items a bit ugly but works as intented for now
-
-  // Extract tag from URL
-  const tagSuffix = tag;
-  let filtered;
-
-  // Check if tagSuffix is empty or null
-  if (!tagSuffix || tagSuffix === "") {
-    // Use all items
-    filtered = items;
-  } else {
-    // Filter items with tag matching tagSuffix
-    filtered = items.filter((item) => {
-      const itemTags = item.data.tags
-        ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
-        : [];
-      return itemTags.includes(tagSuffix.toLowerCase());
-    });
-  }
-  // Update state with the filtered items
-  setFilteredItems(filtered);
-  // Initialize packery after items filtering
-  initializePackery();
-
-
-
+                      const tagSuffix = tag;
+                      let filtered;
+                      if (!tagSuffix || tagSuffix === "") {
+                        filtered = items;
+                      } else {
+                        filtered = items.filter((item) => {
+                          const itemTags = item.data.tags
+                            ? String(item.data.tags).split(",").map((tag) => tag.toLowerCase().trim())
+                            : [];
+                          return itemTags.includes(tagSuffix.toLowerCase());
+                        });
+                      }
+                      setFilteredItems(filtered);
+                      initializePackery();
                     }}
                   >
                     {tag}
                   </button>
                 ))}
-                
               </div>
             </div>
           )}

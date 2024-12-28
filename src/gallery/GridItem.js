@@ -188,7 +188,7 @@ const GridItem = ({
         </div>
       )}
 
-      <div className="absolute top-0 left-0 w-full">
+      <div className="absolute top-0 left-0 w-full" style={{  zIndex: "5" }}>
         <div className="top-0 left-0 w-full max-h-80 flex flex-wrap justify-center">
           {tagsArray.length > 0 ? (
             tagsArray.map((tag) => (
@@ -211,7 +211,7 @@ const GridItem = ({
       </div>
 
       {type === "video" && mediaUrl ? (
-        <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        <div style={{ position: "relative", width: "100%", height: "100%", zIndex: "0" }}>
           <video
             src={mediaUrl}
             controls
@@ -224,7 +224,7 @@ const GridItem = ({
         <img src={mediaUrl} alt={text} className="media-element w-full h-auto" onClick={() => setShowSwiper(index)} />
       ) : null}
 
-<div className="absolute bottom-0 right-0 flex items-center space-x-2" style={{ zIndex: 1000 }}>
+<div className="absolute bottom-0 right-0 flex items-center space-x-2" style={{ zIndex: 10 }}>
   <button onClick={handleLike}>
     <span className={userLiked ? 'text-red-600' : 'text-gray-600'}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={userLiked ? "red" : "grey"} stroke={userLiked ? "none" : "currentColor"} className="icon">
